@@ -12,16 +12,16 @@ module.exports = function(app, passport) {
 	// LOGIN ===============================
 	// =====================================
 	// show the login form
-	app.get('/login', function(req, res) {
+	app.get('/entrar', function(req, res) {
 
 		// render the page and pass in any flash data if it exists
-		res.render('login.ejs', { message: req.flash('loginMessage') });
+		res.render('entrar.ejs', { message: req.flash('loginMessage') });
 	});
 
 	// process the login form
-	app.post('/login', passport.authenticate('local-login', {
+	app.post('/entrar', passport.authenticate('local-login', {
             successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
+            failureRedirect : '/entrar', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
 		}),
         function(req, res) {
@@ -39,15 +39,15 @@ module.exports = function(app, passport) {
 	// SIGNUP ==============================
 	// =====================================
 	// show the signup form
-	app.get('/signup', function(req, res) {
+	app.get('/registrar', function(req, res) {
 		// render the page and pass in any flash data if it exists
-		res.render('signup.ejs', { message: req.flash('signupMessage') });
+		res.render('registrar.ejs', { message: req.flash('signupMessage') });
 	});
 
 	// process the signup form
-	app.post('/signup', passport.authenticate('local-signup', {
+	app.post('/registrar', passport.authenticate('local-signup', {
 		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/signup', // redirect back to the signup page if there is an error
+		failureRedirect : '/registrar', // redirect back to the signup page if there is an error
 		failureFlash : true // allow flash messages
 	}));
 
@@ -61,6 +61,40 @@ module.exports = function(app, passport) {
 			user : req.user // get the user out of session and pass to template
 		});
 	});
+
+
+	// =====================================
+	// SITE =========================
+	// =====================================
+
+	app.get('/jogadores', function(req, res) {
+		res.render('jogadores.ejs', {
+			user : req.user 
+		});
+	});
+
+	app.get('/jogadores/:id', function(req, res) {
+		res.render('jogador.ejs', {
+			user : req.user
+		});
+	});
+
+	app.get('/jogadores/buscar/:id', function(req, res) {
+		res.render('jogadores.ejs', {
+			user : req.user
+		});
+	});
+
+
+	app.get('/cv', function(req, res) {
+		res.render('cv.ejs', {});
+	});
+
+
+
+
+
+
 
 	// =====================================
 	// LOGOUT ==============================

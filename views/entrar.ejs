@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    
+
+ <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>Entrar</h1>
+                    <p>Utilize seus dados cadastrados para entrar no site.</p>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Entrar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                <!-- show any messages that come back with authentication -->
+                    <% if (message.length > 0) { %>
+                        <div class="alert alert-danger"><%= message %></div>
+                    <% } %>
+
+                    <!-- LOGIN FORM -->
+                    <form action="/entrar" method="post">
+                        <div class="form-group">
+                            <label>Usuário</label>
+                            <input type="text" class="form-control" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label>Senha</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-lg">Entrar</button>
+                    </form>
+                </div>
+            </div>        
+        </div>
+    </section><!--/#registration-->   
+
+
+
+
+
+
+    <%- include partials/footer.ejs %>
+
+</body>
+</html>
+
+

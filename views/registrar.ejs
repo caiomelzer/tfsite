@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    
+
+ <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>Registrar</h1>
+                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Registrar</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <form action="/registrar" method="post">
+            		<div class="form-group">
+            			<label>Usuário</label>
+            			<input type="text" class="form-control" name="username" minlength="6" required data-validation-required-message="teste" >
+                        <p class="help-block">dasdsadas</p>
+            		</div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" class="form-control" name="email" required  >
+                        <p class="help-block"></p>
+                    </div>
+            		<div class="form-group">
+            			<label>Senha</label>
+            			<input type="password" class="form-control" name="password" required >
+                        <p class="help-block"></p>
+            		</div>
+                    <div class="form-group">
+                        <label>Novamente sua Senha</label>
+                        <input type="password" class="form-control" name="passwordb" required >
+                        <p class="help-block"></p>
+                    </div>
+
+            		<button type="submit" class="btn btn-warning btn-lg">Registrar</button>
+            	</form>
+            </div>        
+        </div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/view/registrar.js"></script>
+
+</body>
+</html>
+
