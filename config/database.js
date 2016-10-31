@@ -6,5 +6,5 @@ module.exports = {
         'password': ''
     },
 	'database': 'terraqli_bd',
-    'users_table': 'users'
+    'users_table': 'usuarios'
 };

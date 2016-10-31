@@ -5,7 +5,7 @@ module.exports = function(app, passport) {
 	// HOME PAGE (with login links) ========
 	// =====================================
 	app.get('/', function(req, res) {
-		res.render('index.ejs'); // load the index.ejs file
+		res.render('index.ejs', {lang: res}); // load the index.ejs file
 	});
 
 	// =====================================
@@ -15,7 +15,7 @@ module.exports = function(app, passport) {
 	app.get('/entrar', function(req, res) {
 
 		// render the page and pass in any flash data if it exists
-		res.render('entrar.ejs', { message: req.flash('loginMessage') });
+		res.render('entrar.ejs', { lang: res, message: req.flash('loginMessage') });
 	});
 
 	// process the login form
@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
 	// show the signup form
 	app.get('/registrar', function(req, res) {
 		// render the page and pass in any flash data if it exists
-		res.render('registrar.ejs', { message: req.flash('signupMessage') });
+		res.render('registrar.ejs', { lang: res, message: req.flash('signupMessage') });
 	});
 
 	// process the signup form
@@ -58,6 +58,7 @@ module.exports = function(app, passport) {
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile.ejs', {
+			lang : res, 
 			user : req.user // get the user out of session and pass to template
 		});
 	});
@@ -89,12 +90,6 @@ module.exports = function(app, passport) {
 	app.get('/cv', function(req, res) {
 		res.render('cv.ejs', {});
 	});
-
-
-
-
-
-
 
 	// =====================================
 	// LOGOUT ==============================

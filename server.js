@@ -12,6 +12,7 @@ var port     = process.env.PORT || 8000;
 
 var passport = require('passport');
 var flash    = require('connect-flash');
+var i18n 	= require('i18n');
 
 // configuration ===============================================================
 // connect to our database
@@ -19,7 +20,12 @@ var flash    = require('connect-flash');
 require('./config/passport')(passport); // pass passport for configuration
 
 
+i18n.configure({
+    locales:['br', 'en'],
+    directory: __dirname + '/locales'
+});
 
+app.use(i18n.init);
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)

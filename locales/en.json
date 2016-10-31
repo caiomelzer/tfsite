@@ -1,0 +1,12 @@
+{
+	"email":"Email",
+	"password":"Senha",
+	"re-type password":"Confirme sua senha",
+	"user": "Usuário",
+	"register":"Registrar",
+	"the password need to be the same":"A senha deve ser igual",
+	"the password need to have 6 digits":"A senha deve conter no mínimo 6 digitos",
+	"Please, fill the fomr with a valid email":"Por favor, preencha com um e-mail válido!",
+	"The username need to have 6 digits":"O usuário deve conter no mínimo 6 digitos!"
+
+}
