@@ -1,32 +1,24 @@
-// app/routes.js
+
+var bcrypt = require('bcrypt-nodejs');
+var apis = require('../models/api');
+var users = require('../models/users');
+
 module.exports = function(app, passport) {
 
-	// =====================================
-	// HOME PAGE (with login links) ========
-	// =====================================
 	app.get('/', function(req, res) {
-		res.render('index.ejs', {lang: res}); // load the index.ejs file
+		res.render('index.ejs', {lang: res}); 
 	});
 
-	// =====================================
-	// LOGIN ===============================
-	// =====================================
-	// show the login form
 	app.get('/entrar', function(req, res) {
-
-		// render the page and pass in any flash data if it exists
 		res.render('entrar.ejs', { lang: res, message: req.flash('loginMessage') });
 	});
 
-	// process the login form
 	app.post('/entrar', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/entrar', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
+            successRedirect : '/perfil', 
+            failureRedirect : '/entrar', 
+            failureFlash : true 
 		}),
         function(req, res) {
-            console.log("hello");
-
             if (req.body.remember) {
               req.session.cookie.maxAge = 1000 * 60 * 3;
             } else {
@@ -35,38 +27,52 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-	// =====================================
-	// SIGNUP ==============================
-	// =====================================
-	// show the signup form
 	app.get('/registrar', function(req, res) {
-		// render the page and pass in any flash data if it exists
 		res.render('registrar.ejs', { lang: res, message: req.flash('signupMessage') });
 	});
 
-	// process the signup form
 	app.post('/registrar', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/registrar', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
+		successRedirect : '/perfil', 
+		failureRedirect : '/registrar',
+		failureFlash : true 
 	}));
 
-	// =====================================
-	// PROFILE SECTION =========================
-	// =====================================
-	// we will want this protected so you have to be logged in to visit
-	// we will use route middleware to verify this (the isLoggedIn function)
-	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
+	app.get('/perfil', isLoggedIn, function(req, res) {
+		res.render('perfil.ejs', {
 			lang : res, 
-			user : req.user // get the user out of session and pass to template
+			user : req.user
 		});
 	});
 
+	app.post('/perfil', isLoggedIn, function(req, res) {
+		users.update(req, res);
+	});
 
-	// =====================================
-	// SITE =========================
-	// =====================================
+
+	//API SECTION //
+	app.get('/api/genders/', function(req, res) {
+		apis.listGenders(req, res);
+	});
+
+	app.get('/api/nationalities/', isLoggedIn, function(req, res) {
+		apis.listNationalities(req, res);
+	});
+
+	app.get('/api/countries/', isLoggedIn, function(req, res) {
+		apis.listCountries(req, res);
+	});
+
+	app.get('/api/states/:id', isLoggedIn, function(req, res) {
+		apis.listStates(req, res);
+	});
+
+	app.get('/api/cities/:id', isLoggedIn, function(req, res) {
+		apis.listCities(req, res);
+	});
+
+
+
+
 
 	app.get('/jogadores', function(req, res) {
 		res.render('jogadores.ejs', {
@@ -87,26 +93,17 @@ module.exports = function(app, passport) {
 	});
 
 
-	app.get('/cv', function(req, res) {
-		res.render('cv.ejs', {});
-	});
-
-	// =====================================
-	// LOGOUT ==============================
-	// =====================================
+	
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
 	});
 };
 
-// route middleware to make sure
 function isLoggedIn(req, res, next) {
-
-	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
 		return next();
-
-	// if they aren't redirect them to the home page
 	res.redirect('/');
 }
+
+

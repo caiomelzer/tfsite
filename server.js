@@ -8,11 +8,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app      = express();
-var port     = process.env.PORT || 8000;
+var port     = process.env.PORT || 8080;
 
 var passport = require('passport');
 var flash    = require('connect-flash');
 var i18n 	= require('i18n');
+
+
 
 // configuration ===============================================================
 // connect to our database

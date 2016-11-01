@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    
+
+ <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('profile') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><%= __('profile') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <div class="alert hidden alert-success"><%= __('Congratulations') %></div>
+            <div class="alert hidden alert-danger"><%= __('Oh,  it´s wrong!') %></div>
+            <form id="form_perfil" role="form" data-toggle="validator">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="email" class="control-label"><%= __('email') %></label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.email %>" disabled required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>    
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="username" class="control-label"><%= __('username') %></label>
+                        <input type="text" class="form-control" id="username" data-minlength="6" name="username" placeholder="" data-error="<%= __('Please, fill the form with a valid username') %>" value="<%= user.username %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="gender" class="control-label"><%= __('gender') %></label>
+                        <select name="gender" id="gender" class="form-control" > 
+                            <% if(user.gender >= 0){ %>
+                            <option value="<%= user.gender %>"><%= user.genders_name %></option>
+                            <% } %>  
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="email" class="control-label"><%= __('first name') %></label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.first_name %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>    
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="username" class="control-label"><%= __('middle name') %></label>
+                        <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.middle_name %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="last_name" class="control-label"><%= __('last name') %></label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.last_name %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="born" class="control-label"><%= __('born') %></label>
+                        <input type="date" class="form-control" id="born" name="born" placeholder="" data-error="<%= __('Please, fill the form with a valid date') %>" value="<%= user.born %>" <% if(user.born != ''){ %>disabled<% } %>>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>    
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="nationality" class="control-label"><%= __('nationality') %></label>
+                        <select name="nationality" id="nationality" class="form-control" >
+                            <% if(user.nationality >= 0){ %>
+                            <option value="<%= user.nationality %>"><%= user.nationality_name %></option>
+                            <% } %> 
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="passport" class="control-label"><%= __('passport') %></label>
+                         <input type="text" class="form-control" data-minlength="2" data-maxlength="20"   id="passport" name="passport" placeholder="" data-error="<%= __('Please, fill the form with a valid passport') %>" value="<%= user.passport %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="cpf" class="control-label"><%= __('cpf') %></label>
+                         <input type="text" class="form-control" data-minlength="11" data-maxlength="11"   id="cpf" name="cpf" placeholder="" data-error="<%= __('Please, fill the form with a valid cpf') %>" value="<%= user.cpf %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="country" class="control-label"><%= __('country') %></label>
+                        <select name="country" id="country" class="form-control" >
+                            <% if(user.country >= 0){ %>
+                            <option value="<%= user.country %>"><%= user.country_name%></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="state" class="control-label"><%= __('state') %></label>
+                        <select name="state" id="state" class="form-control">
+                            <% if(user.state >= 0){ %>
+                            <option value="<%= user.state %>"><%= user.state_name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="city" class="control-label"><%= __('city') %></label>
+                        <select name="city" id="city" class="form-control" >
+                            <% if(user.city >= 0){ %>
+                            <option value="<%= user.city %>"><%= user.city_name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="address" class="control-label"><%= __('address') %></label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="" data-error="<%= __('Please, fill the form with a valid address') %>" value="<%= user.address %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>    
+            </div>
+
+            <div class="row">       
+                <div class="col-sm-4">    
+            		<div class="form-group">
+            			<label for="senha" class="control-label"><%= __('password') %></label>
+                        <input type="password" class="form-control"  data-minlength="6" name="password" id="password" placeholder="" data-error="<%= __('the password need to have 6 digits') %>">
+                        <div class="help-block with-errors"></div>
+            		</div>
+                </div>
+                <div class="col-sm-4">     
+                    <div class="form-group">
+                        <label for="senhab" class="control-label"><%= __('re-type password') %></label>
+                        <input type="password" class="form-control"  data-minlength="6"  data-match="#password"  id="senhab" placeholder="" data-error="<%= __('the password need to be the same') %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+            </div>   
+            <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-warning btn-lg"><%= __('update') %></button>
+                        </div>
+                    </div> 
+                </div>  
+            </form>    
+        </div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="js/util.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/view/perfil.js"></script>
+
+</body>
+</html>
+
