@@ -1,0 +1,35 @@
+<div class="alert alert-info"><%= __('Results') %>:  <%= players.length %></div>
+<div class="row">
+    <% for(var i=0; i < players.length; i++) { %>
+    <div class="col-lg-3 col-sm-6">
+    	<div class="card hovercard">
+            <div class="cardheader"></div>
+            <div class="avatar">
+                <img alt="" src="/images/uploads/<%= players[i].picture %>">
+            </div>
+            <div class="info">
+                <div class="title">
+                    <a target="_blank" href="http://scripteden.com/"><%= players[i].alias %></a>
+                </div>
+                <div class="desc"><%= players[i].age %> anos, <%= players[i].city_name %> - <%= players[i].country_name %></div>
+                <div class="desc"><%= players[i].ground_name %></div>
+                <div class="desc"><%= players[i].position_name %></div>
+            </div>
+            <div class="bottom player_teams">
+                <a class="" href="#">
+                    <img alt="" src="/images/time2.png">
+                </a>
+                <a class="" href="#">
+                    <img alt="" src="/images/time1.png">
+                </a>
+                <a class="" href="#">
+                    <img alt="" src="/images/time2.png">
+                </a>
+                <a class="" href="#">
+                    <img alt="" src="/images/time1.png">
+                </a>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>    

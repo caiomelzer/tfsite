@@ -8,7 +8,7 @@ $(document).on('ready', function(){
 				type: 'POST',
 				data: $('#form_perfil').serializeObject(),
 				success: function(res){
-					if(res.status == 1){
+					if(res.status == 0){
 						showMessageError();
 					}
 					else{
@@ -93,4 +93,15 @@ $(document).on('ready', function(){
 			}
 		});
 	});
+
+	$('#is_player').on('change', function(){
+		if($('#is_player')==0){
+			console.info('hide');
+		}
+		else{
+			console.info('show');
+		}
+	});
+
+
 });

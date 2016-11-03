@@ -10,9 +10,9 @@ function Apis() {
 			con.query('select * from genders where lang = ?', [i18n.getLocale()], function(err, result){
 				con.release();
 				if(err)
-					res.send({status: 1, message: 'Error'});
+					res.send({status: 0, message: err});
 				else
-					res.send({status: 0, data: result});
+					res.send({status: 1, data: result});
 			});
 		});
 	}
@@ -22,48 +22,69 @@ function Apis() {
 			con.query('select * from countries where lang = ?', [i18n.getLocale()], function(err, result){
 				con.release();
 				if(err)
-					res.send({status: 1, message: 'Error'});
+					res.send({status: 0, message: err});
 				else
-					res.send({status: 0, data: result});
+					res.send({status: 1, data: result});
 			});
 		});
 	}
 	
 	this.listCountries = function(req, res){
-		req.language = i18n.getLocale();
 		connection.acquire(function(err, con){
 			con.query('select * from countries where lang = ?', [i18n.getLocale()], function(err, result){
 				con.release();
 				if(err)
-					res.send({status: 1, message: 'Error'});
+					res.send({status: 0, message: err});
 				else
-					res.send({status: 0, data: result});
+					res.send({status: 1, data: result});
 			});
 		});
 	}
 
 	this.listStates = function(req, res){
-		req.language = i18n.getLocale();
 		connection.acquire(function(err, con){
-			con.query('select * from states where country_id = ?', [req.params.id], function(err, result){
+			con.query('select * from states where country_id = ? and lang = ?' , [req.params.id, i18n.getLocale()], function(err, result){
 				con.release();
 				if(err)
-					res.send({status: 1, message: 'Error'});
+					res.send({status: 0, message: err});
 				else
-					res.send({status: 0, data: result});
+					res.send({status: 1, data: result});
 			});
 		});
 	}
 
 	this.listCities = function(req, res){
-		req.language = i18n.getLocale();
 		connection.acquire(function(err, con){
-			con.query('select * from cities where state_id = ?', [req.params.id], function(err, result){
+			con.query('select * from cities where state_id = ? and lang = ?', [req.params.id, i18n.getLocale()], function(err, result){
 				con.release();
 				if(err)
-					res.send({status: 1, message: 'Error'});
+					res.send({status: 0, message: err});
 				else
-					res.send({status: 0, data: result});
+					res.send({status: 1, data: result});
+			});
+		});
+	}
+
+	this.listGrounds = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from grounds where lang = ?', [i18n.getLocale()], function(err, result){
+				con.release();
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, data: result});
+			});
+		});
+	}
+
+	this.listPositions = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from positions where ground_id = ? and lang = ?', [req.params.id, i18n.getLocale()], function(err, result){
+				con.release();
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, data: result});
 			});
 		});
 	}

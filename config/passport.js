@@ -27,7 +27,9 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        connection.query("SELECT * FROM vw_users WHERE id = ? AND lang = ? ",[id, i18n.getLocale()], function(err, rows){
+        
+        connection.query("SELECT * FROM vw_users WHERE id",[id], function(err, rows){
+            console.log(rows[0]);
             done(err, rows[0]);
         });
     });

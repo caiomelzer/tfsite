@@ -6,6 +6,7 @@
 </head><!--/head-->
 <body>
     <%- include partials/header.ejs %>
+    
     <section id="title" class="emerald">
         <div class="container">
             <div class="row">
@@ -17,7 +18,7 @@
                     <ul class="breadcrumb pull-right">
                         <li><a href="/">Home</a></li>
                         <li><%= __('Players') %></li>
-                        <li class="active"><%= __('Search') %></li>
+                        <li class="active"><%= __('My data') %></li>
                     </ul>
                 </div>
             </div>
@@ -27,15 +28,16 @@
     <section id="registration" class="container">
         <div class="container">
             <%- include partials/alert.ejs %>
-            <form id="form_jogadores_buscar" role="form" data-toggle="validator">
-            <div class="row form_buscar"> 
-                <div class="col-sm-3">
+            <form id="form_jogador" role="form" data-toggle="validator">
+            <div class="row">
+                <form id="form_jogadores" enctype="multipart/form-data">
+                <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="name" class="control-label"><%= __('Alias') %></label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="">
+                        <label for="alias" class="control-label"><%= __('Alias') %></label>
+                        <input type="text" class="form-control" id="alias" data-minlength="5" data-maxlength="20" value="<% if(user.alias != null){ %><%= user.alias %><% } %>"  name="alias" placeholder="" data-error="<%= __('Please, fill the form with a valid alias') %>" >
                         <div class="help-block with-errors"></div>
                     </div>
-                </div>    
+                </div> 
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="ground" class="control-label"><%= __('Ground') %></label>
@@ -52,33 +54,51 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
-                        <label for="min_age" class="control-label"><%= __('Min Age') %></label>
-                        <select name="min_age" id="min_age" class="form-control" ></select>
+                        <label for="looking_teams" class="control-label"><%= __('Looking for teams') %></label>
+                        <select name="looking_teams" id="looking_teams" class="form-control" > 
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                        </select>
                     </div>
-                </div>
+                </div>  
                 <div class="col-sm-2">
                     <div class="form-group">
-                        <label for="max_age" class="control-label"><%= __('Max Age') %></label>
-                        <select name="max_age" id="max_age" class="form-control" ></select>
+                        <label for="open_for_invites" class="control-label"><%= __('Open for invites') %></label>
+                        <select name="open_for_invites" id="open_for_invites" class="form-control" > 
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                        </select>
                     </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-warning btn-lg"><%= __('Filter') %></button>
-                    </div>
-                </div>
-            </div>
-            </form> 
-            <div class="row" id="list_jogadores">
+                </div> 
                 
             </div>
-		</div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="picture" class="control-label"><%= __('Photo') %></label>
+                        <input type="file" name="picture" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>  
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-warning btn-lg"><%= __('Update') %></button>
+                    </div>
+                </div> 
+            </div>  
+            </form> 
+        </div>
     </section><!--/#registration-->   
 
     <%- include partials/footer.ejs %>
     <script src="/js/util.js"></script>
     <script src="/js/validator.js"></script>
-    <script src="/js/view/jogadores.js"></script>
+    <script src="/js/view/jogador.js"></script>
 
 </body>
 </html>

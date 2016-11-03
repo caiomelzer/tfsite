@@ -28,8 +28,7 @@
 
     <section id="registration" class="container">
         <div class="container">
-            <div class="alert hidden alert-success"><%= __('Congratulations') %></div>
-            <div class="alert hidden alert-danger"><%= __('Oh,  it´s wrong!') %></div>
+            <%- include partials/alert.ejs %>
             <form id="form_perfil" role="form" data-toggle="validator">
             <div class="row">
                 <div class="col-sm-4">
@@ -169,6 +168,20 @@
                         <label for="senhab" class="control-label"><%= __('re-type password') %></label>
                         <input type="password" class="form-control"  data-minlength="6"  data-match="#password"  id="senhab" placeholder="" data-error="<%= __('the password need to be the same') %>">
                         <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-4">     
+                    <div class="form-group">
+                        <label for="is_player" class="control-label"><%= __('Is a player?') %></label>
+                        <select name="is_player" id="is_player" class="form-control">
+                            <% if(user.is_player == 0){ %>
+                            <option value="<%= user.is_player %>"><%= __('No') %></option>
+                            <option value="<%= user.is_player %>"><%= __('Yes') %></option>
+                            <% } else { %>
+                            <option value="<%= user.is_player %>"><%= __('Yes') %></option>
+                            <option value="<%= user.is_player %>"><%= __('No') %></option>
+                            <% } %>
+                        </select>
                     </div>
                 </div> 
             </div>   

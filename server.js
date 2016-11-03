@@ -4,6 +4,8 @@
 // get all the tools we need
 var express  = require('express');
 var session  = require('express-session');
+var multer  =   require('multer');
+
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');

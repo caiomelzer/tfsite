@@ -5,7 +5,6 @@ connection.init();
 
 function Users() {
 	this.update = function(req, res) {
-		console.log(req.body, req.user);
 		var data = [req.body, req.user.email];
 	    connection.acquire(function(err, con){
 	    	con.query('update users set ? where email = ?', data, function(err, result){
@@ -20,9 +19,9 @@ function Users() {
 					});
 				}
 				if(err)
-					res.send({status: 1, message: 'Error'});
+					res.send({status: 0, message: err});
 				else
-					res.send({status: 0, message: 'Success'});
+					res.send({status: 1, message: 'Success'});
 			});
 		});
 	}
