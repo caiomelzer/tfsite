@@ -55,7 +55,7 @@ function Apis() {
 
 	this.listCities = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from cities where state_id = ? and lang = ?', [req.params.id, i18n.getLocale()], function(err, result){
+			con.query('select * from cities where state_id = ?', [req.params.id], function(err, result){
 				con.release();
 				if(err)
 					res.send({status: 0, message: err});

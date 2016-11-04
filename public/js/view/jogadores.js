@@ -28,7 +28,7 @@ function listPosition(){
 function listPlayers(){
 	console.info('dacaca');
 	$.ajax({
-		url:'/jogadores/search/',
+		url:'/jogadores/buscar/',
 		type: 'GET',
 		data: $('#form_jogadores_buscar').serializeObject(),
 		success: function(res){

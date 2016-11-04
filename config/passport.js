@@ -21,15 +21,13 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser(function(user, done){
         done(null, user.id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        
-        connection.query("SELECT * FROM vw_users WHERE id",[id], function(err, rows){
-            console.log(rows[0]);
+        connection.query("SELECT * FROM vw_users WHERE id = ?",[id], function(err, rows){
             done(err, rows[0]);
         });
     });
@@ -64,11 +62,10 @@ module.exports = function(passport) {
                         password: bcrypt.hashSync(password, null, null)
                     };
 
-                    var insertQuery = "INSERT INTO users ( email, password ) values (?,?)";
+                    var insertQuery = "INSERT INTO users ( email, username, password ) values (?,?,?)";
 
-                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password, newUserMysql.email],function(err, rows) {
+                    connection.query(insertQuery, [newUserMysql.username ,newUserMysql.username , newUserMysql.password],function(err, rows) {
                         newUserMysql.id = rows.insertId;
-
                         return done(null, newUserMysql);
                     });
                 }

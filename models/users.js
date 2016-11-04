@@ -25,7 +25,6 @@ function Users() {
 			});
 		});
 	}
-
 }
 
 module.exports = new Users();

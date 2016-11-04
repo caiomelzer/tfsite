@@ -41,14 +41,14 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="username" class="control-label"><%= __('username') %></label>
-                        <input type="text" class="form-control" id="username" data-minlength="6" name="username" placeholder="" data-error="<%= __('Please, fill the form with a valid username') %>" value="<%= user.username %>">
+                        <input type="text" class="form-control" id="username" data-minlength="6" name="username" placeholder="" data-error="<%= __('Please, fill the form with a valid username') %>" value="<%= user.username %>" required>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div> 
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="gender" class="control-label"><%= __('gender') %></label>
-                        <select name="gender" id="gender" class="form-control" > 
+                        <select name="gender" id="gender" class="form-control" required > 
                             <% if(user.gender >= 0){ %>
                             <option value="<%= user.gender %>"><%= user.genders_name %></option>
                             <% } %>  
@@ -61,7 +61,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="email" class="control-label"><%= __('first name') %></label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.first_name %>">
+                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.first_name %>" required>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>    
@@ -75,7 +75,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="last_name" class="control-label"><%= __('last name') %></label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.last_name %>">
+                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" value="<%= user.last_name %>" required>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
@@ -85,14 +85,14 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label for="born" class="control-label"><%= __('born') %></label>
-                        <input type="date" class="form-control" id="born" name="born" placeholder="" data-error="<%= __('Please, fill the form with a valid date') %>" value="<%= user.born %>" <% if(user.born != ''){ %>disabled<% } %>>
+                        <input type="date" class="form-control" id="born" name="born" placeholder="" required data-error="<%= __('Please, fill the form with a valid date') %>" value="<%= user.born %>" <% if(user.born != ''){ %>disabled<% } %>>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>    
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label for="nationality" class="control-label"><%= __('nationality') %></label>
-                        <select name="nationality" id="nationality" class="form-control" >
+                        <select name="nationality" id="nationality" class="form-control" required >
                             <% if(user.nationality >= 0){ %>
                             <option value="<%= user.nationality %>"><%= user.nationality_name %></option>
                             <% } %> 
@@ -102,7 +102,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label for="passport" class="control-label"><%= __('passport') %></label>
-                         <input type="text" class="form-control" data-minlength="2" data-maxlength="20"   id="passport" name="passport" placeholder="" data-error="<%= __('Please, fill the form with a valid passport') %>" value="<%= user.passport %>">
+                         <input type="text" class="form-control" data-minlength="2" data-maxlength="20" id="passport" name="passport" placeholder="" data-error="<%= __('Please, fill the form with a valid passport') %>" value="<%= user.passport %>">
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="country" class="control-label"><%= __('country') %></label>
-                        <select name="country" id="country" class="form-control" >
+                        <select name="country" id="country" class="form-control" required >
                             <% if(user.country >= 0){ %>
                             <option value="<%= user.country %>"><%= user.country_name%></option>
                             <% } %>
@@ -129,7 +129,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="state" class="control-label"><%= __('state') %></label>
-                        <select name="state" id="state" class="form-control">
+                        <select name="state" id="state" class="form-control" required>
                             <% if(user.state >= 0){ %>
                             <option value="<%= user.state %>"><%= user.state_name %></option>
                             <% } %>
@@ -139,7 +139,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label for="city" class="control-label"><%= __('city') %></label>
-                        <select name="city" id="city" class="form-control" >
+                        <select name="city" id="city" class="form-control" required>
                             <% if(user.city >= 0){ %>
                             <option value="<%= user.city %>"><%= user.city_name %></option>
                             <% } %>
@@ -175,11 +175,11 @@
                         <label for="is_player" class="control-label"><%= __('Is a player?') %></label>
                         <select name="is_player" id="is_player" class="form-control">
                             <% if(user.is_player == 0){ %>
-                            <option value="<%= user.is_player %>"><%= __('No') %></option>
-                            <option value="<%= user.is_player %>"><%= __('Yes') %></option>
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
                             <% } else { %>
-                            <option value="<%= user.is_player %>"><%= __('Yes') %></option>
-                            <option value="<%= user.is_player %>"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                            <option value="0"><%= __('No') %></option>
                             <% } %>
                         </select>
                     </div>

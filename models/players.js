@@ -29,7 +29,6 @@ function Players() {
 						res.send({status: 0, message: err});
 					}
 					else{
-
 						if(result.length>0){
 							con.query('update players set ? where user_id = ?', [data, req.user.id], function(err, result){
 								if(err)

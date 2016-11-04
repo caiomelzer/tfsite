@@ -4,8 +4,7 @@ var apis = require('../models/api');
 var users = require('../models/users');
 var players = require('../models/players');
 var email = require('emailjs');
-var https = require('https');
-
+var userData;
 
 module.exports = function(app, passport) {
 
@@ -23,10 +22,10 @@ module.exports = function(app, passport) {
             failureFlash : true 
 		}),
         function(req, res) {
-            if (req.body.remember) {
-              req.session.cookie.maxAge = 1000 * 60 * 3;
+        	if (req.body.remember) {
+              	req.session.cookie.maxAge = 1000 * 60 * 3;
             } else {
-              req.session.cookie.expires = false;
+              	req.session.cookie.expires = false;
             }
         res.redirect('/');
     });
@@ -69,7 +68,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/jogadores/search', isLoggedIn, function(req, res) {
+	app.get('/jogadores/buscar', isLoggedIn, function(req, res) {
 		players.read(req, res);
 	});
 
@@ -124,39 +123,6 @@ module.exports = function(app, passport) {
 	app.get('/api/positions/:id', isLoggedIn, function(req, res) {
 		apis.listPositions(req, res);
 	});
-
-
-
-
-
-
-
-
-	app.get('/teste/', function(req, res) {
-		apis.listCities(req, res);
-		
-		https.globalAgent.options.secureProtocol = 'SSLv3_method';
-		var email = require('emailjs');
-		var server = email.server.connect({
-			user: "melzer.caio@gmail.com", 
-			password:"Ca!!1603", 
-			host: "smtp.gmail.com", 
-			ssl: true,
-			port: 587
-		});
-
-		server.send({
-		  text: 'Hey howdy',
-		  from: 'NodeJS',
-		  to: 'melzer.caio@gmail.com',
-		  cc: '',
-		  subject: 'Greetings'
-		}, function (err, message) {
-		  console.log(err || message);
-		});
-	});
-
-
 
 	app.get('/logout', function(req, res) {
 		req.logout();
