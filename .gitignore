@@ -201,6 +201,9 @@ sdist/
 develop-eggs/
 .installed.cfg
 
+dataase.js
+connection.js
+
 # Installer logs
 pip-log.txt
 
