@@ -1,64 +1,77 @@
 var bcrypt = require('bcrypt-nodejs');
 var connection = require('../config/connection');
 connection.init();
-var multer  = require('multer');
-var fileInfo = '';
-var storage =   multer.diskStorage({
-	destination: function (req, file, callback) {
-		callback(null, './public/images/uploads');
-	},
-	filename: function (req, file, callback) {
-		fileInfo = Date.now() + '-' + file.originalname;
-		callback(null, fileInfo);
-	}
-});
-var upload = multer({ storage : storage}).single('picture');
 
 function Players() {
 	this.create = function(req, res) {
-		upload(req, res, function(err) {
-			if(err) {
-	        	return res.end("Error uploading file.");
-	        }
-	        if(fileInfo != '') req.body.picture = fileInfo;
-	        var data = req.body;
-			connection.acquire(function(err, con){
-				con.query('select * from vw_players where user_id = ?', [req.user.id], function(err, result){
-					con.release();
-					if(err){
-						res.send({status: 0, message: err});
+		var dataUser = {
+        	alias: req.body.alias,
+        	looking_teams: req.body.looking_teams,
+        	player_id: req.user.id,
+        	open_for_invites: req.body.open_for_invites
+        };
+        console.log(dataUser);
+        connection.acquire(function(err, con){
+			con.query('select * from players where user_id = ?', [req.user.id], function(err, result){
+				con.release();
+				if(err){
+					res.send({status: 0, message: err});
+				}
+				else{
+					if(result.length>0){
+						con.query('update players set ? where user_id = ?', [dataUser, req.user.id], function(err, result){
+							if(err)
+								res.send({status: 0, message: err});
+							else
+								res.send({status: 1, message: 'Success'});
+						});
 					}
 					else{
-						if(result.length>0){
-							con.query('update players set ? where user_id = ?', [data, req.user.id], function(err, result){
-								if(err)
-									res.send({status: 0, message: err});
-								else
-									res.send({status: 1, message: 'Success'});
-							});
+						dataUser.user_id = req.user.id;
+						con.query('insert into players set ?', dataUser, function(err, result){
+							if(err)
+								res.send({status: 0, message: err});
+							else
+								res.send({status: 1, message: 'Success'});
+						});
+					}
+					con.query('delete from player_positions where player_id = ?', [req.user.id], function(err, result){
+						if(err){
+							console.log('dasdasda',err);
 						}
 						else{
-							data.user_id = req.user.id;
-							con.query('insert into players set ?', data, function(err, result){
-								if(err)
-									res.send({status: 0, message: err});
-								else
-									res.send({status: 1, message: 'Success'});
-							});
+							var data = {
+								player_id : req.user.id,
+								position_id : parseInt(req.body.position_id)
+							};
+							if(req.body.position_id && req.body.position_id !== undefined){
+								if(typeof req.body.position_id === 'string'){
+									con.query('insert into player_positions set ?', [data], function(err, result){});
+								}
+								else{
+									var sqlQuery = '';
+									for(var i=0; i<req.body.position_id.length; i++){
+										sqlQuery += 'insert into player_positions values ('+req.user.id+','+req.body.position_id[i]+');';
+									}
+									con.query(sqlQuery, function(err, result){});
+								}
+							}
 						}
-					}	
-				});
+					});
+				}	
 			});
 		});
 	}
 	this.read = function(req, res){
 		connection.acquire(function(err, con){
-			var query = 'select * from vw_users where is_player = 1 ';
+			var query = 'select distinct vw_users.* from vw_users inner join vw_player_postions on vw_player_postions.player_id = vw_users.id where is_player = 1 ';
 			if(req.query.ground){ query += ' and ground_id = '+ req.query.ground};
+			if(req.query.position){ query += ' and position_id = '+ req.query.position};
 			if(req.query.min_age){ query += ' and ( age >= '+ req.query.min_age }else{ query += ' and ( age >= 1'};
 			if(req.query.max_age){ query += ' and age <= '+ req.query.max_age+')' }else{ query += ' and age <= 100)'};
 			if(req.query.name){ query += ' and alias like \'%'+req.query.name+'%\''};
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
+			console.log(query);
 			con.query(query, function(err, result){
 				con.release();
 				if(err)
@@ -74,5 +87,4 @@ function Players() {
 		});
 	}
 }
-
 module.exports = new Players();

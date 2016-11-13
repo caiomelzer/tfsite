@@ -9,7 +9,8 @@ function Connection() {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'terraqli_bd'
+      database: 'terraqli_bd',
+      multipleStatements: true
     });
   };
  

@@ -26,7 +26,6 @@ function listPosition(){
 }
 
 function listPlayers(){
-	console.info('dacaca');
 	$.ajax({
 		url:'/jogadores/buscar/',
 		type: 'GET',
@@ -80,6 +79,8 @@ $(document).on('ready', function(){
 	$('#min_age').on('change', function(){
 		fillAgeList();
 	});
+
+	$()
 
 	listPlayers();	
 });

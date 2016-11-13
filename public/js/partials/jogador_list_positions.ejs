@@ -1,0 +1,26 @@
+<% for(var i=0;i<data.length;i++){ %>
+<div class="row">
+    <div class="panel-group col-sm-12" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= data[i].id %>">
+                        <%= data[i].name %>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <% for(var j=0;j<data[i].positions.length;j++){ %>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <input type="checkbox" data-rel="position_id_<%= data[i].positions[j].id %>" name="position_id" value="<%= data[i].positions[j].id %>"> <%= data[i].positions[j].name %>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>

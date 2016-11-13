@@ -38,52 +38,40 @@
                         <div class="help-block with-errors"></div>
                     </div>
                 </div> 
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <label for="ground" class="control-label"><%= __('Ground') %></label>
-                        <select name="ground" id="ground" class="form-control" > 
-                              
-                        </select>
-                    </div>
-                </div> 
-                <div class="col-sm-2">
-                    <div class="form-group">
-                        <label for="position" class="control-label"><%= __('Position') %></label>
-                        <select name="position" id="position" class="form-control" ></select>
-                    </div>
-                </div>
+                
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="looking_teams" class="control-label"><%= __('Looking for teams') %></label>
                         <select name="looking_teams" id="looking_teams" class="form-control" > 
+                            <% if(user.looking_teams === 0){ %>
                             <option value="0"><%= __('No') %></option>
                             <option value="1"><%= __('Yes') %></option>
+                            <% }else{ %>
+                            <option value="1"><%= __('Yes') %></option>
+                            <option value="0"><%= __('No') %></option>
+                            <% } %>
                         </select>
                     </div>
                 </div>  
                 <div class="col-sm-2">
                     <div class="form-group">
-                        <label for="open_for_invites" class="control-label"><%= __('Open for invites') %></label>
+                        <label for="open_for_invites" class="control-label"><%= __('Open for invites') %> </label>
                         <select name="open_for_invites" id="open_for_invites" class="form-control" > 
+                            <% if(user.open_for_invites === 0){ %>
                             <option value="0"><%= __('No') %></option>
                             <option value="1"><%= __('Yes') %></option>
+                            <% }else{ %>
+                            <option value="1"><%= __('Yes') %></option>
+                            <option value="0"><%= __('No') %></option>
+                            <% } %>
                         </select>
                     </div>
                 </div> 
                 
             </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="picture" class="control-label"><%= __('Photo') %></label>
-                        <input type="file" name="picture" />
-                        <div class="help-block with-errors"></div>
-                    </div>
-                </div>  
+            <div id="form_ground_positions">
+                
             </div>
-
-
-
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">

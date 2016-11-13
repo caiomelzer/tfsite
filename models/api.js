@@ -1,8 +1,10 @@
-var bcrypt = require('bcrypt-nodejs');
-var connection = require('../config/connection');
-var i18n 	= require('i18n');
+var bcrypt 		= require('bcrypt-nodejs');
+var connection 	= require('../config/connection');
+var i18n 		= require('i18n');
+var util 		= require('../util.js');
 
 connection.init();
+console.log(connection);
 
 function Apis() {
 	this.listGenders = function(req, res) {
@@ -77,7 +79,7 @@ function Apis() {
 		});
 	}
 
-	this.listPositions = function(req, res){
+	this.listPositionsByGround = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from positions where ground_id = ? and lang = ?', [req.params.id, i18n.getLocale()], function(err, result){
 				con.release();
@@ -85,6 +87,42 @@ function Apis() {
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+			});
+		});
+	}
+
+	this.listPositionsByPlayer = function(req, res){
+		var player_id;
+		if(req.params.id)
+			player_id = req.params.id;
+		else
+			player_id = req.user.id;
+		connection.acquire(function(err, con){
+			con.query('select * from vw_player_postions where lang = ? and player_id = ?', [i18n.getLocale(), player_id], function(err, result){
+				con.release();
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, data: result});
+			});
+		});
+	}
+
+	this.listPositions = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select id, name from grounds where lang = ? order by name; select * from vw_positions where lang = ?', [i18n.getLocale(), i18n.getLocale()], function(err, result){
+				var grounds = result[0];
+				var positions = result[1];
+				for(var i=0; i<grounds.length; i++){
+					grounds[i].positions = [];
+				}
+				for(var i in grounds){
+					for(var j in positions){
+						if(grounds[i].id == positions[j].ground_id)
+							grounds[i].positions.push(positions[j]);
+					}
+				}
+				res.send({status: 1, data: grounds});
 			});
 		});
 	}

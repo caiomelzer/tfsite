@@ -1092,6 +1092,24 @@ ul.faq li > div h3 {
 
 
 /*CUSTOM*/
+.user-header{
+  display: block;
+}
+.redondo{
+  margin:-10px 10px 0px 0px;
+}
+.redondo, .redondo img {
+   width: 40px !important;
+   height: 40px !important;
+   background-color: #000 !important;
+   color: #FFF !important;
+   float: left;
+   /* Agora a mágica */
+   border-radius: 50% !important;
+}
+.reset{
+  cursor: pointer;
+}
 /*GERAL*/
 .grama{
   background-image: url(/images/grama.png)

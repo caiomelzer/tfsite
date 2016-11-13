@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    
+
+ <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('configuration') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><%= __('configuration') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            <div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse_dependents">
+			                   <%= __('Dependents') %>
+			                   </a>
+			                </h4>
+			            </div>
+			            <div id="collapse_dependents" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                	<table class="table table-hover" id="table_dependentes">
+									<thead>
+										<tr>
+											<th class="col-sm-3"><%= __('Username') %></th>
+											<th class="col-sm-2" ><%= __('Status') %></th>
+											<th class="col-sm-7" ><%= __('Last Login') %></th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+								<form id="form_dependentes">
+								<div class="row">
+									<div class="col-sm-3">
+				                        <div class="form-group">
+				                             <div class="input-group">
+					                            <input type="username" class="form-control" id="username" name="username" placeholder="" data-error="<%= __('Please, fill the fomr with a valid username') %>" required aria-describedby="basic-addon">
+					                            <span class="input-group-addon" id="basic-addon"><i class="glyphicon glyphicon-remove"></i></span>
+					                        </div>
+					                        <div class="help-block with-errors"></div>
+				                        </div>
+				                    </div> 
+				                    <div class="col-sm-3">
+				                        <div class="form-group">
+				                             <input type="password" class="form-control"  data-minlength="6" name="password" id="password" placeholder="<%= __('Password') %>" data-error="<%= __('the password need to have 6 digits') %>" required>
+                        					<div class="help-block with-errors"></div>
+				                        </div>
+				                    </div> 
+				                    <div class="col-sm-3">
+				                        <div class="form-group">
+				                             <input type="password" class="form-control"  data-minlength="6"  data-match="#password"  id="senhab" placeholder="<%= __('Password Again') %>" data-error="<%= __('the password need to be the same') %>" required>
+                        					<div class="help-block with-errors"></div>
+				                        </div>
+				                    </div>  
+				                    <div class="col-sm-2">
+				                        <div class="form-group">
+				                            <button type="submit" class="btn btn-warning"><%= __('Add') %></button>
+				                        </div>
+				                    </div> 
+				                </div>  
+				            	</form> 
+							</div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+               
+        </div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="js/util.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/view/configuracoes.js"></script>
+
+</body>
+</html>
+

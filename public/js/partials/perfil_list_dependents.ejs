@@ -1,0 +1,13 @@
+<% for(var i=0;i<data.length;i++){ %>
+<tr>
+    <td class="col-sm-3"><%= data[i].username %></td>
+    <td class="col-sm-2">
+        <% if(data[i].status === 0){ %>
+        <input id="switch-size" type="checkbox" data-size="mini" data-off-color="warning" data-rel="<%= data[i].id %>">
+        <% } else { %>
+        <input id="switch-size" type="checkbox" checked="" data-off-color="warning" data-size="mini" data-rel="<%= data[i].id %>">
+        <% } %>
+    </td>
+    <td class="col-sm-7"><%= data[i].last_login %></td>
+</tr>
+<% } %>

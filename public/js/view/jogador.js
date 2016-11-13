@@ -1,48 +1,36 @@
 $(document).on('ready', function(){ 
 	$.ajax({
-		url:'/api/grounds/',
+		url:'/api/positions/',
 		type: 'GET',
 		success: function(res){
-			var content = '';
-			$.each(res.data, function(i,v){
-				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
-			});
-			if($('#ground option').length > 1)
-				$('#ground').html(content);
-			else
-				$('#ground').html($('#ground').html()+content);
+			console.info(res);
+			$('#form_ground_positions').html(new EJS({url: '/js/partials/jogador_list_positions.ejs'}).render(res));
 		}
-	});
-
-	$('#ground').on('change', function(){
+	})
+	.done(function(){
 		$.ajax({
-			url:'/api/positions/'+$('#ground').val(),
+			url:'/api/player/positions',
 			type: 'GET',
 			success: function(res){
-				var content = '';
+				console.info(res);
 				$.each(res.data, function(i,v){
-					content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+					$('input[data-rel=position_id_'+v.id+']').prop('checked', true);
+					console.info($('input[data-rel=position_id_'+v.id+']'));
 				});
-				if($('#position option').length > 1)
-					$('#position').html(content);
-				else
-					$('#position').html($('#position').html()+content);
 			}
-		});
+		})
 	});
+
+
 
 	$('#form_jogador').validator().on('submit', function (e) {
 		if (e.isDefaultPrevented()) {
 		
 		} else {
-			var formData = new FormData($(this)[0]);
 			$.ajax({
 				url:'/jogadores/editar',
 				type: 'POST',
-				enctype: 'multipart/form-data',
-				processData: false,  // tell jQuery not to process the data
-       			contentType: false,  // tell jQuery not to set contentType
-				data: formData,
+				data: $('#form_jogador').serializeObject(),
 				success: function(res){
 					if(res.status == 0){
 						showMessageError();

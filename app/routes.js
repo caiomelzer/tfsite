@@ -40,7 +40,12 @@ module.exports = function(app, passport) {
 		failureFlash : true 
 	}));
 
+	app.post('/registrar/check', function(req, res) {
+		users.check(req, res);
+	});
+
 	app.get('/perfil', isLoggedIn, function(req, res) {
+		console.log(req.user);
 		res.render('perfil.ejs', {
 			lang : res, 
 			user : req.user
@@ -62,6 +67,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/jogadores/', isLoggedIn, function(req, res) {
+		console.log(req.user);
 		res.render('jogadores.ejs', {
 			lang : res,
 			user : req.user 
@@ -72,31 +78,30 @@ module.exports = function(app, passport) {
 		players.read(req, res);
 	});
 
+	app.get('/configuracoes/', isLoggedIn, function(req, res) {
+		res.render('configuracoes.ejs', {
+			user : req.user
+		});
+	});
 
+	app.get('/configuracoes/dependentes', isLoggedIn, function(req, res) {
+		users.listDependents(req, res);
+	});
 
+	app.post('/configuracoes/dependentes', isLoggedIn, function(req, res) {
+		users.createDependents(req, res);
+	});
 
+	app.put('/configuracoes/dependentes', isLoggedIn, function(req, res) {
+		users.updateDependents(req, res);
+	});
 
-	
-
-
-
-
-
-
-	
-
-	
-
-	
-
-
-
-
-
-
+	app.post('/configuracoes/dependentes/check', isLoggedIn, function(req, res) {
+		users.check(req, res);
+	});
 
 	//API SECTION //
-	app.get('/api/genders/', function(req, res) {
+	app.get('/api/genders/', isLoggedIn, function(req, res) {
 		apis.listGenders(req, res);
 	});
 
@@ -120,8 +125,20 @@ module.exports = function(app, passport) {
 		apis.listGrounds(req, res);
 	});
 
-	app.get('/api/positions/:id', isLoggedIn, function(req, res) {
+	app.get('/api/player/positions', isLoggedIn, function(req, res) {
+		apis.listPositionsByPlayer(req, res);
+	});
+
+	app.get('/api/positions/', isLoggedIn, function(req, res) {
 		apis.listPositions(req, res);
+	});
+
+	app.get('/api/configuracoes/dependentes', isLoggedIn, function(req, res) {
+		users.listDependents(req, res);
+	});
+
+	app.get('/api/positions/:id', isLoggedIn, function(req, res) {
+		apis.listPositionsByGround(req, res);
 	});
 
 	app.get('/logout', function(req, res) {

@@ -49,12 +49,13 @@ module.exports = function(passport) {
         function(req, username, password, done) {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            connection.query("SELECT * FROM vw_users WHERE email = ?",[username], function(err, rows) {
+            connection.query("SELECT * FROM vw_users WHERE username = ?",[username], function(err, rows) {
                 if (err)
                     return done(err);
                 if (rows.length) {
                     return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
                 } else {
+                    console.log(req.body);
                     // if there is no user with that username
                     // create the user
                     var newUserMysql = {
@@ -64,7 +65,7 @@ module.exports = function(passport) {
 
                     var insertQuery = "INSERT INTO users ( email, username, password ) values (?,?,?)";
 
-                    connection.query(insertQuery, [newUserMysql.username ,newUserMysql.username , newUserMysql.password],function(err, rows) {
+                    connection.query(insertQuery, [req.body.email , newUserMysql.username, newUserMysql.password],function(err, rows) {
                         newUserMysql.id = rows.insertId;
                         return done(null, newUserMysql);
                     });
@@ -88,7 +89,7 @@ module.exports = function(passport) {
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, username, password, done) { // callback with email and password from our form
-            connection.query("SELECT * FROM vw_users WHERE email = ?",[username], function(err, rows){
+            connection.query("SELECT * FROM vw_users WHERE username = ?",[username], function(err, rows){
                 if (err)
                     return done(err);
                 if (!rows.length) {
@@ -100,6 +101,10 @@ module.exports = function(passport) {
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
                 // all is well, return successful user
+                connection.query("UPDATE users SET last_login = NOW() where id = ?", rows[0].id ,function(err, rows) {
+                    
+                });
+
                 return done(null, rows[0]);
             });
         })

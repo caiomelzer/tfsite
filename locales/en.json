@@ -60,5 +60,20 @@
 	"Age": "Age",
 	"Min Age": "Min Age",
 	"Max Age": "Max Age",
-	"Results": "Results"
+	"Results": "Results",
+	"Phone number 1": "Phone number 1",
+	"Please, fill the form with a valid phone number": "Please, fill the form with a valid phone number",
+	"Phone number 2": "Phone number 2",
+	"Phone number 3": "Phone number 3",
+	"Carrier": "Carrier",
+	"Reset": "Reset",
+	"Please, fill the fomr with a valid username": "Please, fill the fomr with a valid username",
+	"configuration": "configuration",
+	"Dependents": "Dependents",
+	"Username": "Username",
+	"Status": "Status",
+	"Last Login": "Last Login",
+	"Add": "Add",
+	"Password": "Password",
+	"Password Again": "Password Again"
 }

@@ -29,7 +29,7 @@
     <section id="registration" class="container">
         <div class="container">
             <%- include partials/alert.ejs %>
-            <form id="form_perfil" role="form" data-toggle="validator">
+            <form id="form_perfil" role="form" data-toggle="validator"  enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
@@ -38,10 +38,10 @@
                         <div class="help-block with-errors"></div>
                     </div>
                 </div>    
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <div class="form-group">
                         <label for="username" class="control-label"><%= __('username') %></label>
-                        <input type="text" class="form-control" id="username" data-minlength="6" name="username" placeholder="" data-error="<%= __('Please, fill the form with a valid username') %>" value="<%= user.username %>" required>
+                        <input type="text" class="form-control" id="username" data-minlength="6" name="username" placeholder="" data-error="<%= __('Please, fill the form with a valid username') %>" disabled value="<%= user.username %>" required>
                         <div class="help-block with-errors"></div>
                     </div>
                 </div> 
@@ -55,6 +55,13 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="picture" class="control-label"><%= __('Photo') %></label>
+                        <input type="file" name="picture" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
             </div>
             
             <div class="row">
@@ -154,6 +161,73 @@
                     </div>
                 </div>    
             </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="phone_a_number" class="control-label"><%= __('Phone number 1') %></label>
+                        <input type="phone" class="form-control" id="phone_a_number" name="phone_a_number" placeholder="" data-error="<%= __('Please, fill the form with a valid phone number') %>" value="<%= user.phone_a_number %>" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label for="phone_a_carrier" class="control-label"><%= __('Carrier') %></label>
+                        <select name="phone_a_carrier" id="phone_a_carrier" class="form-control">
+                            <option value="<%= user.phone_a_carrier_id %>"><%= user.phone_a_carrier_name %></option>
+                        </select>
+                    </div>
+                </div>     
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="phone_b_number" class="control-label"><%= __('Phone number 2') %></label>
+                        <input type="phone" class="form-control" id="phone_b_number" name="phone_b_number" placeholder="" data-error="<%= __('Please, fill the form with a valid phone number') %>" value="<%= user.phone_b_number %>" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label for="phone_b_carrier" class="control-label"><%= __('Carrier') %></label>
+                        <select name="phone_b_carrier" id="phone_b_carrier" class="form-control">
+                            <option value="<%= user.phone_a_carrier_id %>"><%= user.phone_a_carrier_name %></option>
+                        </select>
+                    </div>
+                </div>  
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="phone_c_number" class="control-label"><%= __('Phone number 3') %></label>
+                        <input type="phone" class="form-control" id="phone_c_number" name="phone_c_number" placeholder="" data-error="<%= __('Please, fill the form with a valid phone number') %>" value="<%= user.phone_c_number %>" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label for="phone_c_carrier" class="control-label"><%= __('Carrier') %></label>
+                        <select name="phone_c_carrier" id="phone_c_carrier" class="form-control">
+                            <option value="<%= user.phone_a_carrier_id %>"><%= user.phone_a_carrier_name %></option>
+                        </select>
+                    </div>
+                </div>  
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <div class="row">       
                 <div class="col-sm-4">    

@@ -3,10 +3,14 @@ $(document).on('ready', function(){
 		if (e.isDefaultPrevented()) {
 		
 		} else {
+			var formData = new FormData($(this)[0]);
 			$.ajax({
 				url:'/perfil/',
 				type: 'POST',
-				data: $('#form_perfil').serializeObject(),
+				enctype: 'multipart/form-data',
+				processData: false,  // tell jQuery not to process the data
+       			contentType: false,  // tell jQuery not to set contentType
+				data: formData,
 				success: function(res){
 					if(res.status == 0){
 						showMessageError();
@@ -16,7 +20,6 @@ $(document).on('ready', function(){
 					}
 				}
 			});
-			
 			return false;
 		}
 	});

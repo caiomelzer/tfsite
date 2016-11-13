@@ -54,6 +54,7 @@
                     <div class="form-group">
                         <label for="min_age" class="control-label"><%= __('Min Age') %></label>
                         <select name="min_age" id="min_age" class="form-control" ></select>
+
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -62,16 +63,15 @@
                         <select name="max_age" id="max_age" class="form-control" ></select>
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-warning btn-lg"><%= __('Filter') %></button>
+                        <label for="reset" class="control-label reset"><%= __('Reset') %></label>
+                        <button type="submit" class="btn btn-warning"><%= __('Filter') %></button>
                     </div>
                 </div>
             </div>
             </form> 
-            <div class="row" id="list_jogadores">
-                
-            </div>
+            <div class="row" id="list_jogadores"></div>
 		</div>
     </section><!--/#registration-->   
 
