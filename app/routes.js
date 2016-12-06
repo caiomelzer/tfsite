@@ -67,7 +67,6 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/jogadores/', isLoggedIn, function(req, res) {
-		console.log(req.user);
 		res.render('jogadores.ejs', {
 			lang : res,
 			user : req.user 
@@ -75,6 +74,10 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/jogadores/buscar', isLoggedIn, function(req, res) {
+		players.search(req, res);
+	});
+
+	app.get('/jogadores/:id', isLoggedIn, function(req, res) {
 		players.read(req, res);
 	});
 
@@ -99,6 +102,9 @@ module.exports = function(app, passport) {
 	app.post('/configuracoes/dependentes/check', isLoggedIn, function(req, res) {
 		users.check(req, res);
 	});
+
+
+
 
 	//API SECTION //
 	app.get('/api/genders/', isLoggedIn, function(req, res) {

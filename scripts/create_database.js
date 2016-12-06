@@ -53,4 +53,9 @@ left join vw_players on vw_players.user_id = vw_users_tmp.id ;
 create or replace view vw_player_postions as
 SELECT positions.*, player_positions.* FROM player_positions 
 inner join positions on positions.id = player_positions.position_id
+inner join vw_users on vw_users.id = player_positions.player_id;
+
+create or replace view vw_player_ground_postions as
+SELECT vw_player_postions.*, grounds.name as ground_name FROM vw_player_postions 
+inner join grounds on grounds.id = vw_player_postions.ground_id;
 

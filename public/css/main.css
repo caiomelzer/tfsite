@@ -1107,6 +1107,16 @@ ul.faq li > div h3 {
    /* Agora a mágica */
    border-radius: 50% !important;
 }
+
+.redondo-perfil, .redondo-perfil img {
+   width: 100% !important;
+   height: 100% !important;
+   background-color: #000 !important;
+   color: #FFF !important;
+   float: left;
+   /* Agora a mágica */
+   border-radius: 50% !important;
+}
 .reset{
   cursor: pointer;
 }
@@ -1384,6 +1394,13 @@ li.registrar{
   padding: 10px 0px 0px;
   margin-bottom: 15px;
 }
-
+h1 span{
+    color: #999;
+    float: left;
+    margin-bottom: 10px;
+    width: 100%;
+    font-size: 0.7em;
+    font-weight: 300;
+}
 
 

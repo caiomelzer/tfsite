@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                	<h1><%= __('Player Info') %></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><%= __('Players') %></li>
+                        <li><%= __('Search') %></li>
+                        <li class="active"><%= __('Player Info') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <div class="row">
+            	<div class="col-sm-2">
+            		<div class="redondo-perfil">
+					    <% if(user.picture.length !== null){ %>
+					        <img src="/images/uploads/<%= user.picture %>">
+					    <% }else{ %>    
+					        <img src="/images/uploads/player_avatar.png "> 
+					    <% } %> 
+					</div>
+            	</div>
+            	<div class="col-sm-10">
+            		<h1><%= user.alias %> <span>(<%= user.first_name %> <%= user.middle_name %> <%= user.last_name %>)</span></h1>
+            		<p> <%= user.age %> <%= __('years') %> - <%= user.city_name %>, <%= user.state_name %> - <%= user.country_name %></p>
+            	</div>
+            </div>
+            <div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('Details') %>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('History') %>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="js/util.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/view/perfil.js"></script>
+
+</body>
+</html>
+
+
+

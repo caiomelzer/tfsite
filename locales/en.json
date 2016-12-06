@@ -75,5 +75,10 @@
 	"Last Login": "Last Login",
 	"Add": "Add",
 	"Password": "Password",
-	"Password Again": "Password Again"
+	"Password Again": "Password Again",
+	"Info": "Info",
+	"Player Info": "Player Info",
+	"years": "years",
+	"Details": "Details",
+	"History": "History"
 }
