@@ -28,18 +28,8 @@ function showMessageSuccess(){
     }, 9000 );
 }
 
-function renderEJS(options){
-    var content = '';
-    if(options.template){
-        return false;
-    }
-    return content;
-}
-
 function resetForm(e){
-    console.info(e);
     var b = $(e).attr('id');
-    console.info(b);
     $(e).find('input[type=text]').val('');
     $(e).find('select').prop('selectedIndex', 0);
     $(e).find('input[type=checkbox]').prop('checked', false);
@@ -50,6 +40,7 @@ function initSite(){
         resetForm($(this).parents('form'));
     });
 }
+
 
 $(document).on('ready', function(){ 
     initSite();

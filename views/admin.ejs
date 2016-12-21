@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Admin') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><%= __('Admin') %></li>
+                        <li class="active"><%= __('Manage') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#general"><%= __('General') %></a></li>
+                <li><a data-toggle="tab" href="#ads"><%= __('Ads') %></a></li>
+                <li><a data-toggle="tab" href="#cups"><%= __('Cups') %></a></li>
+                <li><a data-toggle="tab" href="#users"><%= __('Users') %></a></li>
+                <li><a data-toggle="tab" href="#teams"><%= __('Teams') %></a></li>
+                <li><a data-toggle="tab" href="#games"><%= __('Games') %></a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="general" class="tab-pane fade in active">
+                    <p>...</p>
+                </div>
+                <div id="ads" class="tab-pane fade in">
+                    <p>...</p>
+                </div>
+                <div id="cups" class="tab-pane fade in">
+                    <p>...</p>
+                </div>
+                <div id="users" class="tab-pane fade in">
+                    <p>...</p>
+                </div>
+                <div id="teams" class="tab-pane fade in">
+                    <p>...</p>
+                </div>
+                <div id="games" class="tab-pane fade in">
+                    <p>...</p>
+                </div>
+            </div>
+        </div>
+    </section><!--/#registration-->   
+
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/view/times.js"></script>
+
+</body>
+</html>

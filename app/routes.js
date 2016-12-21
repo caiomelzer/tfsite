@@ -3,11 +3,12 @@ var bcrypt = require('bcrypt-nodejs');
 var apis = require('../models/api');
 var users = require('../models/users');
 var players = require('../models/players');
+var teams = require('../models/teams');
+var entities = require('../models/entities');
 var email = require('emailjs');
 var userData;
 
 module.exports = function(app, passport) {
-
 	app.get('/', function(req, res) {
 		res.render('index.ejs', {lang: res}); 
 	});
@@ -45,7 +46,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/perfil', isLoggedIn, function(req, res) {
-		console.log(req.user);
+		//console.log(req.user);
 		res.render('perfil.ejs', {
 			lang : res, 
 			user : req.user
@@ -54,6 +55,48 @@ module.exports = function(app, passport) {
 
 	app.post('/perfil', isLoggedIn, function(req, res) {
 		users.update(req, res);
+	});
+
+
+	app.get('/times/editar/', isLoggedIn, function(req, res) {
+		res.render('times.ejs', {
+			user : req.user
+		});
+	});
+
+
+
+	
+	app.get('/times/', isLoggedIn, function(req, res) {
+		res.render('times-search.ejs', {
+			user : req.user
+		});
+	});
+
+
+
+
+
+	
+
+
+
+
+
+	
+
+	app.get('/times/:slug', isLoggedIn, function(req, res) {
+		res.render('times-search.ejs', {
+			user : req.user
+		});
+	});
+
+	
+
+	app.get('/times/editar/:id', isLoggedIn, function(req, res) {
+		res.render('times-editar.ejs', {
+			user : req.user
+		});
 	});
 
 	app.get('/jogadores/editar', isLoggedIn, function(req, res) {
@@ -103,10 +146,35 @@ module.exports = function(app, passport) {
 		users.check(req, res);
 	});
 
+	app.get('/configuracoes/entidades', isLoggedIn, function(req, res) {
+		entities.read(req, res);
+	});
 
+	app.post('/configuracoes/entidades', isLoggedIn, function(req, res) {
+		entities.create(req, res);
+	});
+
+	app.get('/configuracoes/times', isLoggedIn, function(req, res) {
+		teams.read(req, res);
+	});
+
+	app.post('/configuracoes/times', isLoggedIn, function(req, res) {
+		teams.create(req, res);
+	});
+
+	//Static Files
+
+
+	//Admin Side
+	app.get('/configuracoes/admin/', isLoggedIn, function(req, res) {
+		res.render('admin.ejs', {
+			user : req.user
+		});
+	});
 
 
 	//API SECTION //
+	
 	app.get('/api/genders/', isLoggedIn, function(req, res) {
 		apis.listGenders(req, res);
 	});

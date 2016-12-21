@@ -126,6 +126,10 @@ function Apis() {
 			});
 		});
 	}
+
+	this.analytics = function(req, res){
+		console.log(req);
+	}
 }
 
 module.exports = new Apis();

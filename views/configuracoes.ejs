@@ -13,13 +13,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <h1><%= __('configuration') %></h1>
+                    <h1><%= __('Configuration') %></h1>
                     <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
                 </div>
                 <div class="col-sm-6">
                     <ul class="breadcrumb pull-right">
                         <li><a href="/">Home</a></li>
-                        <li class="active"><%= __('configuration') %></li>
+                        <li class="active"><%= __('Configuration') %></li>
                     </ul>
                 </div>
             </div>
@@ -54,42 +54,143 @@
 									</tbody>
 								</table>
 								<form id="form_dependentes">
-								<div class="row">
-									<div class="col-sm-3">
-				                        <div class="form-group">
-				                             <div class="input-group">
-					                            <input type="username" class="form-control" id="username" name="username" placeholder="" data-error="<%= __('Please, fill the fomr with a valid username') %>" required aria-describedby="basic-addon">
-					                            <span class="input-group-addon" id="basic-addon"><i class="glyphicon glyphicon-remove"></i></span>
+									<div class="row">
+										<div class="col-sm-3">
+					                        <div class="form-group">
+					                             <div class="input-group">
+						                            <input type="username" class="form-control" id="username" name="username" placeholder="" data-error="<%= __('Please, fill the fomr with a valid username') %>" required aria-describedby="basic-addon">
+						                            <span class="input-group-addon" id="basic-addon"><i class="glyphicon glyphicon-remove"></i></span>
+						                        </div>
+						                        <div class="help-block with-errors"></div>
 					                        </div>
-					                        <div class="help-block with-errors"></div>
-				                        </div>
-				                    </div> 
-				                    <div class="col-sm-3">
-				                        <div class="form-group">
-				                             <input type="password" class="form-control"  data-minlength="6" name="password" id="password" placeholder="<%= __('Password') %>" data-error="<%= __('the password need to have 6 digits') %>" required>
-                        					<div class="help-block with-errors"></div>
-				                        </div>
-				                    </div> 
-				                    <div class="col-sm-3">
-				                        <div class="form-group">
-				                             <input type="password" class="form-control"  data-minlength="6"  data-match="#password"  id="senhab" placeholder="<%= __('Password Again') %>" data-error="<%= __('the password need to be the same') %>" required>
-                        					<div class="help-block with-errors"></div>
-				                        </div>
-				                    </div>  
-				                    <div class="col-sm-2">
-				                        <div class="form-group">
-				                            <button type="submit" class="btn btn-warning"><%= __('Add') %></button>
-				                        </div>
-				                    </div> 
-				                </div>  
+					                    </div> 
+					                    <div class="col-sm-3">
+					                        <div class="form-group">
+					                             <input type="password" class="form-control"  data-minlength="6" name="password" id="password" placeholder="<%= __('Password') %>" data-error="<%= __('the password need to have 6 digits') %>" required>
+	                        					<div class="help-block with-errors"></div>
+					                        </div>
+					                    </div> 
+					                    <div class="col-sm-3">
+					                        <div class="form-group">
+					                             <input type="password" class="form-control"  data-minlength="6"  data-match="#password"  id="senhab" placeholder="<%= __('Password Again') %>" data-error="<%= __('the password need to be the same') %>" required>
+	                        					<div class="help-block with-errors"></div>
+					                        </div>
+					                    </div>  
+					                    <div class="col-sm-2">
+					                        <div class="form-group">
+					                            <button type="submit" class="btn btn-warning"><%= __('Add') %></button>
+					                        </div>
+					                    </div> 
+					                </div>  
 				            	</form> 
 							</div>
 			            </div>
 			        </div>
 			    </div>
 			</div>
-               
-        </div>
+
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse_entities">
+			                   <%= __('Entities') %>
+			                   </a>
+			                </h4>
+			            </div>
+			            <div id="collapse_entities" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                	<table class="table table-hover" id="table_entities">
+									<thead>
+										<tr>
+											<th class="col-sm-4"><%= __('Name') %></th>
+											<th class="col-sm-7" ><%= __('Alias') %></th>
+											<th class="col-sm-1" ></th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+								<form id="form_entities">
+									<div class="row">
+										<div class="col-sm-3">
+					                        <div class="form-group">
+					                             <input type="text" class="form-control" id="full_name" name="full_name" placeholder="<%= __('Name') %>" data-error="<%= __('Please, fill the fomr with a valid name') %>" required aria-describedby="basic-addon">
+						                        <div class="help-block with-errors"></div>
+					                        </div>
+					                    </div> 
+					                    <div class="col-sm-3">
+					                        <div class="form-group">
+					                             <input type="text" class="form-control"  name="alias" id="alias" placeholder="<%= __('Alias') %>" data-error="<%= __('Please, fill the fomr with a valid alias') %>" required>
+	                        					<div class="help-block with-errors"></div>
+					                        </div>
+					                    </div> 
+					                    <div class="col-sm-2">
+					                        <div class="form-group">
+					                            <button type="submit" class="btn btn-warning"><%= __('Add') %></button>
+					                        </div>
+					                    </div> 
+					                </div>  
+				            	</form> 
+							</div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse_teams">
+			                   <%= __('Teams') %>
+			                   </a>
+			                </h4>
+			            </div>
+			            <div id="collapse_teams" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                	<table class="table table-hover" id="table_teams">
+									<thead>
+										<tr>
+											<th class="col-sm-4"><%= __('Name') %></th>
+											<th class="col-sm-5" ><%= __('Alias') %></th>
+											<th class="col-sm-2" ><%= __('Status') %></th>
+											<th class="col-sm-1" ></th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+								<form id="form_teams">
+									<div class="row">
+										<div class="col-sm-3">
+					                        <div class="form-group">
+					                             <input type="text" class="form-control" id="name" name="name" placeholder="<%= __('Name') %>" data-error="<%= __('Please, fill the fomr with a valid name') %>" required aria-describedby="basic-addon">
+						                        <div class="help-block with-errors"></div>
+					                        </div>
+					                    </div> 
+					                    <div class="col-sm-3">
+					                        <div class="form-group">
+					                             <input type="text" class="form-control"  name="alias" id="alias" placeholder="<%= __('Alias') %>" data-error="<%= __('Please, fill the fomr with a valid alias') %>" required>
+	                        					<div class="help-block with-errors"></div>
+					                        </div>
+					                    </div> 
+					                    <div class="col-sm-2">
+					                        <div class="form-group">
+					                            <button type="submit" class="btn btn-warning"><%= __('Add') %></button>
+					                        </div>
+					                    </div> 
+					                </div>  
+				            	</form> 
+							</div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</div>
     </section><!--/#registration-->   
     <%- include partials/footer.ejs %>
     <script src="js/util.js"></script>

@@ -1,0 +1,21 @@
+<% for(var i=0; i < data.length; i++) { %>
+<div class="col-lg-3 col-sm-6">
+	<div class="card hovercard">
+        <div class="cardheader"></div>
+        <div class="avatar">
+            <img alt="" src="/images/uploads/<%= data[i].logo %>">
+        </div>
+        <div class="info">
+            <div class="title">
+                <a href="/times/<%= data[i].slug %>"><%= data[i].alias %></a>
+            </div>
+            <div class="subtitle">
+                <a href="/times/<%= data[i].slug %>"><%= data[i].name %></a>
+            </div>
+        </div>
+        <div class="bottom player_teams">
+            <a href="/times/editar/<%= data[i].id %>">Editar</a>
+        </div>
+    </div>
+</div>
+<% } %> 

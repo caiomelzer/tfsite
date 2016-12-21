@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Teams') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><%= __('Teams') %></li>
+                        <li class="active"><%= __('Search') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            
+            <div class="row" id="teams_list"></div>
+        </div>
+    </section><!--/#registration-->   
+
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/view/times.js"></script>
+
+</body>
+</html>

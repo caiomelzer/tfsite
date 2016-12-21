@@ -57,6 +57,9 @@ function Users() {
 				});
 			});
 		}
+		else{
+			res.send({status: 0, message: 'failed to load data'});
+		}
 	},
 	this.listDependents = function(req,res){
 		if(req.user.id){
@@ -69,6 +72,9 @@ function Users() {
 				});
 			});
 		}
+		else{
+			res.send({status: 0, message: 'failed to load data'});
+		}
 	}
 	this.createDependents = function(req, res){
 		if(req.user.id){
@@ -80,6 +86,9 @@ function Users() {
 						res.send({status: 1, message: 'Success'});
 				});
 			});
+		}
+		else{
+			res.send({status: 0, message: 'failed to load data'});
 		}
 	}
 	this.updateDependents = function(req, res){
