@@ -5,10 +5,16 @@ var users = require('../models/users');
 var players = require('../models/players');
 var teams = require('../models/teams');
 var entities = require('../models/entities');
+var games = require('../models/games');
 var email = require('emailjs');
 var userData;
 
 module.exports = function(app, passport) {
+	app.get('/*', function(req, res, next){ 
+		res.setHeader('Last-Modified', (new Date()).toUTCString());
+		next(); 
+	});
+
 	app.get('/', function(req, res) {
 		res.render('index.ejs', {lang: res}); 
 	});
@@ -46,7 +52,6 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/perfil', isLoggedIn, function(req, res) {
-		//console.log(req.user);
 		res.render('perfil.ejs', {
 			lang : res, 
 			user : req.user
@@ -58,49 +63,54 @@ module.exports = function(app, passport) {
 	});
 
 
-	app.get('/times/editar/', isLoggedIn, function(req, res) {
-		res.render('times.ejs', {
+
+	app.get('/times/meus-times', isLoggedIn, function(req, res) {
+		res.render('meus-times.ejs', {
+			lang : res,
 			user : req.user
 		});
 	});
 
-
-
-	
 	app.get('/times/', isLoggedIn, function(req, res) {
-		res.render('times-search.ejs', {
+		res.render('times.ejs', {
+			lang : res,
 			user : req.user
 		});
 	});
 
-
-
-
-
-	
-
-
-
-
-
-	
-
-	app.get('/times/:slug', isLoggedIn, function(req, res) {
-		res.render('times-search.ejs', {
-			user : req.user
-		});
+	app.get('/times/buscar/meus-times', isLoggedIn, function(req, res) {
+		teams.myTeams(req, res);
 	});
-
 	
+	app.get('/times/buscar', isLoggedIn, function(req, res) {
+		teams.search(req, res);
+	});
 
 	app.get('/times/editar/:id', isLoggedIn, function(req, res) {
 		res.render('times-editar.ejs', {
+			lang : res,
 			user : req.user
 		});
 	});
 
+	app.post('/times/editar/:id', isLoggedIn, function(req, res) {
+		teams.update(req, res);
+	});
+
+	app.get('/times/:slug/', isLoggedIn, function(req, res) {
+		teams.read(req, res);
+	});
+
+	app.get('/jogos/convites/meus-times', isLoggedIn, function(req, res) {
+		games.myTeams(req, res);
+	});
+
+
+
+
 	app.get('/jogadores/editar', isLoggedIn, function(req, res) {
 		res.render('jogador.ejs', {
+			lang : res,
 			user : req.user
 		});
 	});
@@ -108,6 +118,7 @@ module.exports = function(app, passport) {
 	app.post('/jogadores/editar', isLoggedIn, function(req, res) {
 		players.create(req, res);
 	});
+
 
 	app.get('/jogadores/', isLoggedIn, function(req, res) {
 		res.render('jogadores.ejs', {
@@ -126,6 +137,7 @@ module.exports = function(app, passport) {
 
 	app.get('/configuracoes/', isLoggedIn, function(req, res) {
 		res.render('configuracoes.ejs', {
+			lang : res,
 			user : req.user
 		});
 	});
@@ -155,6 +167,10 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/configuracoes/times', isLoggedIn, function(req, res) {
+		teams.read(req, res);
+	});
+
+	app.get('/configuracoes/times/:id', isLoggedIn, function(req, res) {
 		teams.read(req, res);
 	});
 

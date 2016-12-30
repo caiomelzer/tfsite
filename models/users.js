@@ -54,6 +54,7 @@ function Users() {
 							res.send({status: 1, message: 'Success', avaliable: false});
 						else
 							res.send({status: 1, message: 'Success', avaliable: true});
+					con.release();	
 				});
 			});
 		}
@@ -70,6 +71,7 @@ function Users() {
 					else
 						res.send({status: 1, message: 'Success', data: result});
 				});
+				con.release();
 			});
 		}
 		else{
@@ -79,12 +81,13 @@ function Users() {
 	this.createDependents = function(req, res){
 		if(req.user.id){
 			connection.acquire(function(err, con){
-				con.query('INSERT INTO users ( email, resp_id, username, password ) values (?, ?,?,?)', [req.user.email, req.user.id , req.body.username, bcrypt.hashSync(req.body.password, null, null)], function(err, result){
+				con.query('INSERT INTO users ( email, resp_id, username, password ) values (?,?,?,MD5(?))', [req.user.email, req.user.id , req.body.username, bcrypt.hashSync(req.body.password, null, null)], function(err, result){
 					if(err)
 						res.send({status: 0, message: err});
 					else
 						res.send({status: 1, message: 'Success'});
 				});
+				con.release();
 			});
 		}
 		else{
@@ -103,6 +106,7 @@ function Users() {
 				else
 					res.send({status: 1, message: 'Success'});
 			});
+			con.release();
 		});
 	}
 }

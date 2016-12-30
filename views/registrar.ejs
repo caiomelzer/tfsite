@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <label for="username" class="control-label"><%= __('username') %></label>
                         <div class="input-group">
-                            <input type="username" class="form-control" id="username" name="username" placeholder="" data-error="<%= __('Please, fill the fomr with a valid username') %>" required aria-describedby="basic-addon">
+                            <input data-minlength="6" type="username" class="form-control" id="username" name="username" placeholder="" data-error="<%= __('Please, fill the fomr with a valid username') %>" required aria-describedby="basic-addon">
                             <span class="input-group-addon" id="basic-addon"><i class="glyphicon glyphicon-remove"></i></span>
                         </div>
                         <div class="help-block with-errors"></div>

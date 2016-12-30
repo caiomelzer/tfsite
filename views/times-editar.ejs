@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Players') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><%= __('Players') %></li>
+                        <li class="active"><%= __('My data') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            <form id="form_time" role="form" data-toggle="validator">
+            <div class="row">
+                <form id="form_times" enctype="multipart/form-data">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="alias" class="control-label"><%= __('Alias') %></label>
+                        <input disabled="disabled" type="text" class="form-control" id="alias" data-minlength="5" data-maxlength="20" value="<% if(user.alias != null){ %><%= user.alias %><% } %>"  name="alias" placeholder="" data-error="<%= __('Please, fill the form with a valid alias') %>" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="name" class="control-label"><%= __('Name') %></label>
+                        <input disabled="disabled" type="text" class="form-control" id="name" data-minlength="5" data-maxlength="20" value="<% if(user.alias != null){ %><%= user.alias %><% } %>"  name="name" placeholder="" data-error="<%= __('Please, fill the form with a valid name') %>" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="logo" class="control-label"><%= __('Logo') %></label>
+                        <input type="file" name="logo" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+            </div>
+            <div class="row">    
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="looking_games" class="control-label"><%= __('Looking for games') %></label>
+                        <select name="looking_games" id="looking_teams" class="form-control" > 
+                            <% if(user.looking_games === 0){ %>
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                            <% }else{ %>
+                            <option value="1"><%= __('Yes') %></option>
+                            <option value="0"><%= __('No') %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>  
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="open_for_new_players" class="control-label"><%= __('Open for new players') %> </label>
+                        <select name="open_for_new_players" id="open_for_new_players" class="form-control" > 
+                            <% if(user.open_for_new_players === 0){ %>
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                            <% }else{ %>
+                            <option value="1"><%= __('Yes') %></option>
+                            <option value="0"><%= __('No') %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="gender" class="control-label"><%= __('gender') %></label>
+                        <select name="gender" id="gender" class="form-control" required > 
+                            <% if(user.gender >= 0){ %>
+                            <option value="<%= user.gender %>"><%= user.genders_name %></option>
+                            <% } %>  
+                        </select>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="country" class="control-label"><%= __('country') %></label>
+                        <select name="country" id="country" class="form-control" required >
+                            <% if(user.country >= 0){ %>
+                            <option value="<%= user.country %>"><%= user.country_name%></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="state" class="control-label"><%= __('state') %></label>
+                        <select name="state" id="state" class="form-control" required>
+                            <% if(user.state >= 0){ %>
+                            <option value="<%= user.state %>"><%= user.state_name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="city" class="control-label"><%= __('city') %></label>
+                        <select name="city_id" id="city" class="form-control" required>
+                            <% if(user.city >= 0){ %>
+                            <option value="<%= user.city %>"><%= user.city_name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>   
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="address" class="control-label"><%= __('address') %></label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="" data-error="<%= __('Please, fill the form with a valid address') %>" value="<%= user.address %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-lg"><%= __('Cancel') %></button>
+                        <button type="submit" class="btn btn-warning btn-lg"><%= __('Update') %></button>
+                    </div>
+                </div> 
+            </div>  
+            </form> 
+        </div>
+    </section><!--/#registration-->   
+
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/view/time.js"></script>
+
+</body>
+</html>

@@ -10,11 +10,11 @@ function Apis() {
 	this.listGenders = function(req, res) {
 		connection.acquire(function(err, con){
 			con.query('select * from genders where lang = ?', [i18n.getLocale()], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -22,11 +22,11 @@ function Apis() {
 	this.listNationalities = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from countries where lang = ?', [i18n.getLocale()], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -34,11 +34,11 @@ function Apis() {
 	this.listCountries = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from countries where lang = ?', [i18n.getLocale()], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -46,11 +46,11 @@ function Apis() {
 	this.listStates = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from states where country_id = ? and lang = ?' , [req.params.id, i18n.getLocale()], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -58,11 +58,11 @@ function Apis() {
 	this.listCities = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from cities where state_id = ?', [req.params.id], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -70,11 +70,11 @@ function Apis() {
 	this.listGrounds = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from grounds where lang = ?', [i18n.getLocale()], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -82,11 +82,11 @@ function Apis() {
 	this.listPositionsByGround = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from positions where ground_id = ? and lang = ?', [req.params.id, i18n.getLocale()], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -99,11 +99,11 @@ function Apis() {
 			player_id = req.user.id;
 		connection.acquire(function(err, con){
 			con.query('select * from vw_player_postions where lang = ? and player_id = ?', [i18n.getLocale(), player_id], function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, data: result});
+				con.release();
 			});
 		});
 	}
@@ -124,6 +124,7 @@ function Apis() {
 				}
 				res.send({status: 1, data: grounds});
 			});
+			con.release();
 		});
 	}
 

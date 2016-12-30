@@ -17,6 +17,7 @@ function Entities() {
 				else
 					res.send({status: 1, message: 'Success'});
 			});
+			con.release();
 		});
 	},
 	this.read = function(req, res) {
@@ -28,6 +29,7 @@ function Entities() {
 					else
 						res.send({status: 1, message: 'Success', data: result});
 				});
+				con.release();
 			});
 		}
 		else{

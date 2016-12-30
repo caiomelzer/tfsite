@@ -80,7 +80,5 @@ $(document).on('ready', function(){
 		fillAgeList();
 	});
 
-	$()
-
 	listPlayers();	
 });

@@ -1,6 +1,6 @@
 function listTeams(){
 $.ajax({
-		url:'/times/buscar/',
+		url:'/times/buscar/meus-times',
 		type: 'GET',
 		data: $('#form_times_buscar').serializeObject(),
 		success: function(res){

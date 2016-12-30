@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css" />
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                	<h1><%= __('Team Info') %></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><%= __('Teams') %></li>
+                        <li><%= __('Search') %></li>
+                        <li class="active"><%= __('Team Info') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <div class="row">
+            	<div class="col-sm-2">
+            		<div class="redondo-perfil">
+					    <img src="/images/uploads/<%= teams[0].logo %>">
+					</div>
+            	</div>
+            	<div class="col-sm-8">
+            		<h1><%= teams[0].alias %> <span>(<%= teams[0].name %>)</span></h1>
+            		<p> 
+	            		<% if(teams[0].city_name){ %>
+						<%= teams[0].city_name+', ' %>
+	            		<% } %>
+	            		<% if(teams[0].state_name){ %>
+						<%= teams[0].state_name+', ' %>
+	            		<% } %>
+	            		<% if(teams[0].country_name){ %>
+						<%= teams[0].country_name %>
+	            		<% } %>
+					</p>
+            	</div>
+            	<div class="col-sm-2">
+            	<p>
+            		<div class="btn-group" role="group" aria-label="...">
+            			<% if(teams[0].resp_id !== user.id){ %>
+						<button type="button" class="btn btn-primary btn-default invite" data-toggle="modal" data-target="#invite"><%= __('Invite to game') %></button>
+						<% } else { %>
+						<button type="button" class="btn btn-primary btn-default edit"><%= __('Edit') %></button>
+						<% } %>
+					</div>
+					</p>	
+            	</div>
+            </div>
+            <div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('Details') %>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('History') %>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('Games') %>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('Players') %>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('Events') %>
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    <% if(teams[0].resp_id === user.id){ %>
+								<button type="button" class="btn btn-primary btn-default event-new"><%= __('New') %></button>
+								<% } %>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div id="invite" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title"><%= __('Invite') %></h4>
+					</div>
+					<form id="form_evento">
+					    <div class="modal-body">
+							<div style="overflow:hidden;">
+					        	<div class="eventstep1">
+						        	<div class="form-group">
+								        <div class="row">
+								            <div class="col-md-12">
+								             	<select name="eventteam" id="eventteam" class="form-control" required ></select>
+								            </div>
+								        </div>
+								    </div>
+									<div class="form-group">
+								        <div class="row">
+								            <div class="col-md-12">
+								                <div id="eventdate"></div>
+								            </div>
+								        </div>
+								    </div>
+						        </div>
+						        <div class="eventstep2 hidden">
+						        	<div class="form-group">
+								        <div class="row">
+								            <div class="col-md-12">
+								             	<p class="eventdetails"></p>
+								            </div>
+								        </div>
+								    </div>
+									<div class="form-group">
+								        <div class="row">
+								            <div class="col-md-12">
+								                <div id="eventplace"></div>
+								            </div>
+								        </div>
+								    </div>
+						        </div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-primary eventnextstep"><%= __('Next') %></button>
+					        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('Cancel') %></button>
+					        <button type="submit" class="btn btn-default btn-primary eventinvite hidden"><%= __('Invite') %></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/view/time-detail.js"></script>
+	</body>
+</html>
+
+
+

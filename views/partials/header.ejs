@@ -18,8 +18,8 @@
                         <%= __('Teams') %> <i class="icon-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <% if(user.is_player === 1){ %>
-                            <li><a href="/times/editar"><%= __('My Teams') %></a></li>
+                        <% if(user.have_teams > 0){ %>
+                            <li><a href="/times/meus-times"><%= __('My Teams') %></a></li>
                         <% } %> 
                         
                         <li><a href="/times"><%= __('Search') %></a></li>
@@ -44,7 +44,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <% if(user.is_player === 1){ %>
-                            <li><a href="/jogos/convites"><%= __('My Invites') %></a></li>
+                            <li><a href="/jogos/convites"><%= __('Invites') %></a></li>
                         <% } %> 
                         
                         <li><a href="/jogos"><%= __('Games') %></a></li>
@@ -54,11 +54,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle user-header" data-toggle="dropdown">
                         <span class="redondo">
-                            <% if(user.picture.length !== null){ %>
-                                <img src="/images/uploads/<%= user.picture %>">
-                            <% }else{ %>    
-                                <img src="/images/uploads/player_avatar.png "> 
-                            <% } %> 
+                            <img src="/images/uploads/<%= user.picture %>">
                         </span>
                         <% if(user.username.length > 0){ %>
                             <%= user.username %> 

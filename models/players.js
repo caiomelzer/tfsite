@@ -10,10 +10,8 @@ function Players() {
         	player_id: req.user.id,
         	open_for_invites: req.body.open_for_invites
         };
-        console.log(dataUser);
         connection.acquire(function(err, con){
 			con.query('select * from players where user_id = ?', [req.user.id], function(err, result){
-				con.release();
 				if(err){
 					res.send({status: 0, message: err});
 				}
@@ -58,7 +56,8 @@ function Players() {
 							}
 						}
 					});
-				}	
+				}
+				con.release();	
 			});
 		});
 	}
@@ -72,7 +71,6 @@ function Players() {
 			if(req.query.name){ query += ' and alias like \'%'+req.query.name+'%\''};
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
 			con.query(query, function(err, result){
-				con.release();
 				if(err)
 					res.send({status: 0, message: err});
 				else
@@ -83,12 +81,12 @@ function Players() {
 						page: req.query.page
 					});
 			});
+			con.release();
 		});
 	}
 	this.read = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from vw_users where id = ? and is_player = 1; select * from vw_player_ground_postions where player_id = ?', [req.params.id, req.params.id] ,function(err, result){
-				con.release();
 				if(err){
 					res.send({status: 0, message: err});
 				}
@@ -106,6 +104,7 @@ function Players() {
 					}
 				}
 			});
+			con.release();
 		});
 	}
 }
