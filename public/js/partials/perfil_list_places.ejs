@@ -1,0 +1,12 @@
+<% for(var i=0;i<data.length;i++){ %>
+    <tr>
+        <td class="col-sm-11"><%= data[i].name %></td>
+        <td class="col-sm-1" data-crud-url="/configuracoes/quadras" data-id="<%= data[i].id %>">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default crud-delete">
+                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                </button>
+            </div>
+        </td>
+    </tr>
+<% } %>

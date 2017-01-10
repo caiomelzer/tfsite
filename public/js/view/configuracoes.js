@@ -5,9 +5,18 @@ function updateTeams(){
 		async: true,
 		success: function(res){
 			$('#table_teams tbody').html(new EJS({url: '/js/partials/perfil_list_teams.ejs'}).render(res));
-			$('.crud-delete').on('click', function(){
-	            console.info($(this));
-	        });
+			$('#modal-from-dom').on('show', function() {
+		        var id = $(this).data('id'),
+		            removeBtn = $(this).find('.danger');
+				removeBtn.attr('href', removeBtn.attr('href').replace(/(&|\?)ref=\d*/, '$1ref=' + id));
+		        $('#debug-url').html('Delete URL: <strong>' + removeBtn.attr('href') + '</strong>');
+		    });
+
+		    $('.crud-delete').on('click', function(e) {
+		        e.preventDefault();
+				var id = $(this).data('id');
+		        $('#modal-from-dom').data('id', id).modal('show');
+		    });
 		}
 	});
 }
@@ -19,6 +28,17 @@ function updateEntities(){
 		async: true,
 		success: function(res){
 			$('#table_entities tbody').html(new EJS({url: '/js/partials/perfil_list_entities.ejs'}).render(res));
+		}
+	});
+}
+
+function updatePlaces(){
+	$.ajax({
+		url:'/configuracoes/quadras',
+		type: 'GET',
+		async: true,
+		success: function(res){
+			$('#table_places tbody').html(new EJS({url: '/js/partials/perfil_list_places.ejs'}).render(res));
 		}
 	});
 }
@@ -116,6 +136,28 @@ $(document).on('ready', function(){
 		return false;
 	});
 
+	$('#form_places').validator().on('submit', function (e) {
+		if (e.isDefaultPrevented()) {
+		
+		} else {
+			$.ajax({
+				url:'/configuracoes/quadras',
+				type: 'POST',
+				data: $('#form_places').serializeObject(),
+				success: function(res){
+					if(res.status == 0){
+						showMessageError();
+					}
+					else{
+						showMessageSuccess();
+						updatePlaces();
+					}
+				}
+			});
+		}
+		return false;
+	});
+
 	$('#username').on('change', function(){
     	if($('#username').val().length >=6){
     		$.post('/configuracoes/dependentes/check', {username:$('#username').val()})
@@ -133,5 +175,5 @@ $(document).on('ready', function(){
 	updateDependents();
 	updateEntities();
 	updateTeams();
-
+	updatePlaces();
 });

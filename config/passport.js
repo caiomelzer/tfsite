@@ -9,6 +9,7 @@ var bcrypt = require('bcrypt-nodejs');
 var dbconfig = require('./database');
 var connection = mysql.createConnection(dbconfig.connection);
 var i18n    = require('i18n');
+var nodemailer = require('nodemailer');
 
 connection.query('USE ' + dbconfig.database);
 // expose this function to our app using module.exports
@@ -69,6 +70,21 @@ module.exports = function(passport) {
                         newUserMysql.id = rows.insertId;
                         return done(null, newUserMysql);
                     });
+
+                    var transporter = nodemailer.createTransport('smtps://nao-responda%40terradofutebol.com.br:mewtwo@md-20.webhostbox.net');
+                    var mailOptions = {
+                        from: '"Terra do Futebol" <nao-responda@terradofutebol.com.br>', // sender address 
+                        to: req.body.email, // list of receivers 
+                        subject: 'Bem-indo', // Subject line 
+                        text: 'Olá, seu cadastro foi efetivado com sucesso, e você ja pode utilzar nosso site...Abraços!', // plaintext body 
+                        html: '<h2>Olá, </h2><p>seu cadastro foi efetivado com sucesso, e você ja pode utilzar nosso site...</p><p>Abraços!</p>' // html body 
+                    };
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if(error){
+                            return console.log(error);
+                        }
+                        console.log('Message sent: ' + info.response);
+                    });
                 }
             });
         })
@@ -90,6 +106,7 @@ module.exports = function(passport) {
         },
         function(req, username, password, done) { // callback with email and password from our form
             connection.query("SELECT * FROM vw_users WHERE username = ?",[username], function(err, rows){
+                console.log(username, password);
                 if (err)
                     return done(err);
                 if (!rows.length) {

@@ -52,7 +52,51 @@ function Games() {
 			});
 			con.release();
 		});
+	},
+	this.places = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select distinct * from vw_places order by abr, city_name, name', function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, data: result});
+			});
+			con.release();
+		});
+	},
+	this.invite = function(req, res){
+		connection.acquire(function(err, con){
+			var data = {
+				team_id: req.body.eventteam,
+				opponent_id: req.body.event_h_team,
+				place_id: req.body.eventplace,
+				date: req.body.event_h_date
+			};
+			con.query('insert into games set ?', data, function(err, result){
+				console.log(result);
+				if(err){
+					res.send({status: 0, message: err});
+				}
+				else{
+					var data_b = {
+						game_id: result.insertId,
+						team_id: req.body.eventteam,
+						opponent_id: req.body.event_h_team
+					}
+					con.query('insert into games_invites set ?', data_b, function(err, resultb){
+						if(err){
+							res.send({status: 0, message: err});
+						}
+						else{
+							res.send({status: 1, data: resultb});
+						}
+					});
+				}
+			});
+			con.release();
+		});
 	}
+
 	
 }
 module.exports = new Games();

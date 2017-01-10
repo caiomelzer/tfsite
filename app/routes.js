@@ -6,7 +6,9 @@ var players = require('../models/players');
 var teams = require('../models/teams');
 var entities = require('../models/entities');
 var games = require('../models/games');
+var places = require('../models/places');
 var email = require('emailjs');
+var nodemailer = require('nodemailer');
 var userData;
 
 module.exports = function(app, passport) {
@@ -19,12 +21,31 @@ module.exports = function(app, passport) {
 		res.render('index.ejs', {lang: res}); 
 	});
 
+
+
 	app.get('/entrar', function(req, res) {
 		res.render('entrar.ejs', { lang: res, message: req.flash('loginMessage') });
 	});
 
+	app.get('/teste', function(req, res){
+		var transporter = nodemailer.createTransport('smtps://nao-responda%40terradofutebol.com.br:mewtwo@md-20.webhostbox.net');
+		var mailOptions = {
+		    from: '"Fred Foo 👥" <nao-responda@terradofutebol.com.br>', // sender address 
+		    to: 'melzer.caio@gmail.com', // list of receivers 
+		    subject: 'Hello ✔', // Subject line 
+		    text: 'Hello world 🐴', // plaintext body 
+		    html: '<b>Hello world 🐴</b>' // html body 
+		};
+		transporter.sendMail(mailOptions, function(error, info){
+		    if(error){
+		        return console.log(error);
+		    }
+		    console.log('Message sent: ' + info.response);
+		});
+	});
+
 	app.post('/entrar', passport.authenticate('local-login', {
-            successRedirect : '/perfil', 
+            successRedirect : '/dashboard', 
             failureRedirect : '/entrar', 
             failureFlash : true 
 		}),
@@ -49,6 +70,13 @@ module.exports = function(app, passport) {
 
 	app.post('/registrar/check', function(req, res) {
 		users.check(req, res);
+	});
+
+	app.get('/dashboard', isLoggedIn, function(req, res) {
+		res.render('dashboard.ejs', {
+			lang : res, 
+			user : req.user
+		});
 	});
 
 	app.get('/perfil', isLoggedIn, function(req, res) {
@@ -81,16 +109,17 @@ module.exports = function(app, passport) {
 	app.get('/times/buscar/meus-times', isLoggedIn, function(req, res) {
 		teams.myTeams(req, res);
 	});
+
+	app.delete('/times/:id', isLoggedIn, function(req, res) {
+		teams.disable(req, res);
+	});
 	
 	app.get('/times/buscar', isLoggedIn, function(req, res) {
 		teams.search(req, res);
 	});
 
 	app.get('/times/editar/:id', isLoggedIn, function(req, res) {
-		res.render('times-editar.ejs', {
-			lang : res,
-			user : req.user
-		});
+		teams.editMyTeam(req, res);
 	});
 
 	app.post('/times/editar/:id', isLoggedIn, function(req, res) {
@@ -101,8 +130,39 @@ module.exports = function(app, passport) {
 		teams.read(req, res);
 	});
 
+	app.post('/times/follow/:id', isLoggedIn, function(req, res) {
+		teams.follow(req, res);
+	});
+
+	app.get('/times/following/:id', isLoggedIn, function(req, res) {
+		teams.following(req, res);
+	});
+
+	app.get('/times/followers/:id', isLoggedIn, function(req, res) {
+		teams.followers(req, res);
+	});
+
+	app.post('/times/unfollow/:id', isLoggedIn, function(req, res) {
+		teams.unfollow(req, res);
+	});
+
 	app.get('/jogos/convites/meus-times', isLoggedIn, function(req, res) {
 		games.myTeams(req, res);
+	});
+
+	app.get('/jogos/convites/quadras', isLoggedIn, function(req, res) {
+		games.places(req, res);
+	});
+
+	app.post('/jogos/convites/', isLoggedIn, function(req, res) {
+		games.invite(req, res);
+	});
+
+	app.get('/quadras/', isLoggedIn, function(req, res) {
+		res.render('quadras.ejs', {
+			lang : res,
+			user : req.user
+		});
 	});
 
 
@@ -176,6 +236,14 @@ module.exports = function(app, passport) {
 
 	app.post('/configuracoes/times', isLoggedIn, function(req, res) {
 		teams.create(req, res);
+	});
+
+	app.post('/configuracoes/quadras', isLoggedIn, function(req, res) {
+		places.create(req, res);
+	});
+
+	app.get('/configuracoes/quadras', isLoggedIn, function(req, res) {
+		places.myPlaces(req, res);
 	});
 
 	//Static Files

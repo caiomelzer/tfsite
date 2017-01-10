@@ -7,25 +7,33 @@ function Places() {
 	this.create = function(req, res) {
 		var data = {
         	name: req.body.name,
-        	city_id: req.user.id
+        	resp_id: req.user.id
         };
         connection.acquire(function(err, con){
-			con.query('insert into teams set ?; update teams set slug = concat(replace(alias," ","-"),"_",id)', data, function(err, result){
-				if(err){
+			con.query('insert into places set ?;', data, function(err, result){
+				if(err)
 					res.send({status: 0, message: err});
-				}
-				else{
-					con.query('update users set have_teams = (select count(1) from teams where resp_id = ?) where id = ?', [req.user.id, req.user.id], function(err, result){
-						if(err)
-							res.send({status: 0, message: err});
-						else
-							res.send({status: 1, message: 'Success'});
-					});
-				}
+				else
+					res.send({status: 1, message: 'Success'});
 			});
 			con.release();
-		});
-		
+		});	
+	},
+	this.myPlaces = function(req, res){
+		if(req.user.id){
+			connection.acquire(function(err, con){
+				con.query('select * from places where resp_id = ? order by name asc', req.user.id, function(err, result){
+					if(err)
+						res.send({status: 0, message: err});
+					else
+						res.send({status: 1, message: 'Success', data: result});
+				});
+				con.release();
+			});
+		}
+		else{
+			res.send({status: 0, message: 'failed to load data'});
+		}
 	}
 }
 module.exports = new Places();

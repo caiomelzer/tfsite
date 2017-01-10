@@ -32,7 +32,7 @@
 					    <img src="/images/uploads/<%= teams[0].logo %>">
 					</div>
             	</div>
-            	<div class="col-sm-8">
+            	<div class="col-sm-7">
             		<h1><%= teams[0].alias %> <span>(<%= teams[0].name %>)</span></h1>
             		<p> 
 	            		<% if(teams[0].city_name){ %>
@@ -46,14 +46,16 @@
 	            		<% } %>
 					</p>
             	</div>
-            	<div class="col-sm-2">
+            	<div class="col-sm-3">
             	<p>
             		<div class="btn-group" role="group" aria-label="...">
             			<% if(teams[0].resp_id !== user.id){ %>
-						<button type="button" class="btn btn-primary btn-default invite" data-toggle="modal" data-target="#invite"><%= __('Invite to game') %></button>
+						<button type="button" class="btn btn-primary invite" data-toggle="modal" data-target="#invite"><%= __('Invite to game') %></button>
 						<% } else { %>
-						<button type="button" class="btn btn-primary btn-default edit"><%= __('Edit') %></button>
+						<button type="button" class="btn btn-warning edit"><%= __('Edit') %></button>
 						<% } %>
+						<button type="button" class="btn btn-primary hidden follow" data-id="<%= teams[0].id %>"><%= __('Follow') %></button>
+						<button type="button" class="btn btn-default hidden unfollow" data-id="<%= teams[0].id %>"><%= __('Unfollow') %></button>
 					</div>
 					</p>	
             	</div>
@@ -155,13 +157,15 @@
 						        	<div class="form-group">
 								        <div class="row">
 								            <div class="col-md-12">
-								             	<select name="eventteam" id="eventteam" class="form-control" required ></select>
+								            	<label for="eventteam" class="control-label"><%= __('Select your team') %></label>
+								            	<select name="eventteam" id="eventteam" class="form-control" required ></select>
 								            </div>
 								        </div>
 								    </div>
 									<div class="form-group">
 								        <div class="row">
 								            <div class="col-md-12">
+								            	<label for="eventdate" class="control-label"><%= __('Select a date') %></label>
 								                <div id="eventdate"></div>
 								            </div>
 								        </div>
@@ -171,14 +175,8 @@
 						        	<div class="form-group">
 								        <div class="row">
 								            <div class="col-md-12">
-								             	<p class="eventdetails"></p>
-								            </div>
-								        </div>
-								    </div>
-									<div class="form-group">
-								        <div class="row">
-								            <div class="col-md-12">
-								                <div id="eventplace"></div>
+								            	<label for="eventplace" class="control-label"><%= __('Select a place') %></label>
+								                <select name="eventplace" id="eventplace" class="form-control" required ></select>
 								            </div>
 								        </div>
 								    </div>
@@ -186,6 +184,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
+							<input type="hidden" name="event_h_date" required="">
+							<input type="hidden" name="event_h_team" value="<%= teams[0].id %>" required="">
 							<button type="button" class="btn btn-default btn-primary eventnextstep"><%= __('Next') %></button>
 					        <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('Cancel') %></button>
 					        <button type="submit" class="btn btn-default btn-primary eventinvite hidden"><%= __('Invite') %></button>

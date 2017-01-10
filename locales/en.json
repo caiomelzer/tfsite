@@ -115,5 +115,15 @@
 	"Edit": "Edit",
 	"New": "New",
 	"Select a date...": "Select a date...",
-	"Next": "Next"
+	"Next": "Next",
+	"Places": "Places",
+	"Dashboard": "Dashboard",
+	"Confirm": "Confirm",
+	"Follow": "Follow",
+	"Unfollow": "Unfollow",
+	"Select your team": "Select your team",
+	"Select a date": "Select a date",
+	"Select a place": "Select a place",
+	"Invite to team": "Invite to team",
+	"Search for names": "Search for names"
 }

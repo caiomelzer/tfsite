@@ -82,6 +82,22 @@ function Teams() {
 			con.release();
 		});
 	},
+	this.editMyTeam = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from vw_teams where id = ? and resp_id = ?; select * from  ', [req.params.id, req.user.id], function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.render('times-editar.ejs', {
+						lang : res,
+						user : req.user,
+						teams : result
+					});
+				console.log(result);
+			});
+			con.release();
+		});
+	},
 	this.read = function(req, res) {
 		if(req.user.id){
 			if(req.params.id){
@@ -147,8 +163,73 @@ function Teams() {
 					else
 						res.send({status: 1, message: 'Success'});
 				});
+				con.release();
 			});
 		});
+	},
+	this.disable = function(req, res) {
+		var data = {
+			id : req.params.id,
+			resp_id : req.user.id
+		};
+		connection.acquire(function(err, con){
+			con.query('update teams set status = 0 where id = ? and resp_id = ?', data, function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
+		});
+	},
+	this.follow = function(req, res) {
+		var data = {
+			team_id : req.params.id,
+			user_id : req.user.id
+		};	
+		connection.acquire(function(err, con){
+			con.query('insert into team_followers set ?', data, function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
+		});
+	},
+	this.unfollow = function(req, res) {
+		connection.acquire(function(err, con){
+			con.query('delete from team_followers where team_id = ? and user_id = ?', [req.params.id, req.user.id], function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
+		});
+	},	
+	this.following = function(req, res) {
+		connection.acquire(function(err, con){
+			con.query('select * from team_followers where team_id = ? and user_id = ?', [req.params.id, req.user.id], function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success', data: result.length});
+			});
+			con.release();
+		});
+	},
+	this.followers = function(req, res) {
+		connection.acquire(function(err, con){
+			con.query('select distinct count(1) from team_followers where team_id = ?', req.params.id, function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success', data: result});
+			});
+			con.release();
+		});
 	}
+
 }
 module.exports = new Teams();

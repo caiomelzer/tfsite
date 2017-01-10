@@ -8,6 +8,10 @@
         <input id="switch-size" type="checkbox" checked="" data-off-color="warning" data-size="mini" data-rel="<%= data[i].id %>">
         <% } %>
     </td>
-    <td class="col-sm-7"><%= data[i].last_login %></td>
+    <td class="col-sm-7">
+	    <% if(data[i].last_login !== '0000-00-00 00:00:00'){%>
+			<%= data[i].last_login %>
+		<% } %>
+	</td>
 </tr>
 <% } %>

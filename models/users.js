@@ -1,6 +1,7 @@
 var bcrypt = require('bcrypt-nodejs');
 var connection = require('../config/connection');
 var multer  = require('multer');
+var nodemailer = require('nodemailer');
 var fileInfo = '';
 var storage =   multer.diskStorage({
 	destination: function (req, file, callback) {
@@ -82,10 +83,26 @@ function Users() {
 		if(req.user.id){
 			connection.acquire(function(err, con){
 				con.query('INSERT INTO users ( email, resp_id, username, password ) values (?,?,?,MD5(?))', [req.user.email, req.user.id , req.body.username, bcrypt.hashSync(req.body.password, null, null)], function(err, result){
-					if(err)
+					if(err){
 						res.send({status: 0, message: err});
-					else
+					}
+					else{
 						res.send({status: 1, message: 'Success'});
+						var transporter = nodemailer.createTransport('smtps://nao-responda%40terradofutebol.com.br:mewtwo@md-20.webhostbox.net');
+	                    var mailOptions = {
+	                        from: '"Terra do Futebol" <nao-responda@terradofutebol.com.br>', 
+	                        to: req.user.email, 
+	                        subject: 'Bem-indo',
+	                        text: 'Olá, seu dependente foi cadastrado com sucesso...Abraços!', 
+	                        html: '<h2>Olá, </h2><p>Seu dependente foi cadastrado com sucesso...</p><p>Abraços!</p>' 
+	                    };
+	                    transporter.sendMail(mailOptions, function(error, info){
+	                        if(error){
+	                            return console.log(error);
+	                        }
+	                        console.log('Message sent: ' + info.response);
+	                    });
+					}
 				});
 				con.release();
 			});
