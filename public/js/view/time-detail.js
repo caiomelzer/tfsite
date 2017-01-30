@@ -17,7 +17,7 @@ $(document).on('ready', function(){
 	});
 
 	$.ajax({
-		url:'/jogos/convites/meus-times',
+		url:'/jogos/convites/meus-times/'+team_id,
 		type: 'GET',
 		success: function(res){
 			if(res.status == 0){
@@ -33,7 +33,7 @@ $(document).on('ready', function(){
 	});
 
 	$.ajax({
-		url:'/jogos/convites/quadras',
+		url:'/jogos/convites/quadras/'+team_id,
 		type: 'GET',
 		success: function(res){
 			if(res.status == 0){

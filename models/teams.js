@@ -19,7 +19,8 @@ function Teams() {
 		var data = {
         	alias: req.body.alias,
         	name: req.body.name,
-        	resp_id: req.user.id
+        	resp_id: req.user.id,
+        	category_id: req.body.category_id
         };
         connection.acquire(function(err, con){
 			con.query('insert into teams set ?; update teams set slug = concat(replace(alias," ","-"),"_",id)', data, function(err, result){
@@ -84,14 +85,15 @@ function Teams() {
 	},
 	this.editMyTeam = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from vw_teams where id = ? and resp_id = ?; select * from  ', [req.params.id, req.user.id], function(err, result){
+			con.query('select * from vw_teams where id = ? and resp_id = ?; select * from team_players inner join vw_users on vw_users.id = team_players.player_id where team_id= ?', [req.params.id, req.user.id, req.params.id], function(err, result){
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.render('times-editar.ejs', {
 						lang : res,
 						user : req.user,
-						teams : result
+						teams : result[0],
+						players : result[1]
 					});
 				console.log(result);
 			});
@@ -229,7 +231,76 @@ function Teams() {
 			});
 			con.release();
 		});
+	},
+	this.listPlayersAvaliable = function(req, res) {
+		connection.acquire(function(err, con){
+			if(req.params.id){
+				con.query('SELECT vw_teams.ground_id, team_categories.max_age, team_categories.min_age FROM `vw_teams` left join team_categories on team_categories.id = vw_teams.category_id WHERE vw_teams.id = ?', req.params.id, function(err, age){
+					if(err){
+						res.send({status: 0, message: err});
+					}
+					else{
+						con.query('select * from vw_players_list where player_id not in (select player_id from vw_players_list where player_id in (select player_id from team_players where team_id = ? group by player_id)) and age > ? and age < ? and ground_id = ?', [req.params.id, age[0].min_age, age[0].max_age, age[0].ground_id], function(err, result){
+							if(err)
+								res.send({status: 0, message: err});
+							else
+								res.send({status: 1, message: 'Success', data: result});
+						});
+					}	
+				});
+			}
+			con.release();
+		});
+	},
+	this.listPlayers = function(req, res) {
+		connection.acquire(function(err, con){
+			if(req.params.id){
+				con.query('select * from vw_players_list where player_id  in (select player_id from team_players where team_id = ? group by player_id) and ground_id in (select ground_id from teams where id = ?)', [req.params.id, req.params.id], function(err, result){
+					if(err)
+						res.send({status: 0, message: err});
+					else
+						res.send({status: 1, message: 'Success', data: result});
+				});
+			}
+			con.release();
+		});
+	},
+	this.addPlayer = function(req, res) {
+		var data = {
+			team_id : req.params.team_id,
+			player_id : req.params.id
+		};	
+		connection.acquire(function(err, con){
+			con.query('insert into team_players set ?', data, function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
+		});
+	},
+	this.removePlayer = function(req, res) {
+		connection.acquire(function(err, con){
+			con.query('delete from team_players where team_id = ? and player_id = ?', [req.params.team_id, req.params.id], function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
+		});
+	},
+	this.listMyTeams = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from teams', [req.params.team_id, req.params.id], function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
+		});
 	}
-
 }
 module.exports = new Teams();

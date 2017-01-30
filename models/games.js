@@ -4,45 +4,7 @@ var multer  = require('multer');
 connection.init();
 
 function Games() {
-	this.invite = function(req, res) {
-		var data = {
-        	alias: req.body.alias,
-        	name: req.body.name,
-        	resp_id: req.user.id
-        };
-        connection.acquire(function(err, con){
-			con.query('insert into teams set ?; update teams set slug = concat(replace(alias," ","-"),"_",id)', data, function(err, result){
-				if(err)
-					res.send({status: 0, message: err});
-				else
-					res.send({status: 1, message: 'Success'});
-			});
-			con.release();
-		});
-		
-	},
-	this.search = function(req, res){
-		connection.acquire(function(err, con){
-			var query = 'select distinct * from teams where name is not null ';
-			if(req.query.alias){ query += ' and alias like "%'+ req.query.alias+'%" '};
-			if(req.query.name){ query += ' and name like "%'+ req.query.name+'%" '};
-			if(req.query.city){ query += ' and city_id = '+ req.query.city };
-			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
-			con.query(query, function(err, result){
-				if(err)
-					res.send({status: 0, message: err});
-				else
-					res.render('times-buscar.ejs', {
-						lang : res,
-						user : req.user,
-						teams : result,
-						page : req.query.page
-					});
-			});
-			con.release();
-		});
-	},
-	this.myTeams = function(req, res){
+	this.myInvites = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select distinct * from teams where resp_id = ?', req.user.id, function(err, result){
 				if(err)
@@ -53,13 +15,32 @@ function Games() {
 			con.release();
 		});
 	},
-	this.places = function(req, res){
+	this.possibleOpponents = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select distinct * from vw_places order by abr, city_name, name', function(err, result){
-				if(err)
+			if(req.params.id){
+				con.query('select * from teams where resp_id = ? and category_id in (select category_id from teams where id = ?)', [req.user.id, req.params.id], function(err, result){
+					if(err)
+						res.send({status: 0, message: err});
+					else
+						res.send({status: 1, data: result});
+				});
+				con.release();
+			}
+		});
+	},
+	this.list = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from vw_games_invites where resp_id = ? and date > now() order by date asc', req.user.id, function(err, result){
+				if(err){
 					res.send({status: 0, message: err});
-				else
-					res.send({status: 1, data: result});
+				}
+				else{
+					res.render('games-invites.ejs', {
+						lang : res,
+						user : req.user,
+						games : result
+					});
+				}
 			});
 			con.release();
 		});
@@ -95,7 +76,38 @@ function Games() {
 			});
 			con.release();
 		});
+	},
+	this.listPlaces = function(req, res){
+		connection.acquire(function(err, con){
+			if(req.params.id){
+				con.query('select * from vw_places where ground_id in (select ground_id from teams where id = ?)', req.params.id, function(err, result){
+					if(err)
+						res.send({status: 0, message: err});
+					else
+						res.send({status: 1, data: result});
+				});
+				con.release();
+			}
+		});
+	},
+	this.answerInvite = function(req, res){
+		connection.acquire(function(err, con){
+			var data = {
+				opponent_confirm: req.body.opponent_confirm,
+				game_id: req.body.game_id
+			};
+			con.query('update games_invites set opponent_confirm = ? where game_id = ?', data, function(err, result){
+				console.log(data);
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1});
+			});
+			con.release();
+		});
 	}
+
+	
 
 	
 }

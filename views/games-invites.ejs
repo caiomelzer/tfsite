@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Invites') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/"><%= __('Games') %></a></li>
+                        <li class="active"><%= __('Invites') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            <div class="row">
+                <ul class="games-invites-list">
+                <% if(games){ %>
+                    <% for(var i=0;i<games.length;i++){ %>
+                    <li class="games-invites-item" data-id="<%= games[i].game_id %>">
+                        <time datetime="<%= games[i].date %>" class="label-default col-sm-1">
+                            <span class="day"></span>
+                            <span class="month-year"></span>
+                            <span class="time"></span>
+                        </time>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= games[i].logo %>" />
+                        </span>
+                        <span class="versus col-sm-1">VS</span>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= games[i].logo_b %>" />
+                        </span>
+                        <span class="place col-sm-5">
+                            <h4><%= games[i].name %></h4>
+                            <p><%= games[i].address %> - <%= games[i].city_name %> - <%= games[i].state_name %></p>
+                        </span>
+                        <span class="option label-success col-sm-1">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </span>
+                        <span class="option label-danger col-sm-1">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </span>
+                    </li>
+                    <% } %> 
+                <% } %>    
+                </ul>
+            </div>
+        </div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/view/games.js"></script>
+
+</body>
+</html>
+

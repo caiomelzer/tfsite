@@ -17,7 +17,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 
 	this.listNationalities = function(req, res){
 		connection.acquire(function(err, con){
@@ -29,7 +29,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 	
 	this.listCountries = function(req, res){
 		connection.acquire(function(err, con){
@@ -41,7 +41,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 
 	this.listStates = function(req, res){
 		connection.acquire(function(err, con){
@@ -53,7 +53,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 
 	this.listCities = function(req, res){
 		connection.acquire(function(err, con){
@@ -65,7 +65,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 
 	this.listGrounds = function(req, res){
 		connection.acquire(function(err, con){
@@ -77,7 +77,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 
 	this.listPositionsByGround = function(req, res){
 		connection.acquire(function(err, con){
@@ -89,7 +89,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 
 	this.listPositionsByPlayer = function(req, res){
 		var player_id;
@@ -106,7 +106,7 @@ function Apis() {
 				con.release();
 			});
 		});
-	}
+	},
 
 	this.listPositions = function(req, res){
 		connection.acquire(function(err, con){
@@ -126,7 +126,19 @@ function Apis() {
 			});
 			con.release();
 		});
-	}
+	},
+	this.listCategories = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from team_categories where lang = ?', i18n.getLocale(), function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, data: result});
+			});
+			con.release();
+		});
+	},
+	
 
 	this.analytics = function(req, res){
 		console.log(req);

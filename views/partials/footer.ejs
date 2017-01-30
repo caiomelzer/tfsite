@@ -1,5 +1,6 @@
 <center><img src="/images/patrocinio.png" width="100%" /></center>
-    <section id="bottom" class="wet-asphalt">
+<% if(typeof user === 'undefined'){ %>
+<section id="bottom" class="wet-asphalt">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-6">
@@ -102,7 +103,6 @@
         </div>
     </div>
 </div> 
-
 <footer id="footer" class="midnight-blue">
     <div class="container">
         <div class="row">
@@ -120,13 +120,17 @@
             </div>
         </div>
     </div>
+</footer><!--/#footer-->    
+<% } %>    
 
 
-</footer><!--/#footer-->
+
 <script src="/js/jquery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.prettyPhoto.js"></script>
 <script src="/js/ejs_production.js"></script>
 <script src="/js/bootstrap-switch.js"></script>
+<script type="text/javascript" charset="utf8" src="/js/dataTables.js"></script>
+
 
 

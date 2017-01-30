@@ -146,16 +146,40 @@ module.exports = function(app, passport) {
 		teams.unfollow(req, res);
 	});
 
-	app.get('/jogos/convites/meus-times', isLoggedIn, function(req, res) {
-		games.myTeams(req, res);
+	app.get('/times/jogadores/lista/disponiveis/:id', isLoggedIn, function(req, res) {
+		teams.listPlayersAvaliable(req, res);
 	});
 
-	app.get('/jogos/convites/quadras', isLoggedIn, function(req, res) {
-		games.places(req, res);
+	app.get('/times/jogadores/lista/:id', isLoggedIn, function(req, res) {
+		teams.listPlayers(req, res);
+	});
+
+	app.post('/times/jogadores/:team_id/adicionar/:id', isLoggedIn, function(req, res) {
+		teams.addPlayer(req, res);
+	});
+
+	app.post('/times/jogadores/:team_id/remover/:id', isLoggedIn, function(req, res) {
+		teams.removePlayer(req, res);
+	});
+
+	app.get('/jogos/convites/meus-times/:id', isLoggedIn, function(req, res) {
+		games.possibleOpponents(req, res);
+	});
+
+	app.get('/jogos/convites/quadras/:id', isLoggedIn, function(req, res) {
+		games.listPlaces(req, res);
 	});
 
 	app.post('/jogos/convites/', isLoggedIn, function(req, res) {
 		games.invite(req, res);
+	});
+
+	app.get('/jogos/convites/', isLoggedIn, function(req, res) {
+		games.list(req, res);
+	});
+
+	app.post('/jogos/convites/resposta', isLoggedIn, function(req, res) {
+		games.answerInvite(req, res);
 	});
 
 	app.get('/quadras/', isLoggedIn, function(req, res) {
@@ -164,9 +188,6 @@ module.exports = function(app, passport) {
 			user : req.user
 		});
 	});
-
-
-
 
 	app.get('/jogadores/editar', isLoggedIn, function(req, res) {
 		res.render('jogador.ejs', {
@@ -178,7 +199,6 @@ module.exports = function(app, passport) {
 	app.post('/jogadores/editar', isLoggedIn, function(req, res) {
 		players.create(req, res);
 	});
-
 
 	app.get('/jogadores/', isLoggedIn, function(req, res) {
 		res.render('jogadores.ejs', {
@@ -237,6 +257,8 @@ module.exports = function(app, passport) {
 	app.post('/configuracoes/times', isLoggedIn, function(req, res) {
 		teams.create(req, res);
 	});
+
+	
 
 	app.post('/configuracoes/quadras', isLoggedIn, function(req, res) {
 		places.create(req, res);
@@ -297,6 +319,10 @@ module.exports = function(app, passport) {
 
 	app.get('/api/positions/:id', isLoggedIn, function(req, res) {
 		apis.listPositionsByGround(req, res);
+	});
+
+	app.get('/api/times/categorias', isLoggedIn, function(req, res) {
+		apis.listCategories(req, res);
 	});
 
 	app.get('/logout', function(req, res) {

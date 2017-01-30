@@ -172,6 +172,19 @@ $(document).on('ready', function(){
     		});
     	}
     });
+
+	$.ajax({
+		url:'/api/times/categorias',
+		type: 'GET',
+		success: function(res){
+			var content = '';
+			$.each(res.data, function(i,v){
+				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+			});
+			$('#category_id').html(content);
+		}
+	});
+
 	updateDependents();
 	updateEntities();
 	updateTeams();

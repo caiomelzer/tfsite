@@ -1389,10 +1389,10 @@ li.registrar{
 
 /*JOGADORES*/
 .form_buscar{
-  background: #34495e;
-  color: #bdc3c7;
-  padding: 10px 0px 0px;
-  margin-bottom: 15px;
+    background: #34495e;
+    color: #bdc3c7;
+    padding: 10px 0px 0px;
+    margin-bottom: 15px;
 }
 h1 span{
     color: #999;
@@ -1403,37 +1403,87 @@ h1 span{
     font-weight: 300;
 }
 
-
-
-#tablePlayersInput {
-    background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-    background-position: 10px 12px; /* Position the search icon */
-    background-repeat: no-repeat; /* Do not repeat the icon image */
-    width: 100%; /* Full-width */
-    font-size: 16px; /* Increase font-size */
-    padding: 12px 20px 12px 40px; /* Add some padding */
-    border: 1px solid #ddd; /* Add a grey border */
-    margin-bottom: 12px; /* Add some space below the input */
+#invite .modal-dialog{
+    width: 80%;
 }
-
-#tablePlayers {
-    border-collapse: collapse; /* Collapse borders */
-    width: 100%; /* Full-width */
-    border: 1px solid #ddd; /* Add a grey border */
-    font-size: 18px; /* Increase font-size */
+.tools-table{
+    padding-bottom: 10px;
+    text-align: right;
 }
-
-#tablePlayers th, #tablePlayers td {
-    text-align: left; /* Left-align text */
-    padding: 12px; /* Add padding */
+.games-invite-list{
+    list-style: none !important;
+    margin: 0px;
+    padding: 0px;
 }
-
-#tablePlayers tr {
-    /* Add a bottom border to all table rows */
-    border-bottom: 1px solid #ddd; 
+.games-invites-item{
+    background: #fff;
+    padding: 0px;
+    list-style: none;
+    margin: 0 0 10px 0;
+    height: 100px;
 }
+.games-invites-item time{
+    height: 100%;
+    display: block;
+    float: left;
+    margin-right: 20px;
+}
+.games-invites-item time .day{
+    font-size: 4em;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    padding: 0px;
+    margin: 0px;
+    color: #fff;
+}
+.games-invites-item time .month-year{
+    font-size: 0.8em;
+    text-align: center;
+    display: block;
+    margin: -15px 0 0 0;
+    float: left;
+    width: 100%;
+    color: #000;
+    padding: 0px;
+}
+.games-invites-item time .time{
+    font-size: 1em;
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-top: -3px;
+    float: left;
+    color: #fff;
 
-#tablePlayers tr.header, #tablePlayers tr:hover {
-    /* Add a grey background color to the table header and on hover */
-    background-color: #f1f1f1;
+}
+.games-invites-item .team{
+    float: left;
+    height: 100px;
+    padding: 5px;
+}
+.games-invites-item .team img{
+    height: 90px;
+    width: 90px;
+}
+.games-invites-item .versus{
+    float: left;
+    height: 100px;
+    text-align: center;
+    font-size: 2em;
+    padding: 30px 0; 
+}
+.games-invites-item .option{
+    font-size: 3em;
+    color: #fff;
+    float: right;
+    height: 100px;
+    text-align: center;
+    display: block;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+}
+.games-invites-item .option i {
+    padding-top: 22px;
 }

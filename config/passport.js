@@ -56,7 +56,6 @@ module.exports = function(passport) {
                 if (rows.length) {
                     return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
                 } else {
-                    console.log(req.body);
                     // if there is no user with that username
                     // create the user
                     var newUserMysql = {
@@ -106,7 +105,6 @@ module.exports = function(passport) {
         },
         function(req, username, password, done) { // callback with email and password from our form
             connection.query("SELECT * FROM vw_users WHERE username = ?",[username], function(err, rows){
-                console.log(username, password);
                 if (err)
                     return done(err);
                 if (!rows.length) {

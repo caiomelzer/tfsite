@@ -1,24 +1,3 @@
-function searchPlayers() {
-// Declare variables 
-	var input, filter, table, tr, td, i;
-	input = document.getElementById("tablePlayersInput");
-	filter = input.value.toUpperCase();
-	table = document.getElementById("tablePlayers");
-	tr = table.getElementsByTagName("tr");
-
-	// Loop through all table rows, and hide those who don't match the search query
-	for (i = 0; i < tr.length; i++) {
-		td = tr[i].getElementsByTagName("td")[0];
-		if (td) {
-			if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-				tr[i].style.display = "";
-			} else {
-				tr[i].style.display = "none";
-			}
-		} 
-	}
-}
-
 $(document).on('ready', function(){ 
     $('#form_time').validator().on('submit', function (e) {
 		if (e.isDefaultPrevented()) {
@@ -102,4 +81,77 @@ $(document).on('ready', function(){
 			}
 		});
 	});
+
+	var tablePlayersInvite = $('#tablePlayersInvite').DataTable({
+    	"ajax": {
+			"url": "/times/jogadores/lista/disponiveis/"+document.location.pathname.split('/')[3],
+			"type": "GET",
+			"dataSrc": "data"
+		},
+		"autoWidth": true,
+		columns: [
+			{ data: 'picture', render: function(data, res, index){
+	        		return '<img src="/images/uploads/'+data+'" height="50px" width="50px" />';
+	        }},
+	        { data: 'first_name' },
+	        { data: 'last_name' },
+	        { data: 'city_name' },
+	        { data: 'state_name' },
+	        { data: 'country_name' },
+	        { data: 'positions' },
+	        { data: 'id', render: function(data, res, index){
+	        	return '<button type="button" class="btn btn-primary players-add" data-id="'+data+'"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>';
+	        }}
+	    ]
+	});
+
+	var tablePlayers = $('#tablePlayers').DataTable({
+    	"ajax": {
+			"url": "/times/jogadores/lista/"+document.location.pathname.split('/')[3],
+			"type": "GET",
+			"dataSrc": "data"
+		},
+		"autoWidth": true,
+		columns: [
+			{ data: 'picture', render: function(data){
+	        		return '<img src="/images/uploads/'+data+'" height="50px" width="50px" />';
+	        }},
+	        { data: 'first_name' },
+	        { data: 'last_name' },
+	        { data: 'city_name' },
+	        { data: 'state_name' },
+	        { data: 'country_name' },
+	        { data: 'positions' },
+	        { data: 'id', render: function(data){
+	        		return '<button type="button" class="btn btn-danger players-remove" data-id="'+data+'"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+	        }}
+	    ]
+	});
+
+	$('#invite').on('shown', function() {
+        tablePlayersInvite.ajax.reload();
+        tablePlayers.ajax.reload();
+    });
+
+    $('#invite').on('shown', function() {
+        tablePlayersInvite.ajax.reload();
+        tablePlayers.ajax.reload();
+    });
+
+	$(document)
+	.on('click', '.players-add', function(){
+		$.post('/times/jogadores/'+document.location.pathname.split('/')[3]+'/adicionar/'+$(this).attr('data-id'), function(data){
+			tablePlayersInvite.ajax.reload();
+        	tablePlayers.ajax.reload();
+		});
+		
+	})
+	.on('click', '.players-remove', function(){
+		$.post('/times/jogadores/'+document.location.pathname.split('/')[3]+'/remover/'+$(this).attr('data-id'), function(data){
+			tablePlayersInvite.ajax.reload();
+        	tablePlayers.ajax.reload();
+		});
+		
+	});
+
 });
