@@ -29,8 +29,9 @@
         <div class="container">
             <%- include partials/alert.ejs %>
             <div class="row">
-                <ul class="games-invites-list">
-                <% if(games){ %>
+
+                <ul class="games-invites-list col-sm-12">
+                <% if(games && games.length > 0){ %>
                     <% for(var i=0;i<games.length;i++){ %>
                     <li class="games-invites-item" data-id="<%= games[i].game_id %>">
                         <time datetime="<%= games[i].date %>" class="label-default col-sm-1">
@@ -57,7 +58,9 @@
                         </span>
                     </li>
                     <% } %> 
-                <% } %>    
+                <% } else { %>    
+                    <%= __('You have no invites yet!') %>
+                <% } %> 
                 </ul>
             </div>
         </div>

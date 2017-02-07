@@ -26,7 +26,7 @@ function Users() {
 	        var data = [req.body, req.user.username];
 			connection.acquire(function(err, con){
 		    	con.query('update users set ? where username = ?', data, function(err, result){
-					if(req.body.password != null && req.body.password != ''){
+					if(req.body.password != null && req.body.password !== ''){
 						con.query('update users set password = ? where username = ?', [bcrypt.hashSync(req.body.password, null, null), req.user.username], function(err, result){
 							con.release();
 						});

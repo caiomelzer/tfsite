@@ -1,7 +1,7 @@
 $(document).on('ready', function(){ 
     $('#form_perfil').validator().on('submit', function (e) {
 		if (e.isDefaultPrevented()) {
-		
+			return false;
 		} else {
 			var formData = new FormData($(this)[0]);
 			$.ajax({
@@ -14,13 +14,14 @@ $(document).on('ready', function(){
 				success: function(res){
 					if(res.status == 0){
 						showMessageError();
+						return false;
 					}
 					else{
 						showMessageSuccess();
 					}
 				}
 			});
-			return false;
+			
 		}
 	});
 

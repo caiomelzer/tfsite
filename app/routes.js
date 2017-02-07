@@ -7,6 +7,7 @@ var teams = require('../models/teams');
 var entities = require('../models/entities');
 var games = require('../models/games');
 var places = require('../models/places');
+var mkt = require('../models/mkt');
 var email = require('emailjs');
 var nodemailer = require('nodemailer');
 var userData;
@@ -20,8 +21,6 @@ module.exports = function(app, passport) {
 	app.get('/', function(req, res) {
 		res.render('index.ejs', {lang: res}); 
 	});
-
-
 
 	app.get('/entrar', function(req, res) {
 		res.render('entrar.ejs', { lang: res, message: req.flash('loginMessage') });
@@ -45,7 +44,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.post('/entrar', passport.authenticate('local-login', {
-            successRedirect : '/dashboard', 
+            successRedirect : '/jogos', 
             failureRedirect : '/entrar', 
             failureFlash : true 
 		}),
@@ -126,6 +125,14 @@ module.exports = function(app, passport) {
 		teams.update(req, res);
 	});
 
+	app.post('/times/editar/:id/quadras/:place_id', isLoggedIn, function(req, res) {
+		teams.updatePlace(req, res);
+	});
+
+	app.post('/times/editar/:id/remover-local', isLoggedIn, function(req, res) {
+		teams.myTeamRemovePlace(req, res);
+	});
+
 	app.get('/times/:slug/', isLoggedIn, function(req, res) {
 		teams.read(req, res);
 	});
@@ -166,6 +173,10 @@ module.exports = function(app, passport) {
 		games.possibleOpponents(req, res);
 	});
 
+	app.get('/jogos/', isLoggedIn, function(req, res) {
+		games.listAll(req, res);
+	});
+
 	app.get('/jogos/convites/quadras/:id', isLoggedIn, function(req, res) {
 		games.listPlaces(req, res);
 	});
@@ -187,6 +198,10 @@ module.exports = function(app, passport) {
 			lang : res,
 			user : req.user
 		});
+	});
+
+	app.get('/quadras/listar', isLoggedIn, function(req, res) {
+		places.list(req, res);
 	});
 
 	app.get('/jogadores/editar', isLoggedIn, function(req, res) {
@@ -325,6 +340,14 @@ module.exports = function(app, passport) {
 		apis.listCategories(req, res);
 	});
 
+	app.get('/mkt/computar', isLoggedIn, function(req, res) {
+		mkt.computeBanner(req, res);
+	});
+
+	app.get('/mkt/imprimir/:id', function(req, res) {
+		mkt.showBanner(req, res);
+	});
+
 	app.get('/logout', function(req, res) {
 		req.logout();
 		res.redirect('/');
@@ -332,9 +355,11 @@ module.exports = function(app, passport) {
 };
 
 function isLoggedIn(req, res, next) {
-	if (req.isAuthenticated())
-		return next();
-	res.redirect('/');
+	if (req.isAuthenticated()){
+		if(req._parsedUrl.query && req._parsedUrl.query.indexOf('redirect') > -1 && req._parsedUrl.path === '/entrar')
+			res.redirect(req._parsedUrl.query.replace('redirect=',''));
+		else
+			return next();
+	}
+	res.redirect('/entrar?redirect='+req._parsedUrl.path);
 }
-
-

@@ -68,7 +68,6 @@ function Teams() {
 			if(req.query.name){ query += ' and name like "%'+ req.query.name+'%" '};
 			if(req.query.city){ query += ' and city_id = '+ req.query.city };
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
-			console.log(query);
 			con.query(query, function(err, result){
 				if(err)
 					res.send({status: 0, message: err});
@@ -85,7 +84,7 @@ function Teams() {
 	},
 	this.editMyTeam = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from vw_teams where id = ? and resp_id = ?; select * from team_players inner join vw_users on vw_users.id = team_players.player_id where team_id= ?', [req.params.id, req.user.id, req.params.id], function(err, result){
+			con.query('select vw_teams.*, places.name as place from vw_teams left join places on places.id = vw_teams.preferred_place where vw_teams.id = ? and vw_teams.resp_id = ?; select * from team_players inner join vw_users on vw_users.id = team_players.player_id where team_id= ?', [req.params.id, req.user.id, req.params.id], function(err, result){
 				if(err)
 					res.send({status: 0, message: err});
 				else
@@ -100,6 +99,14 @@ function Teams() {
 			con.release();
 		});
 	},
+	this.myTeamRemovePlace = function(req, res){
+		con.query('update teams set preferred_place = null where resp_id = ? and id = ?', [req.user.id, req.params.id], function(err, result){
+			if(err)
+				res.send({status: 0, message: err});
+			else
+				res.send({status: 1, message: 'Success'});
+		});
+	},
 	this.read = function(req, res) {
 		if(req.user.id){
 			if(req.params.id){
@@ -109,7 +116,9 @@ function Teams() {
 							res.send({status: 0, message: err});
 						else
 							res.send({status: 1, message: 'Success', data: result});
+						console.log(result);
 					});
+
 					con.release();
 				});
 			}
@@ -137,6 +146,7 @@ function Teams() {
 								res.send({status: 0, message: err});
 							else
 								res.send({status: 1, message: 'Success', data: result});
+							console.log(result);
 						});
 						con.release();
 					});
@@ -155,10 +165,38 @@ function Teams() {
 	        if(fileInfo != '') req.body.logo = fileInfo;
 	        delete req.body.country;
 	        delete req.body.state;
-	        var data = [req.body, parseInt(req.params.id), req.user.id];
-	        
-	        console.log(data);
-			connection.acquire(function(err, con){
+	        delete req.body.tablePlayers_length;
+	        req.body.days = req.body.days.replace(/\//g, '');
+	        req.body.d1 = null;
+	        req.body.d2 = null;
+	        req.body.d3 = null;
+	        req.body.d4 = null;
+	        req.body.d5 = null;
+	        req.body.d6 = null;
+	        req.body.d7 = null;
+	        var days = JSON.parse(req.body.days);
+	        for(var i=0;i<days.length; i++){
+				days[i] = JSON.parse(days[i]);
+				if(days[i].duration !== '0:00'){
+					if(days[i].day === 'd1')
+						req.body.d1 = days[i].start+'|'+days[i].duration;
+					if(days[i].day === 'd2')
+						req.body.d2 = days[i].start+'|'+days[i].duration;
+					if(days[i].day === 'd3')
+						req.body.d3 = days[i].start+'|'+days[i].duration;
+					if(days[i].day === 'd4')
+						req.body.d4 = days[i].start+'|'+days[i].duration;
+					if(days[i].day === 'd5')
+						req.body.d5 = days[i].start+'|'+days[i].duration;
+					if(days[i].day === 'd6')
+						req.body.d6 = days[i].start+'|'+days[i].duration;
+					if(days[i].day === 'd7')
+						req.body.d7 = days[i].start+'|'+days[i].duration;
+				}
+			}        
+			var data = [req.body, parseInt(req.params.id), req.user.id];
+	        connection.acquire(function(err, con){
+	        	con.query('update teams set days = replace(days,"\\","")', function(err, result){});
 		    	con.query('update teams set ? where id = ? and resp_id = ?', data, function(err, result){
 					if(err)
 						res.send({status: 0, message: err});
@@ -167,6 +205,17 @@ function Teams() {
 				});
 				con.release();
 			});
+		});
+	},
+	this.updatePlace = function(req, res) {
+		connection.acquire(function(err, con){
+			con.query('update teams set preferred_place = ? where id = ? and resp_id = ?', [req.params.place_id, req.params.id, req.user.id], function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
 		});
 	},
 	this.disable = function(req, res) {

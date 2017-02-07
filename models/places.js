@@ -34,6 +34,17 @@ function Places() {
 		else{
 			res.send({status: 0, message: 'failed to load data'});
 		}
+	},
+	this.list = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from places order by name asc', function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, message: 'Success', data: result});
+			});
+			con.release();
+		});
 	}
 }
 module.exports = new Places();

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Games') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><%= __('Games') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            <div class="row">
+                <ul class="games-list col-sm-12">
+                <% if(games && games.length > 0){ %>
+                    <% for(var i=0;i<games.length;i++){ %>
+                    <li class="col-sm-3 games-item" data-id="<%= games[i].game_id %>">
+                        <div class="row">
+                            <span class="team col-sm-5">
+                                <%= games[i].alias_a %>
+                                <img src="/images/uploads/<%= games[i].logo_a %>" />
+                            </span>
+                            <span class="versus col-sm-2">VS</span>
+                            <span class="team col-sm-5">
+                                <%= games[i].alias_b%>
+                                <img src="/images/uploads/<%= games[i].logo_b %>" />
+
+                            </span>
+                        </div>  
+                        <div class="row">  
+                            <span class="place col-sm-12">
+                                <p><%= games[i].name %></p>
+                            </span>
+                        </div>
+                        <div class="row"> 
+                        <div datetime="<%= games[i].date %>" class="col-sm-12 time">
+                            <div class="row">
+                                <div class="col-sm-5"> 
+                                    <span class="date"></span> 
+                                    <span class="hour"></span>
+                                </div>
+                                <div class="col-sm-7"> 
+                                    <div class="result">
+                                    <%= games[i].goals %> - <%= games[i].goals_against %>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        </div>
+                    </li>
+                    <% } %> 
+                <% } else { %>    
+                    <%= __('You have no invites yet!') %>
+                <% } %> 
+                </ul>
+            </div>
+        </div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/view/games.js"></script>
+
+</body>
+</html>
+

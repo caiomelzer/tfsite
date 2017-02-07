@@ -30,12 +30,30 @@ function Games() {
 	},
 	this.list = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from vw_games_invites where resp_id = ? and date > now() order by date asc', req.user.id, function(err, result){
+			con.query('select * from vw_games_invites where opponent_confirm <> 1 and resp_id = ? and date > now() order by date asc', req.user.id, function(err, result){
 				if(err){
 					res.send({status: 0, message: err});
 				}
 				else{
+					console.log(result);
 					res.render('games-invites.ejs', {
+						lang : res,
+						user : req.user,
+						games : result
+					});
+				}
+			});
+			con.release();
+		});
+	},
+	this.listAll = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from vw_games where status = 1 order by date asc', function(err, result){
+				if(err){
+					res.send({status: 0, message: err});
+				}
+				else{
+					res.render('games.ejs', {
 						lang : res,
 						user : req.user,
 						games : result
@@ -92,12 +110,7 @@ function Games() {
 	},
 	this.answerInvite = function(req, res){
 		connection.acquire(function(err, con){
-			var data = {
-				opponent_confirm: req.body.opponent_confirm,
-				game_id: req.body.game_id
-			};
-			con.query('update games_invites set opponent_confirm = ? where game_id = ?', data, function(err, result){
-				console.log(data);
+			con.query('update games_invites set opponent_confirm = ? where game_id = ?', [req.body.opponent_confirm, req.body.game_id], function(err, result){
 				if(err)
 					res.send({status: 0, message: err});
 				else
