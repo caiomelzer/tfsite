@@ -23,16 +23,15 @@ function Users() {
 	        }
 	        
 	        if(fileInfo != '') req.body.picture = fileInfo;
+	        var password = req.body.password;
+	        delete req.body.password;
 	        var data = [req.body, req.user.username];
 			connection.acquire(function(err, con){
+				console.log(data);
 		    	con.query('update users set ? where username = ?', data, function(err, result){
-					if(req.body.password != null && req.body.password !== ''){
-						con.query('update users set password = ? where username = ?', [bcrypt.hashSync(req.body.password, null, null), req.user.username], function(err, result){
-							con.release();
-						});
-					}
-					else{
-						con.query('update users set password = ? where username = ?', [bcrypt.hashSync(req.body.password, null, null), req.user.username], function(err, result){
+		    		console.log(password);
+					if(password !== null && password.length > 1){
+						con.query('update users set password = ? where username = ?', [bcrypt.hashSync(password, null, null), req.user.username], function(err, result){
 							con.release();
 						});
 					}
