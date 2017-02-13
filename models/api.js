@@ -67,6 +67,18 @@ function Apis() {
 		});
 	},
 
+	this.listAllCities = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from vw_cities order by state_name, city_name', function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.send({status: 1, data: result});
+				con.release();
+			});
+		});
+	},
+
 	this.listGrounds = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('select * from grounds where lang = ?', [i18n.getLocale()], function(err, result){

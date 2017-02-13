@@ -49,7 +49,7 @@
                         <select name="city" id="city" class="form-control" ></select>
                     </div>
                 </div>  
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label for="ground" class="control-label"><%= __('Ground') %></label>
                         <select name="ground" id="ground" class="form-control" > 
@@ -57,6 +57,81 @@
                         </select>
                     </div>
                 </div> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="category_id" class="control-label"><%= __('Category') %></label>
+                        <select name="category_id" id="category_id" class="form-control" > 
+                              
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="looking_games" class="control-label"><%= __('Looking for games') %></label>
+                        <select name="looking_games" id="looking_teams"class="form-control" > 
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                        </select>
+                    </div> 
+                </div> 
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="open_for_new_players" class="control-label"><%= __('Open for new players') %> </label>
+                        <select name="open_for_new_players" id="open_for_new_players"class="form-control" > 
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="other_grounds" class="control-label"><%= __('Accept games in other grounds') %></label>
+                        <select name="other_grounds" id="other_grounds" class="form-control"> 
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="other_categories" class="control-label"><%= __('Accept games in other categoreis') %></label>
+                        <select name="other_categories" id="other_categories" class="form-control"> 
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="have_place" class="control-label"><%= __('Have place') %></label>
+                        <select name="have_place" id="have_place" class="form-control"> 
+                            <option value="0"><%= __('No') %></option>
+                            <option value="1"><%= __('Yes') %></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="day" class="control-label"><%= __('Day') %></label>
+                        <select name="day" id="day" class="form-control"> 
+                            <option value=""></option>
+                            <option value="d1"><%= __('Sunday') %></option>
+                            <option value="d2"><%= __('Monday') %></option>
+                            <option value="d3"><%= __('Tuesday') %></option>
+                            <option value="d4"><%= __('Wednesday') %></option>
+                            <option value="d5"><%= __('Thursday') %></option>
+                            <option value="d6"><%= __('Friday') %></option>
+                            <option value="d7"><%= __('Saturday') %></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="hour" class="control-label"><%= __('Hour') %></label>
+                        <select name="hour" id="hour" class="form-control"> 
+                        </select>
+                    </div>
+                </div>
                 <div class="col-sm-1">
                     <div class="form-group">
                         <label for="reset" class="control-label reset"><%= __('Reset') %></label>

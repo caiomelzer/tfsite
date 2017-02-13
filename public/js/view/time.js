@@ -60,6 +60,42 @@ $(document).on('ready', function(){
 		}
 	});
 
+	$.ajax({
+		url:'/api/states/'+$('#country').attr('data-loaded'),
+		type: 'GET',
+		success: function(res){
+			var content = '';
+			$.each(res.data, function(i,v){
+				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+			});
+			$('#state').html(content);
+		}
+	});
+
+	$.ajax({
+		url:'/api/grounds/',
+		type: 'GET',
+		success: function(res){
+			var content = '';
+			$.each(res.data, function(i,v){
+				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+			});
+			$('#ground_id').html(content);
+		}
+	});
+
+	$.ajax({
+		url:'/api/times/categorias',
+		type: 'GET',
+		success: function(res){
+			var content = '';
+			$.each(res.data, function(i,v){
+				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+			});
+			$('#category_id').html(content);
+		}
+	});
+
 	$('#country').on('change, click', function(){
 		$.ajax({
 			url:'/api/states/'+$('#country').val(),
@@ -116,6 +152,7 @@ $(document).on('ready', function(){
 	        }},
 	        { data: 'first_name' },
 	        { data: 'last_name' },
+	        { data: 'age' },
 	        { data: 'city_name' },
 	        { data: 'state_name' },
 	        { data: 'country_name' },
@@ -169,8 +206,6 @@ $(document).on('ready', function(){
         tablePlayers.ajax.reload();
     });
 
-
-
 	$(document)
 	.on('click', '.players-add', function(){
 		$.post('/times/jogadores/'+document.location.pathname.split('/')[3]+'/adicionar/'+$(this).attr('data-id'), function(data){
@@ -181,10 +216,13 @@ $(document).on('ready', function(){
 	.on('click', '.places-add', function(){
 		$.post('/times/editar/'+document.location.pathname.split('/')[3]+'/quadras/'+$(this).attr('data-id'), function(data){
 			$('#places').modal('toggle');
+			location.reload();
 		});	
 	})
 	.on('click', '.places-remove', function(){
-		$.post('/times/editar/'+document.location.pathname.split('/')[3]+'/quadras/'+$(this).attr('data-id'), function(data){		});	
+		$.post('/times/editar/'+document.location.pathname.split('/')[3]+'/quadras/'+$(this).attr('data-id'), function(data){
+			location.reload();
+		});	
 	})
 	.on('click', '.players-remove', function(){
 		$.post('/times/jogadores/'+document.location.pathname.split('/')[3]+'/remover-local', function(data){
@@ -254,6 +292,12 @@ $(document).on('ready', function(){
 			$(this).parent().parent().attr('data-rel', '');
 		}
 		
+	});
+
+	
+
+	$( document ).ajaxComplete(function( event, request, settings ) {
+		selectLoadedOption();
 	});
 
 });

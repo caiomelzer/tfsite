@@ -44,7 +44,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.post('/entrar', passport.authenticate('local-login', {
-            successRedirect : '/jogos', 
+            successRedirect : '/times', 
             failureRedirect : '/entrar', 
             failureFlash : true 
 		}),
@@ -88,8 +88,6 @@ module.exports = function(app, passport) {
 	app.post('/perfil', isLoggedIn, function(req, res) {
 		users.update(req, res);
 	});
-
-
 
 	app.get('/times/meus-times', isLoggedIn, function(req, res) {
 		res.render('meus-times.ejs', {
@@ -177,6 +175,14 @@ module.exports = function(app, passport) {
 		games.listAll(req, res);
 	});
 
+	app.get('/jogos/anteriores', isLoggedIn, function(req, res) {
+		games.listOlds(req, res);
+	});	
+
+	app.get('/jogos/proximos', isLoggedIn, function(req, res) {
+		games.listNext(req, res);
+	});	
+
 	app.get('/jogos/convites/quadras/:id', isLoggedIn, function(req, res) {
 		games.listPlaces(req, res);
 	});
@@ -191,6 +197,22 @@ module.exports = function(app, passport) {
 
 	app.post('/jogos/convites/resposta', isLoggedIn, function(req, res) {
 		games.answerInvite(req, res);
+	});
+
+	app.get('/jogos/convites/:id', isLoggedIn, function(req, res) {
+		games.invitePlayers(req, res);
+	});
+
+	app.get('/jogos/convites/:id/lista/:team_id', isLoggedIn, function(req, res) {
+		games.inviteListPlayers(req, res);
+	});
+
+	app.post('/jogos/convites/:game_id/:team_id/:player_id', isLoggedIn, function(req, res) {
+		games.inviteListPlayersToGame(req, res);
+	});
+
+	app.post('/jogos/convites/:game_id/:team_id/:player_id/remover', isLoggedIn, function(req, res) {
+		games.cancelInviteListPlayersToGame(req, res);
 	});
 
 	app.get('/quadras/', isLoggedIn, function(req, res) {
@@ -314,6 +336,10 @@ module.exports = function(app, passport) {
 
 	app.get('/api/cities/:id', isLoggedIn, function(req, res) {
 		apis.listCities(req, res);
+	});
+
+	app.get('/api/cities/', isLoggedIn, function(req, res) {
+		apis.listAllCities(req, res);
 	});
 
 	app.get('/api/grounds/', isLoggedIn, function(req, res) {

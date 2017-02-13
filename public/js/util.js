@@ -14,6 +14,13 @@ $.fn.serializeObject = function(){
     return o;
 };
 
+function selectLoadedOption(){
+    $.each($('select[data-loaded]'), function(i, e) {
+        $(e).children('option[value="'+$(e).attr('data-loaded')+'"]').attr('selected','selected');
+    });
+};
+
+
 function showMessageError(){
     $(".alert-danger").removeClass('hidden');
     setTimeout( function(){ 

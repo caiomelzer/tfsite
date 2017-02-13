@@ -29,7 +29,7 @@
         <div class="container">
             <%- include partials/alert.ejs %>
             <div class="row">
-
+                <h2><%= __('Open Invites') %></h2>
                 <ul class="games-invites-list col-sm-12">
                 <% if(games && games.length > 0){ %>
                     <% for(var i=0;i<games.length;i++){ %>
@@ -63,12 +63,74 @@
                 <% } %> 
                 </ul>
             </div>
+            <div class="row">
+                <h2><%= __('Next Games') %></h2>
+                <ul class="games-invites-list col-sm-12">
+                <% if(games && games.length > 0){ %>
+                    <% for(var i=0;i<games.length;i++){ %>
+                    <li class="games-invites-item" data-id="<%= games[i].game_id %>">
+                        <time datetime="<%= games[i].date %>" class="label-default col-sm-1">
+                            <span class="day"></span>
+                            <span class="month-year"></span>
+                            <span class="time"></span>
+                        </time>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= games[i].logo %>" />
+                        </span>
+                        <span class="versus col-sm-1">VS</span>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= games[i].logo_b %>" />
+                        </span>
+                        <span class="place col-sm-5">
+                            <h4><%= games[i].name %></h4>
+                            <p><%= games[i].address %> - <%= games[i].city_name %> - <%= games[i].state_name %></p>
+                        </span>
+                        <span class="option label-warning col-sm-1" data-toggle="modal" data-game="<%= games[i].game_id %>" data-target="#invite" data-team="<%= games[i].opponent_id %>">
+                            <i class="glyphicon glyphicon-log-out"></i>
+                        </span>
+                    </li>
+                    <% } %> 
+                <% } else { %>    
+                    <%= __('You have no invites yet!') %>
+                <% } %> 
+                </ul>
+            </div>
+        </div>
+        <div id="invite" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><%= __('Invite Players') %></h4>
+                        <p><%= __('NOTE: This list show only avaliable players to this type of game, considering ground and category!') %></p>
+                    </div>
+                    <form id="form_evento">
+                        <div class="modal-body">
+                            <div style="overflow:hidden;">
+                                <div class="eventstep2">
+                                    <div class="form-group">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <ul class="jogadores-lista-convidar"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('Close') %></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </section><!--/#registration-->   
     <%- include partials/footer.ejs %>
     <script src="/js/util.js"></script>
     <script src="/js/validator.js"></script>
-    <script src="/js/view/games.js"></script>
+    <script src="/js/view/jogos-convites.js"></script>
 
 </body>
 </html>

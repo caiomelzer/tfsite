@@ -46,7 +46,27 @@ function Teams() {
 			if(req.query.alias){ query += ' and alias like "%'+ req.query.alias+'%" '};
 			if(req.query.name){ query += ' and name like "%'+ req.query.name+'%" '};
 			if(req.query.city){ query += ' and city_id = '+ req.query.city };
+			if(req.query.category_id){ query += ' and category_id = "'+ req.query.category_id+'" '};
+			if(req.query.ground && req.query.ground > 0){ query += ' and ground_id = "'+ req.query.ground+'" '};
+			if(req.query.looking_games){ query += ' and looking_games = "'+ req.query.looking_games+'" '};
+			if(req.query.open_for_new_players){ query += ' and open_for_new_players = "'+ req.query.open_for_new_players+'" '};
+			if(req.query.other_grounds){ query += ' and other_grounds = "'+ req.query.other_grounds+'" '};
+			if(req.query.other_categories){ query += ' and other_categories = "'+ req.query.other_categories+'" '};
+			if(req.query.have_place){ query += ' and have_place = "'+ req.query.have_place+'" '};
+			if(req.query.other_grounds){ query += ' and other_grounds = "'+ req.query.other_grounds+'" '};
+			if(req.query.day && req.query.day !== ''){
+				query += ' and '+req.query.day+' is not null '
+				if(req.query.hour && req.query.hour !== ''){
+					query += ' and TIME("'+req.query.hour+'") between REPLACE(SUBSTRING('+req.query.day+',0,5)," ","") and REPLACE(SUBSTRING('+req.query.day+',6,5)," ","")'
+				}
+			}
+			else{
+				if(req.query.hour && req.query.hour !== ''){
+					query += ' and (TIME(d1 between REPLACE(SUBSTRING(d1,0,5)," ","") and REPLACE(SUBSTRING(d1,6,5)," ","") OR TIME(d2 between REPLACE(SUBSTRING(d2,0,5)," ","") and REPLACE(SUBSTRING(d2,6,5)," ","") OR TIME(d3 between REPLACE(SUBSTRING(d3,0,5)," ","") and REPLACE(SUBSTRING(d3,6,5)," ","") OR TIME(d4 between REPLACE(SUBSTRING(d4,0,5)," ","") and REPLACE(SUBSTRING(d4,6,5)," ","") OR TIME(d5 between REPLACE(SUBSTRING(d5,0,5)," ","") and REPLACE(SUBSTRING(d5,6,5)," ","") OR TIME(d6 between REPLACE(SUBSTRING(d6,0,5)," ","") and REPLACE(SUBSTRING(d6,6,5)," ","") OR TIME(d7 between REPLACE(SUBSTRING(d7,0,5)," ","") and REPLACE(SUBSTRING(d7,6,5)," ",""))';
+				}
+			}
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
+			console.log(query);
 			con.query(query, function(err, result){
 				if(err)
 					res.send({status: 0, message: err});

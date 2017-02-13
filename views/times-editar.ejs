@@ -57,56 +57,54 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="looking_games" class="control-label"><%= __('Looking for games') %></label>
-                        <select name="looking_games" id="looking_teams" class="form-control" > 
-                            <% if(teams[0].looking_games === 0){ %>
+                        <select name="looking_games" id="looking_teams" data-loaded="<%= teams[0].looking_games %>" class="form-control" > 
                             <option value="0"><%= __('No') %></option>
                             <option value="1"><%= __('Yes') %></option>
-                            <% }else{ %>
-                            <option value="1"><%= __('Yes') %></option>
-                            <option value="0"><%= __('No') %></option>
-                            <% } %>
                         </select>
                     </div>
                 </div>  
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="open_for_new_players" class="control-label"><%= __('Open for new players') %> </label>
-                        <select name="open_for_new_players" id="open_for_new_players" class="form-control" > 
-                            <% if(teams[0].open_for_new_players === 0){ %>
+                        <select name="open_for_new_players" id="open_for_new_players" data-loaded="<%= teams[0].open_for_new_players %>" class="form-control" > 
                             <option value="0"><%= __('No') %></option>
                             <option value="1"><%= __('Yes') %></option>
-                            <% }else{ %>
-                            <option value="1"><%= __('Yes') %></option>
-                            <option value="0"><%= __('No') %></option>
-                            <% } %>
                         </select>
                     </div>
                 </div> 
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="ground_id" class="control-label"><%= __('ground') %></label>
+                        <select name="ground_id" id="ground_id" class="form-control" required data-loaded="<%= teams[0].ground_id %>" >  
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="other_grounds" class="control-label"><%= __('Accept games in other grounds') %></label>
-                        <select name="other_grounds" id="other_grounds" class="form-control" > 
-                            <% if(teams[0].other_grounds === 0){ %>
+                        <select name="other_grounds" id="other_grounds" class="form-control" data-loaded="<%= teams[0].other_grounds %>" > 
                             <option value="0"><%= __('No') %></option>
                             <option value="1"><%= __('Yes') %></option>
-                            <% }else{ %>
-                            <option value="1"><%= __('Yes') %></option>
-                            <option value="0"><%= __('No') %></option>
-                            <% } %>
                         </select>
                     </div>
                 </div> 
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="category_id" class="control-label"><%= __('category') %></label>
+                        <select name="category_id" id="category_id" class="form-control" required data-loaded="<%= teams[0].category_id %>" >  
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="other_categories" class="control-label"><%= __('Accept games in other categoreis') %></label>
-                        <select name="other_categories" id="other_categories" class="form-control" > 
-                            <% if(teams[0].other_categories === 0){ %>
+                        <select name="other_categories" id="other_categories" class="form-control" data-loaded="<%= teams[0].other_categories %>" > 
                             <option value="0"><%= __('No') %></option>
                             <option value="1"><%= __('Yes') %></option>
-                            <% }else{ %>
-                            <option value="1"><%= __('Yes') %></option>
-                            <option value="0"><%= __('No') %></option>
-                            <% } %>
                         </select>
                     </div>
                 </div> 
@@ -114,14 +112,9 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="have_place" class="control-label"><%= __('Have place') %></label>
-                        <select name="have_place" id="have_place" class="form-control" > 
-                            <% if(teams[0].have_place === 0){ %>
+                        <select name="have_place" id="have_place" class="form-control" data-loaded="<%= teams[0].have_place %>" > 
                             <option value="0"><%= __('No') %></option>
                             <option value="1"><%= __('Yes') %></option>
-                            <% }else{ %>
-                            <option value="1"><%= __('Yes') %></option>
-                            <option value="0"><%= __('No') %></option>
-                            <% } %>
                         </select>
                     </div>
                 </div>
@@ -129,33 +122,30 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="gender" class="control-label"><%= __('gender') %></label>
-                        <select name="gender" id="gender" class="form-control" required > 
-                            <% if(teams[0].gender >= 0){ %>
-                            <option value="<%= user.gender %>"><%= user.genders_name %></option>
-                            <% } %>  
+                        <select name="gender" id="gender" class="form-control" required data-loaded="<%= teams[0].gender %>" > 
+                            
                         </select>
                     </div>
                 </div>
+
+                
+
                 
             </div>
             <div class="row">
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="country" class="control-label"><%= __('country') %></label>
-                        <select name="country" id="country" class="form-control"  >
-                            <% if(teams[0].country_name && teams[0].country_name.length >= 0){ %>
-                            <option value="<%= teams[0].country_id %>"><%= teams[0].country_name%></option>
-                            <% } %>
+                        <select name="country" id="country" class="form-control" data-loaded="<%= teams[0].country_id %>" >
+                            
                         </select>
                     </div>
                 </div> 
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="state" class="control-label"><%= __('state') %></label>
-                        <select name="state" id="state" class="form-control" >
-                            <% if(teams[0].state_name && teams[0].state_name.length >= 0){ %>
-                            <option value="<%= teams[0].state_id %>"><%= teams[0].state_name %></option>
-                            <% } %>
+                        <select name="state" id="state" class="form-control" data-loaded="<%= teams[0].state_id %>" >
+                            
                         </select>
                     </div>
                 </div>
@@ -191,7 +181,7 @@
                             <div class="panel-body">
                                 <div class="row">   
                                     <div class="col-sm-3">
-                                        <select name="" id="we_play" class="form-control" > 
+                                        <select name="" id="we_play" data-loaded="<%= teams[0].we_play %>"  class="form-control" > 
                                             <option value="w"><%= __('Weekly') %></option>
                                             <option value="b"><%= __('Biweekly') %></option>
                                             <option value="m"><%= __('Monthly') %></option>
@@ -383,6 +373,7 @@
                                             <th></th>
                                             <th><%= __('Name') %></th>
                                             <th><%= __('Last Name') %></th>
+                                            <th><%= __('Age') %></th>
                                             <th><%= __('City') %></th>
                                             <th><%= __('State') %></th>
                                             <th><%= __('Country') %></th>

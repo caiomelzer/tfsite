@@ -42,7 +42,7 @@ $(document).on('ready', function(){
 			else{
 				$('#eventplace').html('<option></option>');
 				$.each(res.data, function(i,v){
-					$('#eventplace').html($('#eventplace').html() + '<option value="'+v.id+'">'+v.abr+', '+v.city_name+' - '+v.name+'</option>');
+					$('#eventplace').html($('#eventplace').html() + '<option value="'+v.id+'">['+v.ground_name+'] '+v.abr+', '+v.city_name+' - '+v.name+'</option>');
 				});
 			}
 		}
