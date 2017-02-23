@@ -1,7 +1,8 @@
 <% for(var i=0;i<data.length;i++){ %>
 <tr>
-    <td class="col-sm-4"><%= data[i].name %></td>
-    <td class="col-sm-5"><%= data[i].alias %></td>
+    <td class="col-sm-3"><%= data[i].name %></td>
+    <td class="col-sm-4"><%= data[i].alias %></td>
+    <td class="col-sm-3"><%= data[i].category_name %></td>
     <td class="col-sm-2"><%= data[i].alias %></td>
     <td class="col-sm-1" data-crud-url="/configuracoes/teams" data-id="<%= data[i].id %>">
     	<div class="btn-group">

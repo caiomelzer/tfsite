@@ -20,7 +20,8 @@ function Teams() {
         	alias: req.body.alias,
         	name: req.body.name,
         	resp_id: req.user.id,
-        	category_id: req.body.category_id
+        	category_id: req.body.category_id,
+        	entity_id: req.body.entity_id 
         };
         connection.acquire(function(err, con){
 			con.query('insert into teams set ?; update teams set slug = concat(replace(alias," ","-"),"_",id)', data, function(err, result){
@@ -46,7 +47,7 @@ function Teams() {
 			if(req.query.alias){ query += ' and alias like "%'+ req.query.alias+'%" '};
 			if(req.query.name){ query += ' and name like "%'+ req.query.name+'%" '};
 			if(req.query.city){ query += ' and city_id = '+ req.query.city };
-			if(req.query.category_id){ query += ' and category_id = "'+ req.query.category_id+'" '};
+			if(req.query.category_id && req.query.category_id !== ''){ query += ' and category_id = "'+ req.query.category_id+'" '};
 			if(req.query.ground && req.query.ground > 0){ query += ' and ground_id = "'+ req.query.ground+'" '};
 			if(req.query.looking_games){ query += ' and looking_games = "'+ req.query.looking_games+'" '};
 			if(req.query.open_for_new_players){ query += ' and open_for_new_players = "'+ req.query.open_for_new_players+'" '};
@@ -66,7 +67,6 @@ function Teams() {
 				}
 			}
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
-			console.log(query);
 			con.query(query, function(err, result){
 				if(err)
 					res.send({status: 0, message: err});
@@ -127,11 +127,11 @@ function Teams() {
 				res.send({status: 1, message: 'Success'});
 		});
 	},
-	this.read = function(req, res) {
-		if(req.user.id){
+	this.read = function(req, res){
+		if(req.user){
 			if(req.params.id){
 				connection.acquire(function(err, con){
-					con.query('select * from teams where resp_id = ? and id = ? order by name asc', [req.user.id, req.params.id], function(err, result){
+					con.query('select * from teams where status = 0 and resp_id = ? and id = ? order by name asc', [req.user.id, req.params.id], function(err, result){
 						if(err)
 							res.send({status: 0, message: err});
 						else
@@ -145,7 +145,7 @@ function Teams() {
 			else{
 				if(req.params.slug){
 					connection.acquire(function(err, con){
-						con.query('select * from vw_teams where slug = ? ', req.params.slug, function(err, result){
+						con.query('select * from vw_teams where status = 0 and slug = ? ', req.params.slug, function(err, result){
 							if(err)
 								res.send({status: 0, message: err});
 							else
@@ -161,7 +161,7 @@ function Teams() {
 				}
 				else{
 					connection.acquire(function(err, con){
-						con.query('select * from teams where resp_id = ? order by name asc', req.user.id, function(err, result){
+						con.query('select teams.*, team_categories.name as category_name from teams left join team_categories on teams.category_id = team_categories.id where resp_id = ? and status = 0 order by name asc', req.user.id, function(err, result){
 							if(err)
 								res.send({status: 0, message: err});
 							else
@@ -174,7 +174,25 @@ function Teams() {
 			}
 		}
 		else{
-			res.send({status: 0, message: 'Failed to load data'});
+			if(req.params.slug){
+				connection.acquire(function(err, con){
+					con.query('select * from vw_teams where slug = ? ', req.params.slug, function(err, result){
+						if(err)
+							res.send({status: 0, message: err});
+						else
+							res.render('time.ejs', {
+								lang : res,
+								user : null,
+								teams : result
+							});
+						console.log(result);
+					});
+					con.release();
+				});
+			}
+			else{
+				res.send({status: 0, message: 'Failed to load data'});
+			}
 		}
 	},
 	this.update = function(req, res) {
@@ -370,6 +388,19 @@ function Teams() {
 			});
 			con.release();
 		});
+	},
+	this.delete = function(req, res) {
+		if(req.params.id && req.user.id){
+			connection.acquire(function(err, con){
+				con.query('update teams set status = 0 where id = ? and resp_id = ?', [req.params.id, req.user.id], function(err, result){
+					if(err)
+						res.send({status: 0, message: err});
+					else
+						res.send({status: 1, message: 'Success'});
+				});
+				con.release();
+			});
+		}
 	}
 }
 module.exports = new Teams();

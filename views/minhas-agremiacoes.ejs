@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Entities') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><%= __('Entities') %></li>
+                        <li class="active"><%= __('Search') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            <form id="form_agremiacoes_buscar" role="form" data-toggle="validator">
+            <div class="row form_buscar"> 
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="alias" class="control-label"><%= __('Alias') %></label>
+                        <input type="text" class="form-control" id="alias" name="alias" placeholder="">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>   
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="name" class="control-label"><%= __('Name') %></label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>   
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="city" class="control-label"><%= __('City') %></label>
+                        <select name="city" id="city" class="form-control" ></select>
+                    </div>
+                </div>  
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="ground" class="control-label"><%= __('Ground') %></label>
+                        <select name="ground" id="ground" class="form-control" > 
+                              
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label for="reset" class="control-label reset"><%= __('Reset') %></label>
+                        <button type="submit" class="btn btn-warning"><%= __('Filter') %></button>
+                    </div>
+                </div>
+            </div>
+            </form> 
+            <div class="row" id="list_agremiacoes"></div>
+        </div>
+    </section><!--/#registration-->   
+
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/view/minhas-agremiacoes.js"></script>
+
+</body> 
+</html>

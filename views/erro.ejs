@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css" />
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="error" class="container">
+        <h1><%= __('Hey...') %></h1>
+        <p><%= __('Something is wrong, check the url or wait for some minutes to test again...') %></p>
+        <a class="btn btn-success" href="/">HOME</a>
+    </section><!--/#error-->  
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    </body>
+</html>
+
+
+

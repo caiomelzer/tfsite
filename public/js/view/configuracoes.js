@@ -5,18 +5,11 @@ function updateTeams(){
 		async: true,
 		success: function(res){
 			$('#table_teams tbody').html(new EJS({url: '/js/partials/perfil_list_teams.ejs'}).render(res));
-			$('#modal-from-dom').on('show', function() {
-		        var id = $(this).data('id'),
-		            removeBtn = $(this).find('.danger');
-				removeBtn.attr('href', removeBtn.attr('href').replace(/(&|\?)ref=\d*/, '$1ref=' + id));
-		        $('#debug-url').html('Delete URL: <strong>' + removeBtn.attr('href') + '</strong>');
-		    });
-
-		    $('.crud-delete').on('click', function(e) {
-		        e.preventDefault();
-				var id = $(this).data('id');
-		        $('#modal-from-dom').data('id', id).modal('show');
-		    });
+			$('#table_teams .crud-delete').on('click', function(){
+				$.post('/configuracoes/times/deletar/'+$(this).parent().parent().attr('data-id'), function(){
+					updateTeams();
+				});
+			});
 		}
 	});
 }
@@ -28,6 +21,11 @@ function updateEntities(){
 		async: true,
 		success: function(res){
 			$('#table_entities tbody').html(new EJS({url: '/js/partials/perfil_list_entities.ejs'}).render(res));
+			$('#table_entities .crud-delete').on('click', function(){
+				$.post('/configuracoes/entidades/deletar/'+$(this).parent().parent().attr('data-id'), function(){
+					updateEntities();
+				});
+			});
 		}
 	});
 }
@@ -182,6 +180,18 @@ $(document).on('ready', function(){
 				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
 			});
 			$('#category_id').html(content);
+		}
+	});
+
+	$.ajax({
+		url:'/configuracoes/entidades',
+		type: 'GET',
+		success: function(res){
+			var content = '<option value=""></option>';
+			$.each(res.data, function(i,v){
+				content += '<option value="'+res.data[i].id+'">'+res.data[i].full_name+'</option>';
+			});
+			$('#entity_id').html(content);
 		}
 	});
 

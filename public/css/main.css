@@ -620,8 +620,9 @@ body > section {
 }
 #title h1 {
   margin: 0;
-  font-size: 36px;
-  font-weight: 300;
+    font-size: 36px;
+    font-weight: 300;
+    padding-top: 10px;
 }
 .center {
   text-align: center;
@@ -650,7 +651,7 @@ body > section {
   border: 0;
 }
 ul.breadcrumb {
-  margin: 20px 0 0;
+  margin: 11px 0 0;
   background: transparent;
 }
 ul.breadcrumb > li {
@@ -1624,11 +1625,16 @@ h1 span{
     font-size: 1.25em;
 }
 .jogadores-lista-convidar li .label-success, .jogadores-lista-convidar li .label-danger{
-    text-align: center;
-    height: 50px;
-    padding-top: 8px;
-    font-size: 2em;
-    color: #fff;
-    cursor: pointer;
+  text-align: center;
+  height: 50px;
+  padding-top: 8px;
+  font-size: 2em;
+  color: #fff;
+  cursor: pointer;
 }
-
+section.emerald{
+  padding: 0px !important;
+}
+header div.container{
+  height: 85px;
+}

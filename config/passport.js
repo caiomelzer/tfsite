@@ -10,6 +10,7 @@ var dbconfig = require('./database');
 var connection = mysql.createConnection(dbconfig.connection);
 var i18n    = require('i18n');
 var nodemailer = require('nodemailer');
+var md5 = require('md5');
 
 connection.query('USE ' + dbconfig.database);
 // expose this function to our app using module.exports
@@ -50,7 +51,7 @@ module.exports = function(passport) {
         function(req, username, password, done) {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            connection.query("SELECT * FROM vw_users WHERE username = ?",[username], function(err, rows) {
+            connection.query("SELECT * FROM vw_users WHERE username = ? and status = 1",[username], function(err, rows) {
                 if (err)
                     return done(err);
                 if (rows.length) {
@@ -63,9 +64,9 @@ module.exports = function(passport) {
                         password: bcrypt.hashSync(password, null, null)
                     };
 
-                    var insertQuery = "INSERT INTO users ( email, username, password ) values (?,?,?)";
+                    var insertQuery = "INSERT INTO users ( email, username, password, status, hash ) values (?,?,?, 0, ?)";
 
-                    connection.query(insertQuery, [req.body.email , newUserMysql.username, newUserMysql.password],function(err, rows) {
+                    connection.query(insertQuery, [req.body.email , newUserMysql.username, newUserMysql.password, md5(newUserMysql.username)],function(err, rows) {
                         newUserMysql.id = rows.insertId;
                         return done(null, newUserMysql);
                     });
@@ -75,9 +76,10 @@ module.exports = function(passport) {
                         from: '"Terra do Futebol" <nao-responda@terradofutebol.com.br>', // sender address 
                         to: req.body.email, // list of receivers 
                         subject: 'Bem-indo', // Subject line 
-                        text: 'Olá, seu cadastro foi efetivado com sucesso, e você ja pode utilzar nosso site...Abraços!', // plaintext body 
+                        text: 'Olá, seu cadastro foi efetivado com sucesso, agora basta copiar o link abaixo e colocar no navegador para você poder começar a utilizar nosso site<br/>http://localhost:8080/'+newUserMysql.username+'/'+md5(newUserMysql.username)+'<br/>...Abraços!', // plaintext body 
                         html: '<h2>Olá, </h2><p>seu cadastro foi efetivado com sucesso, e você ja pode utilzar nosso site...</p><p>Abraços!</p>' // html body 
                     };
+                    console.log('http://localhost:8080/ativar/'+newUserMysql.username+'/'+md5(newUserMysql.username));
                     transporter.sendMail(mailOptions, function(error, info){
                         if(error){
                             return console.log(error);

@@ -1,0 +1,22 @@
+<div class="alert alert-info"><%= __('Results') %>:  <%= entities.length %></div>
+<% for(var i=0; i < entities.length; i++) { %>
+<div class="col-lg-3 col-sm-6">
+    <div class="card hovercard">
+        <div class="cardheader"></div>
+        <div class="avatar">
+            <img alt="" src="/images/uploads/<%= entities[i].logo %>">
+        </div>
+        <div class="info">
+            <div class="title">
+                <a href="/agremiacoes/<%= entities[i].id %>"><%= entities[i].alias %></a>
+            </div>
+            <div class="subtitle">
+                <a href="/agremiacoes/<%= entities[i].id %>"><%= entities[i].full_name %></a>
+            </div>
+        </div>
+        <div class="bottom entity_teams">
+            <a href="/agremiacoes/editar/<%= entities[i].id %>">Editar</a>
+        </div>
+    </div>
+</div>
+<% } %> 

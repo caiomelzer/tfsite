@@ -3,6 +3,7 @@ var connection = require('../config/connection');
 var multer  = require('multer');
 var nodemailer = require('nodemailer');
 var fileInfo = '';
+var md5 = require('md5');
 var storage =   multer.diskStorage({
 	destination: function (req, file, callback) {
 		callback(null, './public/images/uploads');
@@ -109,7 +110,7 @@ function Users() {
 		else{
 			res.send({status: 0, message: 'failed to load data'});
 		}
-	}
+	},
 	this.updateDependents = function(req, res){
 		connection.acquire(function(err, con){
 			if(req.body.status === 'true')
@@ -121,6 +122,17 @@ function Users() {
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1, message: 'Success'});
+			});
+			con.release();
+		});
+	},
+	this.activate = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('update users set status = 1 where username = ? and hash = ?', [req.params.username, req.params.hash], function(err, result){
+				if(err)
+					res.redirect('/erro');
+				else
+					res.redirect('/dashboard');
 			});
 			con.release();
 		});

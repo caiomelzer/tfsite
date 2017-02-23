@@ -19,7 +19,10 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/', function(req, res) {
-		res.render('index.ejs', {lang: res}); 
+		if(isLoggedIn)
+			res.redirect('/dashboard');
+		else
+			res.render('index.ejs', {lang: res}); 
 	});
 
 	app.get('/entrar', function(req, res) {
@@ -61,6 +64,10 @@ module.exports = function(app, passport) {
 		res.render('registrar.ejs', { lang: res, message: req.flash('signupMessage') });
 	});
 
+	app.get('/ativar/:username/:hash', function(req, res) {
+		users.activate(req, res);
+	});
+
 	app.post('/registrar', passport.authenticate('local-signup', {
 		successRedirect : '/perfil', 
 		failureRedirect : '/registrar',
@@ -89,6 +96,40 @@ module.exports = function(app, passport) {
 		users.update(req, res);
 	});
 
+	app.get('/agremiacoes', function(req, res) {
+		res.render('agremiacoes.ejs', {
+			lang : res,
+			user : req.user
+		});
+	});
+
+	app.get('/agremiacoes/buscar', function(req, res) {
+		entities.search(req, res);
+	});
+
+	app.get('/agremiacoes/minhas-agremiacoes', isLoggedIn, function(req, res) {
+		res.render('minhas-agremiacoes.ejs', {
+			lang : res,
+			user : req.user
+		});
+	});
+
+	app.get('/agremiacoes/:id/', function(req, res) {
+		entities.read(req, res);
+	});
+
+	app.get('/agremiacoes/buscar/minhas-agremiacoes', isLoggedIn, function(req, res) {
+		entities.myEntities(req, res);
+	});
+
+	app.get('/agremiacoes/editar/:id', isLoggedIn, function(req, res) {
+		entities.edit(req, res);
+	});
+
+	app.post('/agremiacoes/editar/:id', isLoggedIn, function(req, res) {
+		entities.update(req, res);
+	});
+
 	app.get('/times/meus-times', isLoggedIn, function(req, res) {
 		res.render('meus-times.ejs', {
 			lang : res,
@@ -96,7 +137,7 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/times/', isLoggedIn, function(req, res) {
+	app.get('/times/', function(req, res) {
 		res.render('times.ejs', {
 			lang : res,
 			user : req.user
@@ -111,7 +152,7 @@ module.exports = function(app, passport) {
 		teams.disable(req, res);
 	});
 	
-	app.get('/times/buscar', isLoggedIn, function(req, res) {
+	app.get('/times/buscar', function(req, res) {
 		teams.search(req, res);
 	});
 
@@ -131,7 +172,7 @@ module.exports = function(app, passport) {
 		teams.myTeamRemovePlace(req, res);
 	});
 
-	app.get('/times/:slug/', isLoggedIn, function(req, res) {
+	app.get('/times/:slug/', function(req, res) {
 		teams.read(req, res);
 	});
 
@@ -171,15 +212,15 @@ module.exports = function(app, passport) {
 		games.possibleOpponents(req, res);
 	});
 
-	app.get('/jogos/', isLoggedIn, function(req, res) {
+	app.get('/jogos/', function(req, res) {
 		games.listAll(req, res);
 	});
 
-	app.get('/jogos/anteriores', isLoggedIn, function(req, res) {
+	app.get('/jogos/anteriores', function(req, res) {
 		games.listOlds(req, res);
 	});	
 
-	app.get('/jogos/proximos', isLoggedIn, function(req, res) {
+	app.get('/jogos/proximos', function(req, res) {
 		games.listNext(req, res);
 	});	
 
@@ -237,18 +278,18 @@ module.exports = function(app, passport) {
 		players.create(req, res);
 	});
 
-	app.get('/jogadores/', isLoggedIn, function(req, res) {
+	app.get('/jogadores/', function(req, res) {
 		res.render('jogadores.ejs', {
 			lang : res,
 			user : req.user 
 		});
 	});
 
-	app.get('/jogadores/buscar', isLoggedIn, function(req, res) {
+	app.get('/jogadores/buscar', function(req, res) {
 		players.search(req, res);
 	});
 
-	app.get('/jogadores/:id', isLoggedIn, function(req, res) {
+	app.get('/jogadores/:id', function(req, res) {
 		players.read(req, res);
 	});
 
@@ -276,11 +317,15 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/configuracoes/entidades', isLoggedIn, function(req, res) {
-		entities.read(req, res);
+		entities.list(req, res);
 	});
 
 	app.post('/configuracoes/entidades', isLoggedIn, function(req, res) {
 		entities.create(req, res);
+	});
+
+	app.post('/configuracoes/entidades/deletar/:id', isLoggedIn, function(req, res) {
+		entities.delete(req, res);
 	});
 
 	app.get('/configuracoes/times', isLoggedIn, function(req, res) {
@@ -295,7 +340,9 @@ module.exports = function(app, passport) {
 		teams.create(req, res);
 	});
 
-	
+	app.post('/configuracoes/times/deletar/:id', isLoggedIn, function(req, res) {
+		teams.delete(req, res);
+	});
 
 	app.post('/configuracoes/quadras', isLoggedIn, function(req, res) {
 		places.create(req, res);
@@ -305,7 +352,9 @@ module.exports = function(app, passport) {
 		places.myPlaces(req, res);
 	});
 
-	//Static Files
+	app.get('/erro', function(req, res) {
+		res.render('erro.ejs', {});
+	});
 
 
 	//Admin Side
@@ -317,40 +366,39 @@ module.exports = function(app, passport) {
 
 
 	//API SECTION //
-	
-	app.get('/api/genders/', isLoggedIn, function(req, res) {
+	app.get('/api/genders/', function(req, res) {
 		apis.listGenders(req, res);
 	});
 
-	app.get('/api/nationalities/', isLoggedIn, function(req, res) {
+	app.get('/api/nationalities/', function(req, res) {
 		apis.listNationalities(req, res);
 	});
 
-	app.get('/api/countries/', isLoggedIn, function(req, res) {
+	app.get('/api/countries/', function(req, res) {
 		apis.listCountries(req, res);
 	});
 
-	app.get('/api/states/:id', isLoggedIn, function(req, res) {
+	app.get('/api/states/:id', function(req, res) {
 		apis.listStates(req, res);
 	});
 
-	app.get('/api/cities/:id', isLoggedIn, function(req, res) {
+	app.get('/api/cities/:id', function(req, res) {
 		apis.listCities(req, res);
 	});
 
-	app.get('/api/cities/', isLoggedIn, function(req, res) {
+	app.get('/api/cities/', function(req, res) {
 		apis.listAllCities(req, res);
 	});
 
-	app.get('/api/grounds/', isLoggedIn, function(req, res) {
+	app.get('/api/grounds/', function(req, res) {
 		apis.listGrounds(req, res);
 	});
 
-	app.get('/api/player/positions', isLoggedIn, function(req, res) {
+	app.get('/api/player/positions', function(req, res) {
 		apis.listPositionsByPlayer(req, res);
 	});
 
-	app.get('/api/positions/', isLoggedIn, function(req, res) {
+	app.get('/api/positions/', function(req, res) {
 		apis.listPositions(req, res);
 	});
 
@@ -358,15 +406,15 @@ module.exports = function(app, passport) {
 		users.listDependents(req, res);
 	});
 
-	app.get('/api/positions/:id', isLoggedIn, function(req, res) {
+	app.get('/api/positions/:id', function(req, res) {
 		apis.listPositionsByGround(req, res);
 	});
 
-	app.get('/api/times/categorias', isLoggedIn, function(req, res) {
+	app.get('/api/times/categorias', function(req, res) {
 		apis.listCategories(req, res);
 	});
 
-	app.get('/mkt/computar', isLoggedIn, function(req, res) {
+	app.get('/mkt/computar', function(req, res) {
 		mkt.computeBanner(req, res);
 	});
 

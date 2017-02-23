@@ -154,10 +154,11 @@
 			                	<table class="table table-hover" id="table_teams">
 									<thead>
 										<tr>
-											<th class="col-sm-4"><%= __('Name') %></th>
-											<th class="col-sm-5" ><%= __('Alias') %></th>
-											<th class="col-sm-2" ><%= __('Status') %></th>
-											<th class="col-sm-1" ></th>
+											<th class="col-sm-3"><%= __('Name') %></th>
+											<th class="col-sm-2"><%= __('Alias') %></th>
+											<th class="col-sm-3"><%= __('Category') %></th>
+											<th class="col-sm-2"><%= __('Entity') %></th>
+											<th class="col-sm-1"></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -172,7 +173,7 @@
 						                        <div class="help-block with-errors"></div>
 					                        </div>
 					                    </div> 
-					                    <div class="col-sm-3">
+					                    <div class="col-sm-2">
 					                        <div class="form-group">
 					                             <input type="text" class="form-control"  name="alias" id="alias" placeholder="<%= __('Alias') %>" data-error="<%= __('Please, fill the fomr with a valid alias') %>" required>
 	                        					<div class="help-block with-errors"></div>
@@ -185,6 +186,12 @@
 					                        </div>
 					                    </div> 
 					                    <div class="col-sm-2">
+					                        <div class="form-group">
+					                              <select name="entity_id" id="entity_id" class="form-control"> 
+					                              </select>
+					                        </div>
+					                    </div> 
+					                    <div class="col-sm-1">
 					                        <div class="form-group">
 					                            <button type="submit" class="btn btn-warning"><%= __('Add') %></button>
 					                        </div>

@@ -47,9 +47,10 @@
 					</p>
             	</div>
             	<div class="col-sm-3">
+            	<% if(user !== null){ %>
             	<p>
             		<div class="btn-group" role="group" aria-label="...">
-            			<% if(teams[0].resp_id !== user.id){ %>
+            			<% if(user !== null && teams[0].resp_id !== user.id){ %>
 						<button type="button" class="btn btn-primary invite" data-toggle="modal" data-target="#invite"><%= __('Invite to game') %></button>
 						<% } else { %>
 						<button type="button" class="btn btn-warning edit"><%= __('Edit') %></button>
@@ -58,6 +59,7 @@
 						<button type="button" class="btn btn-default hidden unfollow" data-id="<%= teams[0].id %>"><%= __('Unfollow') %></button>
 					</div>
 					</p>	
+				<% } %>	
             	</div>
             </div>
             <div class="row">
@@ -134,7 +136,7 @@
 			            </div>
 			            <div id="collapseOne" class="panel-collapse collapse in">
 			                <div class="panel-body">
-			                    <% if(teams[0].resp_id === user.id){ %>
+			                    <% if(user && teams[0].resp_id === user.id){ %>
 								<button type="button" class="btn btn-primary btn-default event-new"><%= __('New') %></button>
 								<% } %>
 			                </div>
