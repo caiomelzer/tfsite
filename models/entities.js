@@ -27,7 +27,11 @@ function Entities() {
 					if(err)
 						res.send({status: 0, message: err});
 					else
-						res.send({status: 1, message: 'Success', data: result});
+						res.render('agremiacao.ejs', {
+							lang : res,
+							user : req.user,
+							entities : result
+						});
 				});
 				con.release();
 			});
