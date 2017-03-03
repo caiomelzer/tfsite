@@ -87,7 +87,7 @@ function Players() {
 	}
 	this.read = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from vw_users where id = ? and is_player = 1; select * from vw_player_ground_postions where player_id = ?; SELECT teams.* FROM team_players INNER JOIN teams ON teams.id = team_players.team_id where team_players.player_id = ?', [req.params.id, req.params.id, req.params.id] ,function(err, result){
+			con.query('select * from vw_users where id = ? and is_player = 1; select * from vw_player_ground_postions where player_id = ?; SELECT teams.* FROM team_players INNER JOIN teams ON teams.id = team_players.team_id where team_players.player_id = ?; select vw_users.* from vw_users inner join team_followers on team_followers.user_id = vw_users.id where team_followers.team_id = ?; ', [req.params.id, req.params.id, req.params.id, req.params.id] ,function(err, result){
 				if(err){
 					res.send({status: 0, message: err});
 				}
@@ -99,7 +99,8 @@ function Players() {
 							user : req.user,
 							players : result[0],
 							positions : result[1],
-							teams: result[2]
+							teams: result[2],
+							followers: result[3]
 						});
 					}
 					else{

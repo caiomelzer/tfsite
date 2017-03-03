@@ -106,6 +106,26 @@
 			        <div class="panel panel-default">
 			            <div class="panel-heading">
 			                <h4 class="panel-title">
+			                    <%= __('Followers') %> (<%= followers.length %>)
+			                </h4>
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                	<div id="lista-seguidores">
+				                    <% for(var i=0; i<followers.length;i++){ %>
+			                    	<img src="/images/uploads/<%= followers[i].picture %>" />
+			                    	<% } %>
+			                    </div>	
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
 			                    <%= __('Teams') %>
 			                </h4>
 			            </div>
