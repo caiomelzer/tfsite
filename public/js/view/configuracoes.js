@@ -37,6 +37,11 @@ function updatePlaces(){
 		async: true,
 		success: function(res){
 			$('#table_places tbody').html(new EJS({url: '/js/partials/perfil_list_places.ejs'}).render(res));
+			$('#table_places .crud-delete').on('click', function(){
+				$.post('/configuracoes/quadras/deletar/'+$(this).parent().parent().attr('data-id'), function(){
+					updatePlaces();
+				});
+			});
 		}
 	});
 }
@@ -192,6 +197,18 @@ $(document).on('ready', function(){
 				content += '<option value="'+res.data[i].id+'">'+res.data[i].full_name+'</option>';
 			});
 			$('#entity_id').html(content);
+		}
+	});
+
+	$.ajax({
+		url:'/api/grounds/',
+		type: 'GET',
+		success: function(res){
+			var content = '';
+			$.each(res.data, function(i,v){
+				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
+			});
+			$('#ground_id').html(content);
 		}
 	});
 

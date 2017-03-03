@@ -12,7 +12,8 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <% if(typeof user !== 'undefined' && user !== null){ %>
-                    <li><a href="/dashboard"><%= __('Dashboard') %></a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/painel"><%= __('Painel') %></a></li>
                 <% }else{ %>
                     <li><a href="/">Home</a></li>
                 <% } %> 

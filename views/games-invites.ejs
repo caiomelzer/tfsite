@@ -31,24 +31,24 @@
             <div class="row">
                 <h2><%= __('Open Invites') %></h2>
                 <ul class="games-invites-list col-sm-12">
-                <% if(games && games.length > 0){ %>
-                    <% for(var i=0;i<games.length;i++){ %>
-                    <li class="games-invites-item" data-id="<%= games[i].game_id %>">
-                        <time datetime="<%= games[i].date %>" class="label-default col-sm-1">
+                <% if(invites && invites.length > 0){ %>
+                    <% for(var i=0;i<invites.length;i++){ %>
+                    <li class="games-invites-item" data-id="<%= invites[i].game_id %>">
+                        <time datetime="<%= invites[i].date %>" class="label-default col-sm-1">
                             <span class="day"></span>
                             <span class="month-year"></span>
                             <span class="time"></span>
                         </time>
                         <span class="team col-sm-1">
-                            <img src="/images/uploads/<%= games[i].logo %>" />
+                            <img src="/images/uploads/<%= invites[i].logo %>" />
                         </span>
                         <span class="versus col-sm-1">VS</span>
                         <span class="team col-sm-1">
-                            <img src="/images/uploads/<%= games[i].logo_b %>" />
+                            <img src="/images/uploads/<%= invites[i].logo_b %>" />
                         </span>
                         <span class="place col-sm-5">
-                            <h4><%= games[i].name %></h4>
-                            <p><%= games[i].address %> - <%= games[i].city_name %> - <%= games[i].state_name %></p>
+                            <h4><%= invites[i].name %></h4>
+                            <p><%= invites[i].address %> - <%= invites[i].city_name %> - <%= invites[i].state_name %></p>
                         </span>
                         <span class="option label-success col-sm-1">
                             <i class="glyphicon glyphicon-ok"></i>
@@ -87,6 +87,35 @@
                         </span>
                         <span class="option label-warning col-sm-1" data-toggle="modal" data-game="<%= games[i].game_id %>" data-target="#invite" data-team="<%= games[i].opponent_id %>">
                             <i class="glyphicon glyphicon-log-out"></i>
+                        </span>
+                    </li>
+                    <% } %> 
+                <% } else { %>    
+                    <%= __('You have no invites yet!') %>
+                <% } %> 
+                </ul>
+            </div>
+            <div class="row">
+                <h2><%= __('Refused Invites') %></h2>
+                <ul class="games-invites-list col-sm-12">
+                <% if(canceled && canceled.length > 0){ %>
+                    <% for(var i=0;i<canceled.length;i++){ %>
+                    <li class="games-invites-item" data-id="<%= canceled[i].game_id %>">
+                        <time datetime="<%= canceled[i].date %>" class="label-default col-sm-1">
+                            <span class="day"></span>
+                            <span class="month-year"></span>
+                            <span class="time"></span>
+                        </time>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= canceled[i].logo %>" />
+                        </span>
+                        <span class="versus col-sm-1">VS</span>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= canceled[i].logo_b %>" />
+                        </span>
+                        <span class="place col-sm-6">
+                            <h4><%= canceled[i].name %></h4>
+                            <p><%= canceled[i].address %> - <%= canceled[i].city_name %> - <%= canceled[i].state_name %></p>
                         </span>
                     </li>
                     <% } %> 

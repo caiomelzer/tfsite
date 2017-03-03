@@ -55,7 +55,7 @@ $(document).on('ready', function(){
 				showMessageError();
 			}
 			else{
-				var content = '';
+				var content = '<option value=""></option>';
 				$.each(res.data, function(i,v){
 					content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
 				});

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    
+
+ <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Painel') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><%= __('Painel') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            <div class="row">
+                <div class="panel-group col-sm-8" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <%= __('News') %>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-group col-sm-12" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <%= __('Agenda') %>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="js/util.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/view/perfil.js"></script>
+
+</body>
+</html>
+

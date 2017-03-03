@@ -1,7 +1,10 @@
 $(document).on('ready', function(){
-	var team_id = $('.follow').attr('data-id');
+	var team_id_ = document.location.pathname.split('/')[2];
+	team_id_ = team_id_.split('_');
+	//var team_id = $('.follow').attr('data-id');
+	//console.info(team_id);
 	$.ajax({
-		url:'/times/following/'+team_id,
+		url:'/times/following/'+team_id_[team_id_.length-1],
 		type: 'GET',
 		success: function(res){
 			if(res.status == 0){
@@ -17,7 +20,7 @@ $(document).on('ready', function(){
 	});
 
 	$.ajax({
-		url:'/jogos/convites/meus-times/'+team_id,
+		url:'/jogos/convites/meus-times/'+team_id_[team_id_.length-1],
 		type: 'GET',
 		success: function(res){
 			if(res.status == 0){
@@ -33,7 +36,7 @@ $(document).on('ready', function(){
 	});
 
 	$.ajax({
-		url:'/jogos/convites/quadras/'+team_id,
+		url:'/jogos/convites/quadras/'+team_id_[team_id_.length-1],
 		type: 'GET',
 		success: function(res){
 			if(res.status == 0){
@@ -42,6 +45,10 @@ $(document).on('ready', function(){
 			else{
 				$('#eventplace').html('<option></option>');
 				$.each(res.data, function(i,v){
+					if(v.abr === null)
+						v.abr =  '';
+					if(v.city_name === null)
+						v.city_name = '';
 					$('#eventplace').html($('#eventplace').html() + '<option value="'+v.id+'">['+v.ground_name+'] '+v.abr+', '+v.city_name+' - '+v.name+'</option>');
 				});
 			}
@@ -79,6 +86,9 @@ $(document).on('ready', function(){
 		
 		} else {
 			var formData = $('#form_evento').serializeObject();
+			console.info(formData);
+			formData.event_h_date = moment(formData.event_h_date).format('YYYY-MM-DD HH:mm:ss');
+			console.info(formData.event_h_date);
 			$.ajax({
 				url:'/jogos/convites',
 				type: 'POST',
@@ -132,6 +142,46 @@ $(document).on('ready', function(){
 			}
 		});
 	});
+
+	//$('#tablePlayers')
+
+
+	$.ajax({
+		url:'/times/jogadores/lista/'+team_id_[team_id_.length-1],
+		type: 'GET',
+		success: function(res){
+			if(res.status == 0){
+				showMessageError();
+			}
+			else{
+				showMessageSuccess();
+				console.info(res);
+				var content = '';
+				$.each(res.data, function(i, v){
+					content += '<div class="col-sm-2"><a href="/jogadores/'+v.id+'" target="_blank"><span class="redondo-jogador"><img src="/images/uploads/'+v.picture+'" /></span><br />'+v.first_name+' '+v.last_name+'</a></div>'
+				});
+				$('#lista-jogadores').html(content);
+			}
+		}
+	});
+
+	$.ajax({
+		url:'/jogos/time/'+team_id_[team_id_.length-1],
+		type: 'GET',
+		success: function(res){
+			if(res.status == 0){
+				showMessageError();
+			}
+			else{
+				showMessageSuccess();
+				console.info(res);
+			}
+		}
+	});
+
+	if($('.member-since')[0]){
+		$('.member-since datetime').html(moment($('.member-since datetime').html()).format("DD/MM/YYYY"));
+	}
 
 	$('#form_evento').validator().on('submit', function (e) {
 		if (e.isDefaultPrevented()) {

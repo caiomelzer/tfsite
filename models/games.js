@@ -47,7 +47,7 @@ function Games() {
 	},
 	this.list = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from vw_games_invites where opponent_confirm <> 1 and resp_id = ? and date > now() order by date asc', req.user.id, function(err, result){
+			con.query('select * from vw_games_invites where opponent_confirm = 1 and resp_id = ? and date > now() order by date asc; select * from vw_games_invites where opponent_confirm = 0 and resp_id = ? and date > now() order by date asc;  select * from vw_games_invites where opponent_confirm = 2 and resp_id = ? order by date asc', [req.user.id, req.user.id, req.user.id], function(err, result){
 				if(err){
 					res.send({status: 0, message: err});
 				}
@@ -56,7 +56,9 @@ function Games() {
 					res.render('games-invites.ejs', {
 						lang : res,
 						user : req.user,
-						games : result
+						games : result[0],
+						invites: result[1],
+						canceled: result[2],
 					});
 				}
 			});
@@ -80,6 +82,22 @@ function Games() {
 				}
 			});
 			con.release();
+		});
+	},
+	this.listByTeam = function(req, res){
+		connection.acquire(function(err, con){
+			if(req.params.id){
+				var query = 'select * from vw_games where status = 1 and (team_id = ? or opponent_id = ?) order by date desc limit 0, 7;';
+				con.query(query, [req.params.id, req.params.id], function(err, result){
+					if(err){
+						res.send({status: 0, message: err});
+					}
+					else{
+						res.send({status: 1, data: result});
+					}
+				});
+				con.release();
+			}	
 		});
 	},
 	this.listNext = function(req, res){
@@ -144,6 +162,7 @@ function Games() {
 				place_id: req.body.eventplace,
 				date: req.body.event_h_date
 			};
+
 			con.query('insert into games set ?', data, function(err, result){
 				console.log(result);
 				if(err){
@@ -172,12 +191,13 @@ function Games() {
 		connection.acquire(function(err, con){
 			if(req.params.id){
 				con.query('select other_grounds from teams where id = ?', req.params.id, function(err, result){
+				//con.query('select other_grounds from teams where id = ?', req.params.id, function(err, result){
 					if(err){
 						res.send({status: 0, message: err});
 					}
 					else{
 						if(result[0].other_grounds !== null && result[0].other_grounds !== 0){
-							con.query('select * from vw_places', req.params.id, function(err, result){
+							con.query('select * from vw_places', function(err, result){
 								if(err)
 									res.send({status: 0, message: err});
 								else

@@ -82,7 +82,7 @@ $(document).on('ready', function(){
 		url:'/api/times/categorias',
 		type: 'GET',
 		success: function(res){
-			var content = '';
+			var content = '<option value=""></option>';
 			$.each(res.data, function(i,v){
 				content += '<option value="'+res.data[i].id+'">'+res.data[i].name+'</option>';
 			});

@@ -108,5 +108,59 @@ $(document).on('ready', function(){
 		}
 	});
 
+	var team_id_ = document.location.pathname.split('/')[2];
+	//var team_id = $('.follow').attr('data-id');
+	//console.info(team_id);
+	$.ajax({
+		url:'/times/following/'+team_id_[team_id_.length-1],
+		type: 'GET',
+		success: function(res){
+			if(res.status == 0){
+				showMessageError();
+			}
+			else{
+				if(res.data === 0)
+					$('.follow').removeClass('hidden');
+				else
+					$('.unfollow').removeClass('hidden');
+			}
+		}
+	});
+
+	$('.follow').on('click', function(e){
+		var team_id = $(this).attr('data-id');
+		$.ajax({
+			url:'/times/follow/'+team_id,
+			type: 'POST',
+			success: function(res){
+				if(res.status == 0){
+					showMessageError();
+				}
+				else{
+					showMessageSuccess();
+					$('.unfollow').removeClass('hidden');
+					$('.follow').addClass('hidden');
+				}
+			}
+		});
+	});
+
+	$('.unfollow').on('click', function(e){
+		var team_id = $(this).attr('data-id');
+		$.ajax({
+			url:'/times/unfollow/'+team_id,
+			type: 'POST',
+			success: function(res){
+				if(res.status == 0){
+					showMessageError();
+				}
+				else{
+					showMessageSuccess();
+					$('.follow').removeClass('hidden');
+					$('.unfollow').addClass('hidden');
+				}
+			}
+		});
+	});
 
 });

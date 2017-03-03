@@ -6,6 +6,7 @@ var players = require('../models/players');
 var teams = require('../models/teams');
 var entities = require('../models/entities');
 var games = require('../models/games');
+var adm = require('../models/adm');
 var places = require('../models/places');
 var mkt = require('../models/mkt');
 var email = require('emailjs');
@@ -19,10 +20,11 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/', function(req, res) {
-		if(isLoggedIn)
-			res.redirect('/dashboard');
-		else
-			res.render('index.ejs', {lang: res}); 
+		res.render('index.ejs', 
+			{
+				lang: res
+			}
+		); 
 	});
 
 	app.get('/entrar', function(req, res) {
@@ -78,8 +80,8 @@ module.exports = function(app, passport) {
 		users.check(req, res);
 	});
 
-	app.get('/dashboard', isLoggedIn, function(req, res) {
-		res.render('dashboard.ejs', {
+	app.get('/painel', isLoggedIn, function(req, res) {
+		res.render('painel.ejs', {
 			lang : res, 
 			user : req.user
 		});
@@ -123,7 +125,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/agremiacoes/editar/:id', isLoggedIn, function(req, res) {
-		entities.edit(req, res);
+		entities.editMyEntity(req, res);
 	});
 
 	app.post('/agremiacoes/editar/:id', isLoggedIn, function(req, res) {
@@ -143,7 +145,7 @@ module.exports = function(app, passport) {
 			user : req.user
 		});
 	});
-
+	
 	app.get('/times/buscar/meus-times', isLoggedIn, function(req, res) {
 		teams.myTeams(req, res);
 	});
@@ -172,7 +174,7 @@ module.exports = function(app, passport) {
 		teams.myTeamRemovePlace(req, res);
 	});
 
-	app.get('/times/:slug/', function(req, res) {
+	app.get('/times/:slug', function(req, res) {
 		teams.read(req, res);
 	});
 
@@ -196,7 +198,7 @@ module.exports = function(app, passport) {
 		teams.listPlayersAvaliable(req, res);
 	});
 
-	app.get('/times/jogadores/lista/:id', isLoggedIn, function(req, res) {
+	app.get('/times/jogadores/lista/:id', function(req, res) {
 		teams.listPlayers(req, res);
 	});
 
@@ -222,6 +224,10 @@ module.exports = function(app, passport) {
 
 	app.get('/jogos/proximos', function(req, res) {
 		games.listNext(req, res);
+	});	
+
+	app.get('/jogos/time/:id', function(req, res) {
+		games.listByTeam(req, res);
 	});	
 
 	app.get('/jogos/convites/quadras/:id', isLoggedIn, function(req, res) {
@@ -348,6 +354,10 @@ module.exports = function(app, passport) {
 		places.create(req, res);
 	});
 
+	app.post('/configuracoes/quadras/deletar/:id', isLoggedIn, function(req, res) {
+		places.delete(req, res);
+	});
+
 	app.get('/configuracoes/quadras', isLoggedIn, function(req, res) {
 		places.myPlaces(req, res);
 	});
@@ -420,6 +430,14 @@ module.exports = function(app, passport) {
 
 	app.get('/mkt/imprimir/:id', function(req, res) {
 		mkt.showBanner(req, res);
+	});
+
+	app.post('/mkt/imprimir/:id', function(req, res) {
+		mkt.showBanner(req, res);
+	});
+
+	app.post('/adm/tickets/novo', function(req, res) {
+		adm.createTicket(req, res);
 	});
 
 	app.get('/logout', function(req, res) {

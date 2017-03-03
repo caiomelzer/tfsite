@@ -64,12 +64,13 @@ function Players() {
 	this.search = function(req, res){
 		connection.acquire(function(err, con){
 			var query = 'select distinct vw_users.* from vw_users inner join vw_player_postions on vw_player_postions.player_id = vw_users.id where is_player = 1 ';
-			if(req.query.ground){ query += ' and ground_id = '+ req.query.ground};
+			if(req.query.ground && req.query.ground > -1){ query += ' and ground_id = '+ req.query.ground};
 			if(req.query.position){ query += ' and position_id = '+ req.query.position};
 			if(req.query.min_age){ query += ' and ( age >= '+ req.query.min_age }else{ query += ' and ( age >= 1'};
 			if(req.query.max_age){ query += ' and age <= '+ req.query.max_age+')' }else{ query += ' and age <= 100)'};
 			if(req.query.name){ query += ' and alias like \'%'+req.query.name+'%\''};
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
+			console.log(query);
 			con.query(query, function(err, result){
 				if(err)
 					res.send({status: 0, message: err});
@@ -86,17 +87,19 @@ function Players() {
 	}
 	this.read = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from vw_users where id = ? and is_player = 1; select * from vw_player_ground_postions where player_id = ?', [req.params.id, req.params.id] ,function(err, result){
+			con.query('select * from vw_users where id = ? and is_player = 1; select * from vw_player_ground_postions where player_id = ?; SELECT teams.* FROM team_players INNER JOIN teams ON teams.id = team_players.team_id where team_players.player_id = ?', [req.params.id, req.params.id, req.params.id] ,function(err, result){
 				if(err){
 					res.send({status: 0, message: err});
 				}
 				else{
 					if(result[0].length>0){
+						console.log(result[0]);
 						res.render('jogador-perfil.ejs', {
 							lang : res,
 							user : req.user,
 							players : result[0],
-							positions : result[1]
+							positions : result[1],
+							teams: result[2]
 						});
 					}
 					else{

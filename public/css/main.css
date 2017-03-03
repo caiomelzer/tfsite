@@ -1638,3 +1638,71 @@ section.emerald{
 header div.container{
   height: 85px;
 }
+.details-i{
+  margin:5px 0 15px;
+  float: left;
+}
+.details-i i{
+  font-size: 1.5em;
+  float: left;
+  display: inline-block;
+  margin-right: 5px;
+}
+.details-i span{
+  display: block;
+  width: auto;
+  float: left;
+  /*padding-top: 4px;*/
+}
+.split{
+  border-top: 1px solid #efefef;
+  float: left;
+  margin:10px 0px;
+}
+.redondo-jogador{
+  margin:-10px 10px 0px 0px;
+  text-align: center;
+}
+.redondo-jogador, .redondo-jogador img {
+  width: 150px !important;
+  height: 150px !important;
+  background-color: #000 !important;
+  color: #FFF !important;
+  float: left;
+  /* Agora a mágica */
+  border-radius: 50% !important;
+}
+#lista-times div, #lista-jogadores div{
+  text-align: center;
+  margin-top: 10px
+}
+#lista-seguidores img{
+  width: 10%;
+  min-height: 40px;
+}
+.see-more{
+  font-size: 0.8em;
+}
+.contato-botao{
+    position: fixed;
+    right: 0px;
+    background: #f39c12;
+    height: 40px;
+    width: 40px;
+    bottom: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    font-size: 1em;
+    text-align: center;
+    columns: #000;
+    cursor: pointer;
+
+}
+.contato-botao i{
+    font-size: 2em;
+    padding: 5px;
+  }

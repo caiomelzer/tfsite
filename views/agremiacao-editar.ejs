@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1><%= __('Entities') %></h1>
+                    <!-- <p>Pellentesque habitant morbi tristique senectus et netus et malesuada</p> -->
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><%= __('Entities') %></li>
+                        <li class="active"><%= __('Edit') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+            <%- include partials/alert.ejs %>
+            <form id="form_agremiacao" role="form" data-toggle="validator">
+            <div class="row">
+                <form id="form_times" enctype="multipart/form-data">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="alias" class="control-label"><%= __('Alias') %></label>
+                        <input disabled="disabled" type="text" class="form-control" id="alias" data-minlength="3" data-maxlength="20" value="<% if(teams[0].alias != null){ %><%= teams[0].alias %><% } %>"  name="alias" placeholder="" data-error="<%= __('Please, fill the form with a valid alias') %>" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="full_name" class="control-label"><%= __('Name') %></label>
+                        <input disabled="disabled" type="text" class="form-control" id="full_name" data-minlength="3" data-maxlength="20" value="<% if(teams[0].full_name != null){ %><%= teams[0].full_name %><% } %>"  name="full_name" placeholder="" data-error="<%= __('Please, fill the form with a valid name') %>" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="logo" class="control-label"><%= __('Logo') %></label>
+                        <input type="file" name="logo" />
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="country" class="control-label"><%= __('country') %></label>
+                        <select name="country" id="country" class="form-control" data-loaded="<%= teams[0].country_id %>" >
+                            
+                        </select>
+                    </div>
+                </div> 
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="state" class="control-label"><%= __('state') %></label>
+                        <select name="state" id="state" class="form-control" data-loaded="<%= teams[0].state_id %>" >
+                            
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="city" class="control-label"><%= __('city') %></label>
+                        <select name="city_id" id="city" class="form-control"  >
+                            <% if(teams[0].city_name && teams[0].city_name.length >= 0){ %>
+                            <option value="<%= teams[0].city_id %>"><%= teams[0].city_name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>   
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="address" class="control-label"><%= __('address') %></label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="" data-error="<%= __('Please, fill the form with a valid address') %>" value="<%= teams[0].address %>">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>  
+            </div>
+                <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-lg"><%= __('Cancel') %></button>
+                        <button type="submit" class="btn btn-warning btn-lg"><%= __('Update') %></button>
+                    </div>
+                </div> 
+            </div>  
+            </form> 
+            
+            
+            
+
+
+        </div>
+        <div id="invite" class="modal fade" role="dialog" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><%= __('Invite') %></h4>
+                    </div>
+                    <form id="form_evento">
+                        <div class="modal-body">
+                            <div style="overflow:hidden;">
+                                <table id="tablePlayersInvite" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th><%= __('Name') %></th>
+                                            <th><%= __('Last Name') %></th>
+                                            <th><%= __('Age') %></th>
+                                            <th><%= __('City') %></th>
+                                            <th><%= __('State') %></th>
+                                            <th><%= __('Country') %></th>
+                                            <th><%= __('Position') %></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('Cancel') %></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="places" class="modal fade" role="dialog" >
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><%= __('Places') %></h4>
+                    </div>
+                    <form id="form_evento">
+                        <div class="modal-body">
+                            <div style="overflow:hidden;">
+                                <table id="tablePlaces" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th><%= __('Name') %></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('Cancel') %></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </section><!--/#registration-->   
+
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/view/agremiacao.js"></script>
+
+</body>
+</html>

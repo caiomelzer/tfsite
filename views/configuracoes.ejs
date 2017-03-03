@@ -219,8 +219,9 @@
 			                	<table class="table table-hover" id="table_places">
 									<thead>
 										<tr>
-											<th class="col-sm-11"><%= __('Name') %></th>
-											<th class="col-sm-1" ></th>
+											<th class="col-sm-9"><%= __('Name') %></th>
+											<th class="col-sm-2"><%= __('Ground') %></th>
+											<th class="col-sm-1"></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -229,10 +230,16 @@
 								</table>
 								<form id="form_places">
 									<div class="row">
-										<div class="col-sm-6">
+										<div class="col-sm-8">
 					                        <div class="form-group">
 					                             <input type="text" class="form-control" id="name" name="name" placeholder="<%= __('Name') %>" data-error="<%= __('Please, fill the fomr with a valid name') %>" required aria-describedby="basic-addon">
 						                        <div class="help-block with-errors"></div>
+					                        </div>
+					                    </div> 
+					                    <div class="col-sm-2">
+					                        <div class="form-group">
+					                              <select name="ground_id" id="ground_id" class="form-control"> 
+					                              </select>
 					                        </div>
 					                    </div> 
 					                    

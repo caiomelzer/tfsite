@@ -1,5 +1,17 @@
 var bcrypt = require('bcrypt-nodejs');
 var connection = require('../config/connection');
+var multer  = require('multer');
+var fileInfo = '';
+var storage =   multer.diskStorage({
+	destination: function (req, file, callback) {
+		callback(null, './public/images/uploads');
+	},
+	filename: function (req, file, callback) {
+		fileInfo = Date.now() + '-' + file.originalname;
+		callback(null, fileInfo);
+	}
+});
+var upload = multer({ storage : storage}).single('logo');
 connection.init();
 
 function Entities() {
@@ -23,14 +35,17 @@ function Entities() {
 	this.read = function(req, res){
 		if(req.params.id){
 			connection.acquire(function(err, con){
-				con.query('select * from entities where status = 1 and id = ? order by full_name asc', req.params.id, function(err, result){
+				con.query('select * from vw_entities where status = 1 and id = ? order by full_name asc; select * from vw_teams where entity_id  = ?; select vw_users.* from vw_users inner join team_followers on team_followers.user_id = vw_users.id where team_followers.team_id = ?; ', [req.params.id, req.params.id, req.params.id], function(err, result){
+					console.log(err, result[0]);
 					if(err)
 						res.send({status: 0, message: err});
 					else
 						res.render('agremiacao.ejs', {
 							lang : res,
 							user : req.user,
-							entities : result
+							entities : result[0],
+							teams: result[1],
+							followers: result[2]
 						});
 				});
 				con.release();
@@ -119,6 +134,44 @@ function Entities() {
 			});
 			con.release();
 		});
+	},
+	this.editMyEntity = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from entities where id = ? and resp_id = ?; select * from team_players inner join vw_users on vw_users.id = team_players.player_id where team_id= ?', [req.params.id, req.user.id, req.params.id], function(err, result){
+				if(err)
+					res.send({status: 0, message: err});
+				else
+					res.render('agremiacao-editar.ejs', {
+						lang : res,
+						user : req.user,
+						teams : result[0],
+						players : result[1]
+					});
+				console.log(result);
+			});
+			con.release();
+		});
+	},
+	this.update = function(req, res){
+		upload(req, res, function(err) {
+			if(err) {
+	        	return res.end("Error uploading file.");
+	        }
+	        if(fileInfo != '') req.body.logo = fileInfo;
+	        delete req.body.country;
+	        delete req.body.state;
+	        var data = [req.body, parseInt(req.params.id), req.user.id];
+	        connection.acquire(function(err, con){
+	        	con.query('update entities set ? where id = ? and resp_id = ?', data, function(err, result){
+	        		if(err)
+						res.send({status: 0, message: err});
+					else
+						res.send({status: 1, message: 'Success'});
+				});
+				con.release();
+			});
+		});
 	}
+
 }
 module.exports = new Entities();

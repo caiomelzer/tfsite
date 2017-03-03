@@ -1,5 +1,4 @@
 <center><div class="banner" banner="footer"></center>
-<% if(typeof user === 'undefined'){ %>
 <section id="bottom" class="wet-asphalt">
         <div class="container">
             <div class="row">
@@ -54,14 +53,44 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Contato</h4>
             </div>
-            <form id="form_evento">
+            <form id="form_contato" method="POST" role="form" data-toggle="validator">
                 <div class="modal-body">
-                    <p>Dúvidas? Sugestões?</p>
-                    <p></p>
-                    <p id="debug-url"></p>
+                    
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="name" class="control-label"><%= __('Name') %></label>
+                                    <input type="name" class="form-control" id="name" name="name" placeholder="" data-error="<%= __('Please, fill the form with a valid name') %>" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>    
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="email" class="control-label"><%= __('Email') %></label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="" data-error="<%= __('Please, fill the form with a valid email') %>" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div> 
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="title" class="control-label"><%= __('Title') %></label>
+                                    <input type="title" class="form-control" id="title" name="title" placeholder="" data-error="<%= __('Please, fill the form with a valid title') %>" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div> 
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="message" class="control-label"><%= __('Message') %></label>
+                                    <textarea type="message" class="form-control" id="message" name="message" placeholder="" data-error="<%= __('Please, fill the form with a valid message') %>"></textarea>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div> 
+                        </div>
+                       
                 </div>
                 <div class="modal-footer">
-                    <a href="#" data-dismiss="modal" class="btn btn-default">Fechar</a>
+                    <a href="#" data-dismiss="modal" class="btn btn-default"><%= __('Cancel') %></a>
+                    <button type="submit" class="btn btn-default btn-primary"><%= __('Send') %></button>
                 </div>
             </form>
         </div>
@@ -147,10 +176,8 @@
         </div>
     </div>
 </footer><!--/#footer-->    
-<% } %>    
 
-
-
+<div class="contato-botao"data-toggle="modal" data-target="#contato"><i class="fa fa-question-circle" aria-hidden="true"></i> </div> 
 <script src="/js/jquery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.prettyPhoto.js"></script>
@@ -158,6 +185,7 @@
 <script src="/js/bootstrap-switch.js"></script>
 <script type="text/javascript" charset="utf8" src="/js/dataTables.js"></script>
 <script src="/js/mkt.js"></script>
+<script src="/js/general.js"></script>
 
 
 

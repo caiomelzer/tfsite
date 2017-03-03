@@ -1,6 +1,7 @@
 <% for(var i=0;i<data.length;i++){ %>
     <tr>
-        <td class="col-sm-11"><%= data[i].name %></td>
+        <td class="col-sm-9"><%= data[i].name %></td>
+        <td class="col-sm-9"><%= data[i].ground_name %></td>
         <td class="col-sm-1" data-crud-url="/configuracoes/quadras" data-id="<%= data[i].id %>">
             <div class="btn-group">
                 <button type="button" class="btn btn-default crud-delete">

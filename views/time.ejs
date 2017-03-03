@@ -15,8 +15,7 @@
                 <div class="col-sm-6">
                     <ul class="breadcrumb pull-right">
                         <li><a href="/">Home</a></li>
-                        <li><%= __('Teams') %></li>
-                        <li><%= __('Search') %></li>
+                        <li><a href="/times"><%= __('Teams') %></a></li>
                         <li class="active"><%= __('Team Info') %></li>
                     </ul>
                 </div>
@@ -32,9 +31,10 @@
 					    <img src="/images/uploads/<%= teams[0].logo %>">
 					</div>
             	</div>
-            	<div class="col-sm-7">
+            	<div class="col-sm-6">
             		<h1><%= teams[0].alias %> <span>(<%= teams[0].name %>)</span></h1>
             		<p> 
+            			<i class="fa fa-map-marker" aria-hidden="true"></i>
 	            		<% if(teams[0].city_name){ %>
 						<%= teams[0].city_name+', ' %>
 	            		<% } %>
@@ -46,14 +46,14 @@
 	            		<% } %>
 					</p>
             	</div>
-            	<div class="col-sm-3">
+            	<div class="col-sm-4 text-right">
             	<% if(user !== null){ %>
             	<p>
             		<div class="btn-group" role="group" aria-label="...">
             			<% if(user !== null && teams[0].resp_id !== user.id){ %>
 						<button type="button" class="btn btn-primary invite" data-toggle="modal" data-target="#invite"><%= __('Invite to game') %></button>
 						<% } else { %>
-						<button type="button" class="btn btn-warning edit"><%= __('Edit') %></button>
+						<a type="button" href="/times/editar/<%= teams[0].id %>" class="btn btn-warning edit"><%= __('Edit') %></a>
 						<% } %>
 						<button type="button" class="btn btn-primary hidden follow" data-id="<%= teams[0].id %>"><%= __('Follow') %></button>
 						<button type="button" class="btn btn-default hidden unfollow" data-id="<%= teams[0].id %>"><%= __('Unfollow') %></button>
@@ -72,7 +72,83 @@
 			            </div>
 			            <div id="collapseOne" class="panel-collapse collapse in">
 			                <div class="panel-body">
+				                <div class="col-sm-4 details-i">
+			                    	<i class="fa fa-user-circle" aria-hidden="true"></i>
+			                    	<span><%= __('Sponsor') %>: <%= teams[0].resp_name %></span>
+			                    </div>
+								<div class="col-sm-6 details-i">
+			                    	<i class="fa fa-map-o" aria-hidden="true"></i>
+			                    	<span><%= __('Address') %>: <%= teams[0].address %></span>
+			                    </div>
+								<div class="split col-sm-12"></div>
+								<div class="col-sm-2 details-i">
+			                    	<i class="fa fa-braille" aria-hidden="true"></i> 
+			                    	<span>
+			                    		<%= __('Ground') %>: <%= teams[0].ground_name %>
+			                    	</span>
+			                    </div>
+								<div class="col-sm-7 details-i">
+			                    	<i class="fa fa-home" aria-hidden="true"></i> 
+			                    	<span><%= __('Have place') %>: 
+			                    		<% if(teams[0].preferred_place !== 0){ %>
+			                    		<%= __('Yes') %>, <%= teams[0].preferred_place %>
+			                    		<% }else{ %>
+			                    		<%= __('No') %>
+			                    		<% } %>
+			                    	</span>
+			                    </div>
 			                    
+			                    <div class="col-sm-4 details-i">
+			                    	<i class="fa fa-envelope-o" aria-hidden="true"></i> 
+			                    	<span>
+			                    		<%= __('Accept games in other grounds') %>: 
+			                    		<% if(teams[0].other_grounds === 1){ %>
+			                    		<%= __('Yes') %>
+			                    		<% }else{ %>
+			                    		<%= __('No') %>
+			                    		<% } %>
+			                    	</span>
+			                    </div>
+			                    
+			                    <div class="col-sm-4 details-i">
+			                    	<i class="fa fa-handshake-o" aria-hidden="true"></i> 
+			                    	<span>
+			                    		<%= __('Looking for games') %>: 
+			                    		<% if(teams[0].looking_games === 1){ %>
+			                    		<%= __('Yes') %>
+			                    		<% }else{ %>
+			                    		<%= __('No') %>
+			                    		<% } %>
+			                    	</span>
+			                    </div>
+			                    <div class="split col-sm-12"></div>
+
+			                    <div class="col-sm-4 details-i">
+			                    	<i class="fa fa-users" aria-hidden="true"></i> 
+			                    	<span><%= __('Category') %>: <%= teams[0].category_name %></span>
+			                    </div>
+			                    <div class="col-sm-4 details-i">
+			                    	<i class="fa fa-universal-access" aria-hidden="true"></i> 
+			                    	<span>
+			                    		<%= __('Accept games in other categoreis') %>: 
+										<% if(teams[0].other_categories === 1){ %>
+			                    		<%= __('Yes') %>
+			                    		<% }else{ %>
+			                    		<%= __('No') %>
+			                    		<% } %>
+									</span>
+			                    </div>
+			                    <div class="col-sm-4 details-i">
+			                    	<i class="fa fa-user-plus" aria-hidden="true"></i> 
+			                    	<span>
+			                    		<%= __('Open for new players') %>: 
+										<% if(teams[0].open_for_new_players === 1){ %>
+			                    		<%= __('Yes') %>
+			                    		<% }else{ %>
+			                    		<%= __('No') %>
+			                    		<% } %>
+			                    	</span>
+			                    </div>
 			                </div>
 			            </div>
 			        </div>
@@ -83,12 +159,40 @@
 			        <div class="panel panel-default">
 			            <div class="panel-heading">
 			                <h4 class="panel-title">
-			                    <%= __('History') %>
+			                    <%= __('History') %><span class="pull-right see-more"><a href="/jogos"><%= __('More') %> [+]</a></span>
+			                </h4>
+
+			            </div>
+			            <div id="collapseOne" class="panel-collapse collapse in">
+			                <div class="panel-body">
+			                    <div class="col-sm-6 details-i member-since">
+			                    	<i class="fa fa-history" aria-hidden="true"></i> 
+			                    	<span><%= __('Member Since') %>: <datetime><%= teams[0].since %></datetime></span>
+			                    </div>
+			                    <div class="col-sm-6 details-i">
+			                    	<i class="fa fa-trophy" aria-hidden="true"></i> 
+			                    	<span><%= __('Games') %>: 0</span>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+			    <div class="panel-group col-sm-12" id="accordion">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title">
+			                    <%= __('Followers') %> (<%= followers.length %>)
 			                </h4>
 			            </div>
 			            <div id="collapseOne" class="panel-collapse collapse in">
 			                <div class="panel-body">
-			                    
+			                	<div id="lista-seguidores">
+				                    <% for(var i=0; i<followers.length;i++){ %>
+			                    	<img src="/images/uploads/<%= followers[i].picture %>" />
+			                    	<% } %>
+			                    </div>	
 			                </div>
 			            </div>
 			        </div>
@@ -120,13 +224,14 @@
 			            </div>
 			            <div id="collapseOne" class="panel-collapse collapse in">
 			                <div class="panel-body">
-			                    
+			                    <div id="lista-jogadores"></div>
+                                    
 			                </div>
 			            </div>
 			        </div>
 			    </div>
 			</div>
-			<div class="row">
+			<!--<div class="row">
 			    <div class="panel-group col-sm-12" id="accordion">
 			        <div class="panel panel-default">
 			            <div class="panel-heading">
@@ -143,8 +248,9 @@
 			            </div>
 			        </div>
 			    </div>
-			</div>
+			</div>-->
 		</div>
+		<% if(user){ %>
 		<div id="invite" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -196,6 +302,7 @@
 				</div>
 			</div>
 		</div>
+		<% } %>
     </section><!--/#registration-->   
     <%- include partials/footer.ejs %>
     <script src="/js/util.js"></script>

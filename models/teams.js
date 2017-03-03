@@ -67,6 +67,7 @@ function Teams() {
 				}
 			}
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
+			console.log(query);
 			con.query(query, function(err, result){
 				if(err)
 					res.send({status: 0, message: err});
@@ -145,23 +146,24 @@ function Teams() {
 			else{
 				if(req.params.slug){
 					connection.acquire(function(err, con){
-						con.query('select * from vw_teams where status = 0 and slug = ? ', req.params.slug, function(err, result){
+						con.query('select vw_teams.*, grounds.name as ground_name, concat(vw_users.first_name," ", vw_users.last_name) as resp_name, team_categories.name as category_name  from vw_teams left join grounds on grounds.id = vw_teams.ground_id left join vw_users on vw_teams.resp_id = vw_users.id left join team_categories on team_categories.id = vw_teams.category_id  where vw_teams.slug = ?; SELECT vw_users.*, teams.slug FROM vw_users INNER JOIN team_followers ON team_followers.user_id = vw_users.id INNER JOIN teams ON team_followers.team_id = teams.id where teams.slug = ?', [req.params.slug, req.params.slug], function(err, result){
 							if(err)
 								res.send({status: 0, message: err});
 							else
 								res.render('time.ejs', {
 									lang : res,
 									user : req.user,
-									teams : result
+									teams : result[0],
+									followers: result[1]
 								});
-							console.log(result);
+							console.log('teste', result);
 						});
 						con.release();
 					});
 				}
 				else{
 					connection.acquire(function(err, con){
-						con.query('select teams.*, team_categories.name as category_name from teams left join team_categories on teams.category_id = team_categories.id where resp_id = ? and status = 0 order by name asc', req.user.id, function(err, result){
+						con.query('select entities.alias as entity_name, teams.*, team_categories.name as category_name from teams left join team_categories on teams.category_id = team_categories.id left join entities on teams.entity_id = entities.id where teams.resp_id = ? and teams.status = 1 order by name asc', req.user.id, function(err, result){
 							if(err)
 								res.send({status: 0, message: err});
 							else
@@ -176,16 +178,17 @@ function Teams() {
 		else{
 			if(req.params.slug){
 				connection.acquire(function(err, con){
-					con.query('select * from vw_teams where slug = ? ', req.params.slug, function(err, result){
+					con.query('select vw_teams.*, grounds.name as ground_name, concat(vw_users.first_name," ", vw_users.last_name) as resp_name, team_categories.name as category_name  from vw_teams left join grounds on grounds.id = vw_teams.ground_id left join vw_users on vw_teams.resp_id = vw_users.id left join team_categories on team_categories.id = vw_teams.category_id  where vw_teams.slug = ?; SELECT vw_users.*, teams.slug FROM vw_users INNER JOIN team_followers ON team_followers.user_id = vw_users.id INNER JOIN teams ON team_followers.team_id = teams.id where teams.slug = ?', [req.params.slug, req.params.slug], function(err, result){
 						if(err)
 							res.send({status: 0, message: err});
 						else
 							res.render('time.ejs', {
 								lang : res,
 								user : null,
-								teams : result
+								teams : result[0],
+								followers: result[1]
 							});
-						console.log(result);
+						console.log('delosgado', result);
 					});
 					con.release();
 				});
@@ -342,7 +345,8 @@ function Teams() {
 	this.listPlayers = function(req, res) {
 		connection.acquire(function(err, con){
 			if(req.params.id){
-				con.query('select * from vw_players_list where player_id  in (select player_id from team_players where team_id = ? group by player_id) and ground_id in (select ground_id from teams where id = ?)', [req.params.id, req.params.id], function(err, result){
+				//con.query('select * from vw_players_list where id  in (select player_id from team_players where team_id = ? group by player_id) and ground_id in (select ground_id from teams where id = ?)', [req.params.id, req.params.id], function(err, result){
+				con.query('select * from vw_players_list where id  in (select player_id from team_players where team_id = ? and ground_id in (select ground_id from teams where id = ?) group by player_id)', [req.params.id, req.params.id], function(err, result){
 					if(err)
 						res.send({status: 0, message: err});
 					else

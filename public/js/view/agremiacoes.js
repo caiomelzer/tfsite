@@ -20,4 +20,21 @@ $(document).on('ready', function(){
     	listEntities();
     	return false;
 	});	
+	$.ajax({
+		url:'/api/cities/',
+		type: 'GET',
+		success: function(res){
+			if(res.status == 0){
+				//showMessageError();
+			}
+			else{
+				var content = '<option value=""></option>';
+				$.each(res.data, function(i,v){
+					content += '<option value="'+v.city_id+'">'+v.abr+' - '+v.city_name+'</option>';
+				});
+				$('#city').html(content);
+			}
+
+		}
+	});
 });
