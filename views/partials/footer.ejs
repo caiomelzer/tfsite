@@ -73,8 +73,16 @@
                             </div> 
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="title" class="control-label"><%= __('Title') %></label>
-                                    <input type="title" class="form-control" id="title" name="title" placeholder="" data-error="<%= __('Please, fill the form with a valid title') %>" required>
+                                    <label for="title" class="control-label"><%= __('Subject') %></label>
+                                    <select type="title" class="form-control" id="title" name="title" placeholder="" data-error="<%= __('Please, fill the form with a valid title') %>" required>
+                                        <option value="[Geral] Ajuda">[Geral] Ajuda</option>
+                                        <option value="[Conteúdo] Informar conteúdo indesejável">[Conteúdo] Informar conteúdo indesejável</option>
+                                        <option value="[Marketing] Anunciar no Portal">[Marketing] Anunciar no Portal</option>
+                                        <option value="[Perfil] Solicitar alteração do e-mail cadastrado">[Perfil] Solicitar alteração do e-mail cadastrado</option>
+                                        <option value="[Times] Solicitar exclusão ou inativação em equipe">[Times] Solicitar exclusão ou inativação em equipe</option>
+                                        <option value="[Times] Solicitar alteração do responsável">[Times] Solicitar alteração do responsável</option>
+                                        
+                                    </select>
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div> 

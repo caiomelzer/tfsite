@@ -1,4 +1,4 @@
-/*@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);*/
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);
 .clearfix {
   *zoom: 1;
 }
@@ -397,6 +397,15 @@ body > section {
 #main-slider .next {
   right: 10px;
 }
+
+#main-slider .animation{
+      background: #000;
+    width: auto;
+    float: left;
+    clear: both;
+    padding: 6px 5px;
+}
+
 #main-slider .active .animation.animated-item-1 {
   -webkit-animation: fadeInUp 300ms linear 300ms both;
   -moz-animation: fadeInUp 300ms linear 300ms both;
@@ -1632,9 +1641,7 @@ h1 span{
   color: #fff;
   cursor: pointer;
 }
-section.emerald{
-  padding: 0px !important;
-}
+
 header div.container{
   height: 85px;
 }
@@ -1703,6 +1710,9 @@ header div.container{
 
 }
 .contato-botao i{
-    font-size: 2em;
-    padding: 5px;
-  }
+  font-size: 2em;
+  padding: 5px;
+}
+.media div i{
+  font-size: 4em;
+}
