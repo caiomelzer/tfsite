@@ -1,14 +1,20 @@
 $(document).on('ready', function(){ 
 	
-	$.each($('.games-invites-list').children(), function(i,v){
+	$.each($('.list-timestamp').children(), function(i,v){
 		var dataInfo = $(v).children('time').attr('datetime').split(' ');
 		$(v).children('time').children('.day').text(dataInfo[2]);
 		$(v).children('time').children('.month-year').text(dataInfo[1]+' / '+dataInfo[3]);
 		$(v).children('time').children('.time').text(dataInfo[4].split(':')[0]+':'+dataInfo[4].split(':')[1]);
 	});
 
+	$.each($('.list-no-timestamp').children(), function(i,v){
+		var dataInfo = $(v).children('time').attr('datetime').replace(' ','-').split('-');
+		$(v).children('time').children('.day').text(dataInfo[0]);
+		$(v).children('time').children('.month-year').text(dataInfo[1]+' / '+dataInfo[2]);
+		$(v).children('time').children('.time').text(dataInfo[3]);
+	});
+
 	$('.label-warning').on('click', function(){
-		console.info($(this).attr('data-team'));
 		$('#invite').attr('data-team',$(this).attr('data-team'));
 		$('#invite').attr('data-game',$(this).attr('data-game'));
 		$.ajax({
@@ -19,7 +25,6 @@ $(document).on('ready', function(){
 					showMessageError();
 				}
 				else{
-					console.info(res.data);
 					var content = '';
 					$.each(res.data, function(i, v){
 						content += '<li><span class="col-md-1 picture"><img src="/images/uploads/'+v.picture+'" /></span><span class="col-md-10 player-name">'+v.first_name+' '+v.last_name+' - '+v.positions+'</span>';
@@ -104,7 +109,60 @@ $(document).on('ready', function(){
 		$(this).parent().remove();
 	});
 
+	$('.games-invites-item .label-primary').on('click', function(){
+		$('#game-result').attr('data-game',$(this).parent().attr('data-id'));
+		$('#game-result').modal();
+		$.ajax({
+			url:'/jogos/sumula/'+$(this).parent().attr('data-id'),
+			type: 'GET',
+			success: function(res){
+				if(res.status == 0){
+					showMessageError();
+				}
+				else{
+					$('#info-sumula').html(res);
+					$(".game-info").on('blur keypress paste input', function(){
+						var teamA = 0;
+						var teamB = 0;
+						$.each($('.team-a').find('.gols'), function(i,v){
+							teamA += parseInt($(v).html());
+						});
+						$.each($('.team-b').find('.gols-contra'), function(i,v){
+							teamA += parseInt($(v).html());
+						});
+						$.each($('.team-a').find('.gols-contra'), function(i,v){
+							teamB += parseInt($(v).html());
+						});
+						$.each($('.team-b').find('.gols'), function(i,v){
+							teamB += parseInt($(v).html());
+						});
+						$('#team_a').val(teamA);
+						$('#team_b').val(teamB);
+					});
 
+				}
+			}
+		});	
+	});
+	$('#form_sumula').on('submit', function (e) {
+		console.info($('#game-result').attr('data-game'));
+		var dataPlayers = [];
+		$.each($('table tr[data-team]'), function(i,v){
+			dataPlayers.push({game_id: $('#game-result').attr('data-game'), team_id: $(v).attr('data-team'), player_id: $(v).attr('data-player'), goals_against: $(v).children('.gols-contra').text(), goals: $(v).children('.gols').text(), red_card: $(v).children('.red-card').text(), yellow_card: $(v).children('.yellow-card').text()});
+		});
+		console.info(dataPlayers);
+		var data = {
+			players: dataPlayers,
+			text: $('#text').html()
+		};
+		$.ajax({
+			url:'/jogos/sumula/'+$('#game-result').attr('data-game'),
+			type: 'POST',
+			data: data,
+			success: function(res){
+			}
+		});	
+		return false;
+	});
 
-	
 });

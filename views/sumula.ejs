@@ -1,0 +1,90 @@
+<div id="result-info">
+	<% if(games && games.length > 0){ %>
+		<div class="row">
+			<div class="team col-sm-12">
+	            <%= games[0].date %> |  <%= games[0].name %>
+	        </div>
+	    </div>
+		<div class="row">
+			<div class="team col-sm-3">
+	            <img src="/images/uploads/<%= games[0].logo_a %>" />
+	        </div>
+	        <div class="team-score col-sm-2">
+	            <input type="number" class="form-control" id="team_a" name="team_a" disabled required>
+	        </div>
+	        <div class="versus col-sm-2">VS</div>
+	        <div class="team-score col-sm-2">
+				<input type="number" class="form-control" id="team_b" name="team_b" disabled required>
+			</div>
+			<div class="team col-sm-3">
+				<img src="/images/uploads/<%= games[0].logo_b %>" />
+			</div>
+	    </div>
+	    <div class="row">
+			<ul class="team-a col-sm-6">
+				<div class="row">
+	        		<table>
+	            		<tr>
+	            			<td class="col-sm-8"></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-futbol-o" aria-hidden="true"></i></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-futbol-o contra" aria-hidden="true"></i></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-square yellow" aria-hidden="true"></i></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-square red" aria-hidden="true"></i></td>
+	            		</tr>
+	            		<% for(var i=0;i<players_a.length;i++){ %>
+						<tr data-player="<%= players_a[i].player_id %>"  data-team="<%= players_a[i].team_id %>">
+	            			<td class="col-sm-8"><%= players_a[i].first_name %> <%= players_a[i].last_name %></td>
+	            			<td class="col-sm-1 game-info gols" contenteditable="true" type="gols">0</td>
+	            			<td class="col-sm-1 game-info gols-contra" contenteditable="true" type="gols-contra">0</td>
+	            			<td class="col-sm-1 game-info red-card" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info yellow-card" contenteditable="true">0</td>
+	            		</tr>
+						<% } %> 
+						<tr data-player="0" data-team="<%= games[0].team_id %>">
+	            			<td class="col-sm-8"><%= __('Others') %></td>
+	            			<td class="col-sm-1 game-info gols" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info gols-contra" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info red-card " contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info yellow-card" contenteditable="true">0</td>
+	            		</tr>
+	            	</table>
+				</div>  
+	        </ul>
+	        <ul class="team-b col-sm-6">
+	        	<div class="row">
+	        		<table>
+	            		<tr>
+	            			<td class="col-sm-8"></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-futbol-o" aria-hidden="true"></i></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-futbol-o contra" aria-hidden="true"></i></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-square yellow" aria-hidden="true"></i></td>
+	            			<td class="col-sm-1 game-info"><i class="fa fa-square red" aria-hidden="true"></i></td>
+	            		</tr>
+	            		<% for(var i=0;i<players_b.length;i++){ %>
+						<tr data-player="<%= players_b[i].player_id %>"  data-team="<%= players_b[i].team_id %>">
+	            			<td class="col-sm-8"><%= players_b[i].first_name %> <%= players_b[i].last_name %></td>
+	            			<td class="col-sm-1 game-info gols" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info gols-contra" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info red-card" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info yellow-card" contenteditable="true">0</td>
+	            		</tr>
+						<% } %> 
+						<tr data-player="0" data-team="<%= games[0].opponent_id %>">
+	            			<td class="col-sm-8"><%= __('Others') %></td>
+	            			<td class="col-sm-1 game-info gols" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info gols-contra" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info red-card" contenteditable="true">0</td>
+	            			<td class="col-sm-1 game-info yellow-card" contenteditable="true">0</td>
+	            		</tr>
+	            	</table>
+				</div>  
+	        </ul>
+	    </div>
+	    <div class="row">
+			<div class="col-sm-12">
+	            <textarea id="text" name="text" class="resenha" placeholder="<%= __('Comments') %>"></textarea>
+	        </div>
+	        
+	    </div>
+	<% } %> 
+</div>

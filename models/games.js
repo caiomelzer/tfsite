@@ -47,7 +47,7 @@ function Games() {
 	},
 	this.list = function(req, res){
 		connection.acquire(function(err, con){
-			con.query('select * from vw_games_invites where opponent_confirm = 1 and resp_id = ? and date > now() order by date asc; select * from vw_games_invites where opponent_confirm = 0 and resp_id = ? and date > now() order by date asc;  select * from vw_games_invites where opponent_confirm = 2 and resp_id = ? order by date asc', [req.user.id, req.user.id, req.user.id], function(err, result){
+			con.query('select * from vw_games_invites where opponent_confirm = 1 and resp_id = ? and date > now() order by date asc; select * from vw_games_invites where opponent_confirm = 0 and resp_id = ? and date > now() order by date asc;  select * from vw_games_invites where opponent_confirm = 2 and resp_id = ? order by date asc; select * from vw_games where (status = 1 or status = 2) and a_resp_id = ? order by date asc;', [req.user.id, req.user.id, req.user.id, req.user.id], function(err, result){
 				if(err){
 					res.send({status: 0, message: err});
 				}
@@ -59,6 +59,7 @@ function Games() {
 						games : result[0],
 						invites: result[1],
 						canceled: result[2],
+						ended: result[3]
 					});
 				}
 			});
@@ -222,10 +223,12 @@ function Games() {
 	this.answerInvite = function(req, res){
 		connection.acquire(function(err, con){
 			con.query('update games_invites set opponent_confirm = ? where game_id = ?', [req.body.opponent_confirm, req.body.game_id], function(err, result){
+				news.create()
 				if(err)
 					res.send({status: 0, message: err});
 				else
 					res.send({status: 1});
+
 			});
 			con.release();
 		});
@@ -250,8 +253,8 @@ function Games() {
 	this.inviteListPlayers = function(req, res){
 		connection.acquire(function(err, con){
 			if(req.params.id && req.params.team_id){
-				var query = 'select player_id, gender, born, first_name, middle_name, last_name, resp_id, name, id, min_age, max_age, other_grounds, other_categories, age, picture,GROUP_CONCAT(positions SEPARATOR ", ") as positions from (SELECT vw_players.player_id, vw_players.gender, vw_players.born, vw_players.first_name, vw_players.middle_name, vw_players.last_name, vw_players.resp_id, vw_teams.`name`, vw_teams.id, team_categories.min_age, team_categories.max_age, vw_teams.other_grounds, vw_teams.other_categories, timestampdiff(YEAR,vw_players.born,curdate()) AS age, vw_players.picture, vw_players_positions_2.positions FROM vw_games_invites LEFT JOIN team_players ON team_players.team_id = vw_games_invites.team_id OR team_players.team_id = vw_games_invites.opponent_id INNER JOIN vw_players ON team_players.player_id = vw_players.player_id INNER JOIN vw_teams ON vw_teams.id = vw_games_invites.team_id OR vw_teams.id = vw_games_invites.opponent_id INNER JOIN team_categories ON vw_teams.category_id = team_categories.id INNER JOIN vw_players_positions_2 ON vw_players.player_id = vw_players_positions_2.player_id WHERE vw_games_invites.game_id = ? AND vw_teams.id = ?) final';
-				con.query(query, [req.params.id, req.params.team_id], function(err, result){
+				var query = 'select final.player_id, gender, born, first_name, middle_name, last_name, resp_id, name, final.id, min_age, max_age, other_grounds, other_categories, age, picture,GROUP_CONCAT(positions SEPARATOR ", ") as positions, invites.player_confirm from (SELECT vw_players.player_id, vw_players.gender, vw_players.born, vw_players.first_name, vw_players.middle_name, vw_players.last_name, vw_players.resp_id, vw_teams.`name`, vw_teams.id, team_categories.min_age, team_categories.max_age, vw_teams.other_grounds, vw_teams.other_categories, timestampdiff(YEAR,vw_players.born,curdate()) AS age, vw_players.picture, vw_players_positions_2.positions FROM vw_games_invites LEFT JOIN team_players ON team_players.team_id = vw_games_invites.team_id OR team_players.team_id = vw_games_invites.opponent_id INNER JOIN vw_players ON team_players.player_id = vw_players.player_id INNER JOIN vw_teams ON vw_teams.id = vw_games_invites.team_id OR vw_teams.id = vw_games_invites.opponent_id INNER JOIN team_categories ON vw_teams.category_id = team_categories.id INNER JOIN vw_players_positions_2 ON vw_players.player_id = vw_players_positions_2.player_id WHERE vw_games_invites.game_id = ? AND vw_teams.id = ?) final inner join invites on final.id = invites.team_id and final.player_id = invites.player_id where invites.game_id = ?';
+				con.query(query, [req.params.id, req.params.team_id, req.params.id], function(err, result){
 					if(err)
 						res.send({status: 0, message: err});
 					else
@@ -269,7 +272,8 @@ function Games() {
 				team_id: req.params.team_id,
 				player_confirm:0
 			};
-			con.query('insert into invites set ?', data, function(err, result){
+			con.query('delete from invites where game_id = ? and  team_id = ? and player_id = ?; insert into invites set ?', [req.params.game_id, req.params.team_id,req.params.player_id, data], function(err, result){
+				console.log(err, result);
 				if(err)
 					res.send({status: 0, message: err});
 				else
@@ -286,6 +290,45 @@ function Games() {
 				else
 					res.send({status: 1, data: result});
 			});
+			con.release();
+		});
+	},
+	this.result = function(req, res){
+		connection.acquire(function(err, con){
+			con.query('select * from vw_games where id = ? and status >= 1; select * from vw_games_results_team where game_id = ?; select * from vw_games_results_opponent where game_id = ?', [req.params.id,req.params.id,req.params.id], function(err, result){
+				if(err){
+					res.send({status: 0, message: err});
+				}
+				else{
+					console.log(result);
+					res.render('sumula.ejs', {
+						lang : res,
+						user : req.user,
+						games : result[0],
+						players_a : result[1],
+						players_b : result[2]
+					});
+				}
+			});
+			con.release();
+		});
+	},
+	this.saveResult = function(req, res){
+		console.log(req.body);
+		connection.acquire(function(err, con){
+			if(req.body.players){
+				con.query('delete from games_results where game_id = ?', req.body.players[0].game_id, function(err, result){});
+				con.query('update games set text = ?, status = 2 where id = ?', [req.body.text, req.body.players[0].game_id], function(err, result){});
+				for(var i=0; i<req.body.players.length; i++){
+					con.query('insert into games_results set ?', req.body.players[i], function(err, result){
+						
+					});
+				}
+				if(err)
+							res.send({status: 0, message: err});
+						else
+							res.send({status: 1, message: 'success'});
+			}
 			con.release();
 		});
 	}

@@ -1,5 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
 var connection = require('../config/connection');
+var news = require('../models/news');
 var multer  = require('multer');
 var fileInfo = '';
 var storage =   multer.diskStorage({
@@ -34,6 +35,7 @@ function Teams() {
 							res.send({status: 0, message: err});
 						else
 							res.send({status: 1, message: 'Success'});
+
 					});
 				}
 			});

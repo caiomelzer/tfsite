@@ -32,9 +32,9 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/teste', function(req, res){
-		var transporter = nodemailer.createTransport('smtps://nao-responda%40terradofutebol.com.br:mewtwo@md-20.webhostbox.net');
+		var transporter = nodemailer.createTransport('smtps://contato%40terradofutebol.com.br:mewtwo@md-20.webhostbox.net');
 		var mailOptions = {
-		    from: '"Fred Foo 👥" <nao-responda@terradofutebol.com.br>', // sender address 
+		    from: '"Fred Foo 👥" <contato@terradofutebol.com.br>', // sender address 
 		    to: 'melzer.caio@gmail.com', // list of receivers 
 		    subject: 'Hello ✔', // Subject line 
 		    text: 'Hello world 🐴', // plaintext body 
@@ -229,6 +229,14 @@ module.exports = function(app, passport) {
 	app.get('/jogos/time/:id', function(req, res) {
 		games.listByTeam(req, res);
 	});	
+
+	app.get('/jogos/sumula/:id', isLoggedIn, function(req, res) {
+		games.result(req, res);
+	});	
+
+	app.post('/jogos/sumula/:id', isLoggedIn, function(req, res) {
+		games.saveResult(req, res);
+	});		
 
 	app.get('/jogos/convites/quadras/:id', isLoggedIn, function(req, res) {
 		games.listPlaces(req, res);

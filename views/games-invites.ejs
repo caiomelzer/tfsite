@@ -30,7 +30,7 @@
             <%- include partials/alert.ejs %>
             <div class="row">
                 <h2><%= __('Open Invites') %></h2>
-                <ul class="games-invites-list col-sm-12">
+                <ul class="games-invites-list list-timestamp col-sm-12">
                 <% if(invites && invites.length > 0){ %>
                     <% for(var i=0;i<invites.length;i++){ %>
                     <li class="games-invites-item" data-id="<%= invites[i].game_id %>">
@@ -48,7 +48,7 @@
                         </span>
                         <span class="place col-sm-5">
                             <h4><%= invites[i].name %></h4>
-                            <p><%= invites[i].address %> - <%= invites[i].city_name %> - <%= invites[i].state_name %></p>
+                            <!--<p><%= invites[i].address %> - <%= invites[i].city_name %> - <%= invites[i].state_name %></p>-->
                         </span>
                         <span class="option label-success col-sm-1">
                             <i class="glyphicon glyphicon-ok"></i>
@@ -65,10 +65,10 @@
             </div>
             <div class="row">
                 <h2><%= __('Next Games') %></h2>
-                <ul class="games-invites-list col-sm-12">
+                <ul class="games-invites-list list-timestamp col-sm-12">
                 <% if(games && games.length > 0){ %>
                     <% for(var i=0;i<games.length;i++){ %>
-                    <li class="games-invites-item" data-id="<%= games[i].game_id %>">
+                    <li class="games-invites-item " data-id="<%= games[i].game_id %>">
                         <time datetime="<%= games[i].date %>" class="label-default col-sm-1">
                             <span class="day"></span>
                             <span class="month-year"></span>
@@ -83,7 +83,7 @@
                         </span>
                         <span class="place col-sm-5">
                             <h4><%= games[i].name %></h4>
-                            <p><%= games[i].address %> - <%= games[i].city_name %> - <%= games[i].state_name %></p>
+                            <!--<p><%= games[i].address %> - <%= games[i].city_name %> - <%= games[i].state_name %></p>-->
                         </span>
                         <span class="option label-warning col-sm-1" data-toggle="modal" data-game="<%= games[i].game_id %>" data-target="#invite" data-team="<%= games[i].opponent_id %>">
                             <i class="glyphicon glyphicon-log-out"></i>
@@ -97,7 +97,7 @@
             </div>
             <div class="row">
                 <h2><%= __('Refused Invites') %></h2>
-                <ul class="games-invites-list col-sm-12">
+                <ul class="games-invites-list list-timestamp col-sm-12">
                 <% if(canceled && canceled.length > 0){ %>
                     <% for(var i=0;i<canceled.length;i++){ %>
                     <li class="games-invites-item" data-id="<%= canceled[i].game_id %>">
@@ -115,12 +115,50 @@
                         </span>
                         <span class="place col-sm-6">
                             <h4><%= canceled[i].name %></h4>
-                            <p><%= canceled[i].address %> - <%= canceled[i].city_name %> - <%= canceled[i].state_name %></p>
+                            <!--<p><%= canceled[i].address %> - <%= canceled[i].city_name %> - <%= canceled[i].state_name %></p>-->
                         </span>
                     </li>
                     <% } %> 
                 <% } else { %>    
                     <%= __('You have no invites yet!') %>
+                <% } %> 
+                </ul>
+            </div>
+            <div class="row">
+                <h2><%= __('Ended Games') %></h2>
+                <ul class="games-invites-list list-no-timestamp col-sm-12">
+                <% if(ended && ended.length > 0){ %>
+                    <% for(var i=0;i<ended.length;i++){ %>
+                    <li class="games-invites-item" data-id="<%= ended[i].id %>">
+                        <time datetime="<%= ended[i].date %>" class="label-default col-sm-1">
+                            <span class="day"></span>
+                            <span class="month-year"></span>
+                            <span class="time"></span>
+                        </time>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= ended[i].logo_a %>" />
+                        </span>
+                        <span class="versus col-sm-1">VS</span>
+                        <span class="team col-sm-1">
+                            <img src="/images/uploads/<%= ended[i].logo_b %>" />
+                        </span>
+                        <span class="place col-sm-6">
+                            <h4><%= ended[i].name %></h4>
+                            <!--<p><%= ended[i].address %> - <%= ended[i].city_name %> - <%= ended[i].state_name %></p>-->
+                        </span>
+                        <% if(ended[i].status === 1){ %>
+                        <span class="option label-primary col-sm-1">
+                            <i class="glyphicon glyphicon-list-alt"></i>
+                        </span>
+                        <% } else { %>  
+                        <span class="option label-default col-sm-1">
+                            <i class="glyphicon glyphicon-time"></i>
+                        </span>
+                        <% } %> 
+                    </li>
+                    <% } %> 
+                <% } else { %>    
+                    <%= __('You have no ended games yet!') %>
                 <% } %> 
                 </ul>
             </div>
@@ -150,6 +188,29 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('Close') %></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="game-result" class="modal fade modal-lg" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><%= __('Result') %></h4>
+                    </div>
+                    <form id="form_sumula">
+                        <div class="modal-body">
+                            <div style="overflow:hidden;">
+                                <div id="info-sumula">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><%= __('Close') %></button>
+                            <input type="submit" class="btn salvar-sumula btn-success" value="<%= __('Save') %>" />
                         </div>
                     </form>
                 </div>

@@ -200,5 +200,13 @@
 	"Born": "Nascimento",
 	"Titles": "Títulos",
 	"Goals": "Gols",
-	"Subject": "Assunto"
+	"Subject": "Assunto",
+	"Ended Games": "Jogos Finalizados",
+	"You have no ended games yet!": "Você não possui jogos finalizados ainda!",
+	"Result": "Resultado",
+	"Team A": "Team A",
+	"Team B": "Team B",
+	"Save": "Salvar",
+	"Others": "Outros",
+	"Comments": "Resenha"
 }
