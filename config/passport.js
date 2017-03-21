@@ -10,6 +10,7 @@ var dbconfig = require('./database');
 var connection = mysql.createConnection(dbconfig.connection);
 var i18n    = require('i18n');
 var nodemailer = require('nodemailer');
+var sendmail = require('sendmail')({silent: true});
 var md5 = require('md5');
 
 connection.query('USE ' + dbconfig.database);
@@ -71,21 +72,20 @@ module.exports = function(passport) {
                         return done(null, newUserMysql);
                     });
 
-                    var transporter = nodemailer.createTransport('smtps://nao-responda%40terradofutebol.com.br:mewtwo@md-20.webhostbox.net');
-                    var mailOptions = {
-                        from: '"Terra do Futebol" <nao-responda@terradofutebol.com.br>', // sender address 
-                        to: req.body.email, // list of receivers 
-                        subject: 'Bem-indo', // Subject line 
-                        text: 'Olá, seu cadastro foi efetivado com sucesso, agora basta copiar o link abaixo e colocar no navegador para você poder começar a utilizar nosso site<br/>http://localhost:8080/'+newUserMysql.username+'/'+md5(newUserMysql.username)+'<br/>...Abraços!', // plaintext body 
+                    sendmail({
+                        from: 'contato@terradofutebol.com.br',
+                        to: req.body.email,
+                        subject: 'Bem-indo',
+                        text: 'Olá, seu cadastro foi efetivado com sucesso, agora basta copiar o link abaixo e colocar no navegador para você poder começar a utilizar nosso site<br/>http://localhost:8080/'+newUserMysql.username+'/'+md5(newUserMysql.username)+'<br/>...Abraços!', 
                         html: '<h2>Olá, </h2><p>seu cadastro foi efetivado com sucesso, e você ja pode utilzar nosso site...</p><p>Abraços!</p>' // html body 
-                    };
-                    console.log('http://localhost:8080/ativar/'+newUserMysql.username+'/'+md5(newUserMysql.username));
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if(error){
-                            return console.log(error);
-                        }
-                        console.log('Message sent: ' + info.response);
+                    }, 
+                    function (err, reply) {
+                        console.log(err && err.stack)
+                        console.dir(reply)
                     });
+
+
+                    
                 }
             });
         })

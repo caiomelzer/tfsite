@@ -43,7 +43,7 @@ module.exports = function(app, passport) {
 		function (err, reply) {
 			console.log(err && err.stack)
 			console.dir(reply)
-		})
+		});
 	});
 
 	app.post('/entrar', passport.authenticate('local-login', {
