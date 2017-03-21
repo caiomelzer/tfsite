@@ -11,6 +11,7 @@ var places = require('../models/places');
 var mkt = require('../models/mkt');
 var email = require('emailjs');
 var nodemailer = require('nodemailer');
+var sendmail = require(';sendmail')({silent: true})
 var userData;
 
 module.exports = function(app, passport) {
@@ -32,20 +33,17 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/teste', function(req, res){
-		var transporter = nodemailer.createTransport('smtps://contato%40terradofutebol.com.br:mewtwo@md-20.webhostbox.net');
-		var mailOptions = {
-		    from: '"Fred Foo 👥" <contato@terradofutebol.com.br>', // sender address 
-		    to: 'melzer.caio@gmail.com', // list of receivers 
-		    subject: 'Hello ✔', // Subject line 
-		    text: 'Hello world 🐴', // plaintext body 
-		    html: '<b>Hello world 🐴</b>' // html body 
-		};
-		transporter.sendMail(mailOptions, function(error, info){
-		    if(error){
-		        return console.log(error);
-		    }
-		    console.log('Message sent: ' + info.response);
-		});
+		sendmail({
+			from: 'contato@terradofutebol.com.br',
+			to: 'melzer.caio@gmail.com',
+			replyTo: 'jason@yourdomain.com',
+			subject: 'MailComposer sendmail',
+			html: 'Mail of test sendmail '
+		}, 
+		function (err, reply) {
+			console.log(err && err.stack)
+			console.dir(reply)
+		})
 	});
 
 	app.post('/entrar', passport.authenticate('local-login', {
