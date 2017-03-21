@@ -75,9 +75,8 @@ module.exports = function(passport) {
                     sendmail({
                         from: 'contato@terradofutebol.com.br',
                         to: req.body.email,
-                        subject: 'Bem-indo',
-                        text: 'Olá, seu cadastro foi efetivado com sucesso, agora basta copiar o link abaixo e colocar no navegador para você poder começar a utilizar nosso site<br/>http://localhost:8080/'+newUserMysql.username+'/'+md5(newUserMysql.username)+'<br/>...Abraços!', 
-                        html: '<h2>Olá, </h2><p>seu cadastro foi efetivado com sucesso, e você ja pode utilzar nosso site...</p><p>Abraços!</p>' // html body 
+                        subject: 'Bem-Vindo',
+                        html: '<h2>Olá, </h2><p>seu cadastro foi efetivado com sucesso, e você ja pode utilzar nosso site...<br/>http://terradofutebol.com.br/ativar/'+newUserMysql.username+'/'+md5(newUserMysql.username)+'<br/></p><p>Abraços!</p>' // html body 
                     }, 
                     function (err, reply) {
                         console.log(err && err.stack)
