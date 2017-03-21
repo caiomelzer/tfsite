@@ -11,7 +11,7 @@ var places = require('../models/places');
 var mkt = require('../models/mkt');
 var email = require('emailjs');
 var nodemailer = require('nodemailer');
-var sendmail = require(';sendmail')({silent: true})
+var sendmail = require('sendmail')({silent: true});
 var userData;
 
 module.exports = function(app, passport) {
