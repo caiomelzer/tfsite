@@ -225,8 +225,9 @@ $(document).on('ready', function(){
 		});	
 	})
 	.on('click', '.players-remove', function(){
-		$.post('/times/jogadores/'+document.location.pathname.split('/')[3]+'/remover-local', function(data){
-			
+		$.post('/times/jogadores/'+document.location.pathname.split('/')[3]+'/remover/'+$(this).attr('data-id'), function(data){
+			tablePlayersInvite.ajax.reload();
+        	tablePlayers.ajax.reload();
 		});
 	});
 

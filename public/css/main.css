@@ -1418,7 +1418,7 @@ h1 span{
 }
 .tools-table{
     padding-bottom: 10px;
-    text-align: right;
+    text-align: left;
 }
 .games-invite-list{
     list-style: none !important;
@@ -1747,5 +1747,20 @@ header div.container{
   width: 100%;
   min-height: 100px;
 }
-
-
+.dataTables_length{
+  display: none;
+}
+.dataTables_filter{
+  float: right;
+}
+.invite-answer{
+  text-align: center;
+}
+.notification-item{
+    background: #fff;
+    margin-bottom: 10px;
+    line-height: 4em;
+}
+.notification-action{
+  text-align: right;
+}

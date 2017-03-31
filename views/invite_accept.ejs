@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css" />
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                	<h1><%= __('Invite') %></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><%= __('Invite') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+        	
+        	<% if(invite.length > 0){ %>
+        	<div class="row">
+        		<div class="col-sm-12 invite-answer">
+					<h2><%= __('Do you want to play on ') %>
+					<%= invite[0].name %> ?</h2>
+				</div>
+			</div>
+			<div class="row">
+        		<div class="col-sm-12 invite-answer">
+					<a href="/convites/<%= invite[0].teams %>/<%= invite[0].player_id %>/0" class="btn btn-danger btn-lg"><%= __('No') %></a>
+					<a href="/convites/<%= invite[0].teams %>/<%= invite[0].player_id %>/1" class="btn btn-success btn-lg"><%= __('Yes') %></a>
+				</div>
+			</div>
+
+
+
+			<% } else { %>
+				<%= __('Invalid invite...') %>
+			<% }  %>
+            
+		</div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/view/invite_accept.js"></script>
+	</body>
+</html>
+
+
+

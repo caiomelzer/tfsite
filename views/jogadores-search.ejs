@@ -15,21 +15,10 @@
                 <div class="desc"><%= players[i].ground_name %></div>
                 <div class="desc"><%= players[i].position_name %></div>
             </div>
-            <div class="bottom player_teams">
-                <a class="" href="#">
-                    <img alt="" src="/images/time2.png">
-                </a>
-                <a class="" href="#">
-                    <img alt="" src="/images/time1.png">
-                </a>
-                <a class="" href="#">
-                    <img alt="" src="/images/time2.png">
-                </a>
-                <a class="" href="#">
-                    <img alt="" src="/images/time1.png">
-                </a>
+            <div class="bottom player_teams" data-player="<%= players[i].id %>">
+               
             </div>
         </div>
     </div>
     <% } %>
-</div>    
+</div>   

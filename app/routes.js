@@ -8,6 +8,8 @@ var entities = require('../models/entities');
 var games = require('../models/games');
 var adm = require('../models/adm');
 var places = require('../models/places');
+var painel = require('../models/painel');
+var notifications = require('../models/notifications');
 var mkt = require('../models/mkt');
 var email = require('emailjs');
 var nodemailer = require('nodemailer');
@@ -47,7 +49,7 @@ module.exports = function(app, passport) {
 	});
 
 	app.post('/entrar', passport.authenticate('local-login', {
-            successRedirect : '/times', 
+            successRedirect : '/notificacoes', 
             failureRedirect : '/entrar', 
             failureFlash : true 
 		}),
@@ -234,7 +236,15 @@ module.exports = function(app, passport) {
 
 	app.post('/jogos/sumula/:id', isLoggedIn, function(req, res) {
 		games.saveResult(req, res);
-	});		
+	});	
+
+	app.get('/convites/:team_id/:id', isLoggedIn, function(req, res) {
+		teams.getInvite(req, res);
+	});	
+
+	app.get('/convites/:team_id/:id/:resp', isLoggedIn, function(req, res) {
+		teams.answerInvite(req, res);
+	});			
 
 	app.get('/jogos/convites/quadras/:id', isLoggedIn, function(req, res) {
 		games.listPlaces(req, res);
@@ -254,6 +264,10 @@ module.exports = function(app, passport) {
 
 	app.get('/jogos/convites/:id', isLoggedIn, function(req, res) {
 		games.invitePlayers(req, res);
+	});
+
+	app.get('/jogos/:game_id/:result', isLoggedIn, function(req, res) {
+		games.confirmResult(req, res);
 	});
 
 	app.get('/jogos/convites/:id/lista/:team_id', isLoggedIn, function(req, res) {
@@ -288,6 +302,14 @@ module.exports = function(app, passport) {
 
 	app.post('/jogadores/editar', isLoggedIn, function(req, res) {
 		players.create(req, res);
+	});
+
+	app.get('/jogadores/convites/:id', isLoggedIn, function(req, res) {
+		players.inviteToPlayInTeam(req, res);
+	});
+
+	app.get('/jogadores/times/:id', function(req, res) {
+		players.getPlayerTeam(req, res);
 	});
 
 	app.get('/jogadores/', function(req, res) {
@@ -370,6 +392,10 @@ module.exports = function(app, passport) {
 
 	app.get('/erro', function(req, res) {
 		res.render('erro.ejs', {});
+	});
+
+	app.get('/notificacoes/', isLoggedIn, function(req, res) {
+		notifications.list(req, res);
 	});
 
 

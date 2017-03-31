@@ -72,6 +72,7 @@ function Players() {
 			if(req.query.page){ query += ' limit '+req.query.page+', 30'}else{query += ' limit 0, 30'};
 			console.log(query);
 			con.query(query, function(err, result){
+				console.log(result);
 				if(err)
 					res.send({status: 0, message: err});
 				else
@@ -108,6 +109,43 @@ function Players() {
 					}
 				}
 			});
+			con.release();
+		});
+	},
+	this.inviteToPlayInTeam = function(req, res){
+		connection.acquire(function(err, con){
+			if(req.params.id){
+				con.query('select * from vw_users where id = ? and is_player = 1; select * from vw_player_ground_postions where player_id = ?; SELECT teams.* FROM team_players INNER JOIN teams ON teams.id = team_players.team_id where team_players.player_id = ?; select vw_users.* from vw_users inner join team_followers on team_followers.user_id = vw_users.id where team_followers.team_id = ?; ', [req.params.id, req.params.id, req.params.id, req.params.id] ,function(err, result){
+					if(err){
+						res.send({status: 0, message: err});
+					}
+					else{
+						
+					}
+				});
+			}
+			
+			con.release();
+		});
+	},
+	this.getPlayerTeam = function(req, res){
+		connection.acquire(function(err, con){
+			if(req.params.id){
+				con.query('select * from vw_player_teams where player_id = ? ',req.params.id ,function(err, result){
+					console.log(result);
+					if(err){
+						res.send({status: 0, message: err});
+					}
+					else{
+						res.render('partials_player_teams.ejs', {
+							lang : res,
+							user : req.user,
+							teams: result
+						});
+					}
+				});
+			}
+			
 			con.release();
 		});
 	}

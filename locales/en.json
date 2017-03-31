@@ -208,5 +208,16 @@
 	"Team B": "Team B",
 	"Save": "Salvar",
 	"Others": "Outros",
-	"Comments": "Resenha"
+	"Comments": "Resenha",
+	"You have no invites...": "Você não possui convites...",
+	"Do you want to play on ": "Você gostaria de jogar no ",
+	"Notifications": "Notificações",
+	"You receive a invite to play in a team. Do you want to play on ": "Você recebeu um convite para jogar em um time. Gostaria de jogar no ",
+	"You receive a invite to play a game. Do you want to play ": "Você recebeu um convite para um jogo. Gostaria de participar?",
+	"You receive a invite to play a game. Do you want to play on": "Você recebeu uma convocação para um jogo. Gostaria de participar em ",
+	"Invalid invite...": "Convite inválido...",
+	"You receive a feedback of game. You won the game for ": "You receive a feedback of game. You won the game for ",
+	"It´s right?": "It´s right?",
+	"You receive a feedback of game. You lose the game for ": "You receive a feedback of game. You lose the game for ",
+	"versus": "versus"
 }

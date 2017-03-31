@@ -8,7 +8,7 @@ function Connection() {
       connectionLimit: 10,
       host: 'localhost',
       user: 'root',
-      password: 'HrIdQP84tm',
+      password: '',//'HrIdQP84tm',
       database: 'terraqli_bd',
       multipleStatements: true
     });

@@ -36,6 +36,15 @@ function listPlayers(){
 			}
 			else{
 				$('#list_jogadores').html(res);
+				$.each($('.player_teams'), function(i,v){
+					$.ajax({
+						url:'/jogadores/times/'+$(v).attr('data-player'),
+						type: 'GET',
+						success: function(r){
+							$(v).html(r);
+						}
+					});	
+				});
 			}
 		}
 	});
@@ -81,4 +90,8 @@ $(document).on('ready', function(){
 	});
 
 	listPlayers();	
+
+
+
+	//$('/jogadores/times/:id')
 });

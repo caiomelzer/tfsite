@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include partials/top-site.ejs %>
+    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css" />
+</head><!--/head-->
+<body>
+    <%- include partials/header.ejs %>
+    <section id="title" class="emerald">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                	<h1><%= __('Notifications') %></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><%= __('Notifications') %></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section><!--/#title-->     
+
+    <section id="registration" class="container">
+        <div class="container">
+        	
+       
+
+        	<% if(notifications.length > 0){ %>
+                <% for(var i=0; i < notifications.length; i++){ %>
+                <div class="row notification-item">
+                    <div class="col-sm-8">
+                        <%= __('You receive a invite to play in a team. Do you want to play on ') %><%= notifications[i].name %> ?
+                    </div>
+                    <div class="col-sm-4 notification-action">
+                        <a href="/convites/<%= notifications[i].team_id %>/<%= notifications[i].player_id %>/0" class="btn btn-danger btn"><%= __('No') %></a>
+                        <a href="/convites/<%= notifications[i].team_id %>/<%= notifications[i].player_id %>/1" class="btn btn-success btn"><%= __('Yes') %></a>
+                    </div>
+                </div>
+                <% } %>
+            <% } %>
+            <% if(invites.length > 0){ %>
+                <% for(var i=0; i < invites.length; i++){ %>
+                <div class="row notification-item">
+                    <div class="col-sm-8"><%= __('You receive a invite to play a game. Do you want to play on') %> <%= invites[i].date %>?
+                    </div>
+                    <div class="col-sm-4 notification-action">
+                        <a href="/convites/<%= invites[i].team_id %>/<%= invites[i].player_id %>/0" class="btn btn-danger btn"><%= __('No') %></a>
+                        <a href="/convites/<%= invites[i].team_id %>/<%= invites[i].player_id %>/1" class="btn btn-success btn"><%= __('Yes') %></a>
+                    </div>
+                </div>
+                <% } %>
+            <% } %> 
+            <% if(games.length > 0){ %>
+                <% for(var i=0; i < games.length; i++){ %>
+                <div class="row notification-item">
+                    <div class="col-sm-8">
+                    <% if(games[i].team_result > games[i].opponent_result){ %>
+                        <%= __('You receive a feedback of game. You lose the game for ') %><%= games[i].team_result %> x <%= games[i].opponent_result %> <%= __('versus') %> <%= games[i].team_name %>. <%= __('It´s right?') %> 
+                    <% } else{  %>
+                    <% if(games[i].team_result = games[i].opponent_result){ %>
+                        <%= __('You receive a feedback of game. You draw the game for ') %><%= games[i].team_result %> x <%= games[i].opponent_result %> <%= __('versus') %> <%= games[i].team_name %>. <%= __('It´s right?') %> 
+                    <% } else { %>
+                        <%= __('You receive a feedback of game. You won the game for ') %><%= games[i].team_result %> x <%= games[i].opponent_result %> <%= __('versus') %> <%= games[i].team_name %>. <%= __('It´s right?') %> 
+                    <% } %>
+                    <% } %>
+                    </div>
+                    <div class="col-sm-4 notification-action">
+                        <a href="/jogos/<%= games[i].id %>/0" class="btn btn-danger btn"><%= __('No') %></a>
+                        <a href="/jogos/<%= games[i].id %>/1" class="btn btn-success btn"><%= __('Yes') %></a>
+                    </div>
+                </div>
+                <% } %>
+            <% } %> 
+            <% if(games.length == 0 && invites.length == 0 && notifications.length == 0){ %>
+                <meta http-equiv="refresh" content="15; painel" />   
+            <% } %>       
+        </div>
+    </section><!--/#registration-->   
+    <%- include partials/footer.ejs %>
+    <script src="/js/util.js"></script>
+    <script src="/js/validator.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/view/notifications.js"></script>
+	</body>
+</html>
+
+
+

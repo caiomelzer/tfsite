@@ -2,6 +2,8 @@ var bcrypt = require('bcrypt-nodejs');
 var connection = require('../config/connection');
 var news = require('../models/news');
 var multer  = require('multer');
+var sendmail = require('sendmail')({silent: true});
+var md5 = require('md5');
 var fileInfo = '';
 var storage =   multer.diskStorage({
 	destination: function (req, file, callback) {
@@ -364,11 +366,27 @@ function Teams() {
 			player_id : req.params.id
 		};	
 		connection.acquire(function(err, con){
-			con.query('insert into team_players set ?', data, function(err, result){
-				if(err)
-					res.send({status: 0, message: err});
-				else
-					res.send({status: 1, message: 'Success'});
+			con.query('select * from users where id = ?', req.params.id, function(err, player){
+				console.log(player);
+				con.query('insert into team_players set ?', data, function(err, result){
+					if(err){
+						res.send({status: 0, message: err});
+					}
+					else{
+						res.send({status: 1, message: 'Success'});
+						sendmail({
+	                        from: 'contato@terradofutebol.com.br',
+	                        to: player[0].email,
+	                        subject: 'Olá,',
+	                        html: '<h2>Olá, </h2><p>Você foi convocado para participar de um time, responda ao convite no link abaixo...<br/>http://terradofutebol.com.br/convites/'+req.params.team_id+'/'+result.insertId+'<br/></p><p>Abraços!</p>' // html body 
+	                    }, 
+	                    function (err, reply) {
+	                        console.log(err && err.stack)
+	                        console.dir(reply)
+	                    });
+	                    console.log('http://terradofutebol.com.br/convites/'+req.params.team_id+'/'+result.insertId);
+					}
+				});
 			});
 			con.release();
 		});
@@ -407,6 +425,45 @@ function Teams() {
 				con.release();
 			});
 		}
+	},
+	this.getInvite =  function(req, res){
+		if(req.params.id && req.params.team_id){
+			connection.acquire(function(err, con){
+				con.query('select * from vw_team_players_invites where player_id = ? and teams = ?', [req.user.id, req.params.team_id], function(err, result){
+					if(err)
+						res.send({status: 0, message: err});
+					else
+						res.render('invite_accept.ejs', {
+							lang : res,
+							user : req.user,
+							invite : result
+						});
+					console.log('teste', result);
+				});
+				con.release();
+			});
+		}
+		else{
+			res.redirect('/404');
+		}
+	},
+	this.answerInvite =  function(req, res){
+		if(req.params.id && req.params.team_id && req.params.resp){
+			connection.acquire(function(err, con){
+				con.query('update team_players set status = ? where player_id = ? and team_id = ?', [req.params.resp, req.user.id, req.params.team_id], function(err, result){
+					if(err)
+						res.send({status: 0, message: err});
+					else
+						res.redirect('/painel');
+				});
+				con.release();
+			});
+		}
+		else{
+			res.redirect('/404');
+		}
 	}
+
+	
 }
 module.exports = new Teams();

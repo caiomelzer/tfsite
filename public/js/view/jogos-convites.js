@@ -84,6 +84,7 @@ $(document).on('ready', function(){
 				}
 				else{
 					showMessageSuccess();
+					location.reload();
 				}
 			}
 		});
@@ -103,6 +104,7 @@ $(document).on('ready', function(){
 				}
 				else{
 					showMessageSuccess();
+					location.reload();
 				}
 			}
 		});
@@ -153,7 +155,11 @@ $(document).on('ready', function(){
 		console.info(dataPlayers);
 		var data = {
 			players: dataPlayers,
-			text: $('#text').html()
+			text: $('#text').html(),
+			result: {
+				team_a : $('#team_a').val(),
+				team_b : $('#team_b').val()
+			}
 		};
 		$.ajax({
 			url:'/jogos/sumula/'+$('#game-result').attr('data-game'),
